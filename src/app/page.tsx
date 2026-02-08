@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Overview from "../_features/Overview";
 
 export default function Home() {
   return (
     <div>
-     <main><h1>Hello world</h1></main>
+    {<Overview/>}
     </div>
   );
 }

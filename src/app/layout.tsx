@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className="bg-beige-100">
         <SidebarProvider>
           <AppSidebar />
-          <main className="w-full outline outline-amber-300">{children}</main>
+          <main className="w-full ml-25">{children}</main>
         </SidebarProvider>
       </body>
     </html>

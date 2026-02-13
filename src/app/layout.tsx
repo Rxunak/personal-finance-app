@@ -1,6 +1,8 @@
-import Sidebar from "../_components/Sidebar";
+// import Sidebar from "../components/Sidebar";
 import "./globals.css";
 import type { Metadata } from "next";
+import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
+import { AppSidebar } from "../components/appSidebar";
 
 export const metadata: Metadata = {
   title: "Personalised Finance Tracker",
@@ -14,13 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <div className="flex min-h-screen">
-          <aside className="outline-2 outline-red-500 w-1/5">
-            <Sidebar />
-          </aside>
-          <main className="outline-2 outline-red-200 w-full">{children}</main>
-        </div>
+      <body className="bg-beige-100">
+        <SidebarProvider>
+          <AppSidebar />
+          <main className="w-full outline outline-amber-300">{children}</main>
+        </SidebarProvider>
       </body>
     </html>
   );

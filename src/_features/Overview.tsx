@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
 
 const Overview = () => {
   return (
-    <div>Overview</div>
-  )
-}
+    <div>
+      <div>
+        <p>finance</p>
+      </div>
+    </div>
+  );
+};
 
-export default Overview
+export default Overview;

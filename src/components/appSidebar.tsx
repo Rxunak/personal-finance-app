@@ -13,13 +13,16 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { useSidebar } from "../components/ui/sidebar";
+import { usePathname } from "next/navigation";
 
 export function AppSidebar() {
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
+  const pathname = usePathname();
+
   return (
     <Sidebar>
-      <SidebarHeader className={isCollapsed ? "p-4.5 mb-3" : "p-6"}>
+      <SidebarHeader className={isCollapsed ? "p-4 mb-3" : "p-6"}>
         <Image
           src={
             isCollapsed ? "/images/logo-small.svg" : "/images/logo-large.svg"
@@ -30,7 +33,14 @@ export function AppSidebar() {
         />
       </SidebarHeader>
       <SidebarMenu className={isCollapsed ? "gap-4" : ""}>
-        <SidebarMenuButton className={isCollapsed ? "p-4" : "p-6"}>
+        <SidebarMenuButton
+          className={
+            isCollapsed
+              ? "p-3  data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+              : "p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+          }
+          isActive={pathname === "/"}
+        >
           <Link href="/" className="flex gap-5">
             <Image
               src="/images/icon-nav-overview.svg"
@@ -41,7 +51,14 @@ export function AppSidebar() {
             {!isCollapsed ? "Overview" : ""}
           </Link>
         </SidebarMenuButton>
-        <SidebarMenuButton className={isCollapsed ? "p-4" : "p-6"}>
+        <SidebarMenuButton
+          className={
+            isCollapsed
+              ? "p-3  data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+              : "p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+          }
+          isActive={pathname === "/transactions"}
+        >
           <Link href="/transactions" className="flex gap-5">
             <Image
               src="/images/icon-nav-transactions.svg"
@@ -52,7 +69,14 @@ export function AppSidebar() {
             {!isCollapsed ? " Transactions" : ""}
           </Link>
         </SidebarMenuButton>
-        <SidebarMenuButton className={isCollapsed ? "p-4" : "p-6"}>
+        <SidebarMenuButton
+          className={
+            isCollapsed
+              ? "p-3  data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+              : "p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+          }
+          isActive={pathname === "/budget"}
+        >
           <Link href="/budget" className="flex gap-5">
             <Image
               src="/images/icon-nav-budgets.svg"
@@ -64,7 +88,14 @@ export function AppSidebar() {
             {!isCollapsed ? "Budgets" : ""}
           </Link>
         </SidebarMenuButton>
-        <SidebarMenuButton className={isCollapsed ? "p-4" : "p-6"}>
+        <SidebarMenuButton
+          className={
+            isCollapsed
+              ? "p-3  data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+              : "p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+          }
+          isActive={pathname === "/pots"}
+        >
           <Link href="/pots" className="flex gap-5">
             <Image
               src="/images/icon-nav-pots.svg"
@@ -75,7 +106,14 @@ export function AppSidebar() {
             {!isCollapsed ? "Pots" : ""}
           </Link>
         </SidebarMenuButton>
-        <SidebarMenuButton className={isCollapsed ? "p-4" : "p-6"}>
+        <SidebarMenuButton
+          className={
+            isCollapsed
+              ? "p-3  data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+              : "p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+          }
+          isActive={pathname === "/recurringBills"}
+        >
           <Link href="/recurringBills" className="flex gap-5">
             <Image
               src="/images/icon-recurring-bills.svg"

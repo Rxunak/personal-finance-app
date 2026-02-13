@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Sidebar,
   SidebarContent,
@@ -10,20 +12,25 @@ import {
 } from "../components/ui/sidebar";
 import Link from "next/link";
 import Image from "next/image";
+import { useSidebar } from "../components/ui/sidebar";
 
 export function AppSidebar() {
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
   return (
     <Sidebar>
-      <SidebarHeader className="p-6">
+      <SidebarHeader className={isCollapsed ? "p-4.5 mb-3" : "p-6"}>
         <Image
-          src="/images/logo-large.svg"
-          width={150}
-          height={150}
+          src={
+            isCollapsed ? "/images/logo-small.svg" : "/images/logo-large.svg"
+          }
+          width={isCollapsed ? 10 : 120}
+          height={120}
           alt="logo"
         />
       </SidebarHeader>
-      <SidebarMenu>
-        <SidebarMenuButton>
+      <SidebarMenu className={isCollapsed ? "gap-4" : ""}>
+        <SidebarMenuButton className={isCollapsed ? "p-4" : "p-6"}>
           <Link href="/" className="flex gap-5">
             <Image
               src="/images/icon-nav-overview.svg"
@@ -31,10 +38,10 @@ export function AppSidebar() {
               height={18}
               alt="logo"
             />
-            Overview
+            {!isCollapsed ? "Overview" : ""}
           </Link>
         </SidebarMenuButton>
-        <SidebarMenuButton>
+        <SidebarMenuButton className={isCollapsed ? "p-4" : "p-6"}>
           <Link href="/transactions" className="flex gap-5">
             <Image
               src="/images/icon-nav-transactions.svg"
@@ -42,10 +49,10 @@ export function AppSidebar() {
               height={18}
               alt="logo"
             />
-            Transactions
+            {!isCollapsed ? " Transactions" : ""}
           </Link>
         </SidebarMenuButton>
-        <SidebarMenuButton>
+        <SidebarMenuButton className={isCollapsed ? "p-4" : "p-6"}>
           <Link href="/budget" className="flex gap-5">
             <Image
               src="/images/icon-nav-budgets.svg"
@@ -53,10 +60,11 @@ export function AppSidebar() {
               height={18}
               alt="logo"
             />
-            Budgets
+
+            {!isCollapsed ? "Budgets" : ""}
           </Link>
         </SidebarMenuButton>
-        <SidebarMenuButton>
+        <SidebarMenuButton className={isCollapsed ? "p-4" : "p-6"}>
           <Link href="/pots" className="flex gap-5">
             <Image
               src="/images/icon-nav-pots.svg"
@@ -64,10 +72,10 @@ export function AppSidebar() {
               height={18}
               alt="logo"
             />
-            Pots
+            {!isCollapsed ? "Pots" : ""}
           </Link>
         </SidebarMenuButton>
-        <SidebarMenuButton>
+        <SidebarMenuButton className={isCollapsed ? "p-4" : "p-6"}>
           <Link href="/recurringBills" className="flex gap-5">
             <Image
               src="/images/icon-recurring-bills.svg"
@@ -75,7 +83,7 @@ export function AppSidebar() {
               height={18}
               alt="logo"
             />
-            Recurring Bills
+            {!isCollapsed ? "Recurring bills" : ""}
           </Link>
         </SidebarMenuButton>
       </SidebarMenu>

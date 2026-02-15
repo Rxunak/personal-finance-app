@@ -1,7 +1,7 @@
 // import Sidebar from "../components/Sidebar";
 import "./globals.css";
 import type { Metadata } from "next";
-import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "../components/ui/sidebar";
 import { AppSidebar } from "../components/appSidebar";
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className="bg-beige-100">
         <SidebarProvider>
           <AppSidebar />
-          <main className="w-full ml-25">{children}</main>
+          <SidebarInset className="w-full h-full">{children}</SidebarInset>
         </SidebarProvider>
       </body>
     </html>

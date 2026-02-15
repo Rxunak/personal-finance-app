@@ -36,7 +36,7 @@ export function AppSidebar() {
         <SidebarMenuButton
           className={
             isCollapsed
-              ? "p-3  data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+              ? "p-3 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green w-10"
               : "p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
           }
           isActive={pathname === "/"}
@@ -54,7 +54,7 @@ export function AppSidebar() {
         <SidebarMenuButton
           className={
             isCollapsed
-              ? "p-3  data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+              ? "p-3 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green w-10"
               : "p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
           }
           isActive={pathname === "/transactions"}
@@ -72,7 +72,7 @@ export function AppSidebar() {
         <SidebarMenuButton
           className={
             isCollapsed
-              ? "p-3  data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+              ? "p-3 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green w-10"
               : "p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
           }
           isActive={pathname === "/budget"}
@@ -91,7 +91,7 @@ export function AppSidebar() {
         <SidebarMenuButton
           className={
             isCollapsed
-              ? "p-3  data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+              ? "p-3 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green w-10"
               : "p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
           }
           isActive={pathname === "/pots"}
@@ -109,7 +109,7 @@ export function AppSidebar() {
         <SidebarMenuButton
           className={
             isCollapsed
-              ? "p-3  data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+              ? "p-3 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green w-10"
               : "p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
           }
           isActive={pathname === "/recurringBills"}

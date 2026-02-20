@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import IconCaret from "../icons/icon-caret-right.svg";
-import PotIcon from "../icons/icon-pot.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { ChartPieDonut } from "../components/pieChart";
 
 const Overview = () => {
   const router = useRouter();
@@ -24,8 +24,9 @@ const Overview = () => {
           <p className="text-3xl font-bold">$1,700.00</p>
         </div>
       </div>
-      <div className="grid grid-cols-20 gap-4">
-        <div className="col-span-11 rounded-2xl bg-white p-8 ">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <div className="space-y-4 lg:col-span-7">
+          <section className="rounded-2xl bg-white p-8">
           <div className="flex justify-between mb-5">
             <h1 className="text-xl font-bold">Pots</h1>
             <span
@@ -79,10 +80,26 @@ const Overview = () => {
               </span>
             </div>
           </div>
+          </section>
+          <section className="rounded-2xl bg-white">C</section>
         </div>
-        <div className="col-span-9 rounded-2xl bg-white">B</div>
-        <div className="col-span-11 rounded-2xl bg-white">C</div>
-        <div className="col-span-9 rounded-2xl bg-white">D</div>
+        <div className="space-y-4 lg:col-span-5">
+          <section className="rounded-2xl bg-white p-8">
+          <div className="flex justify-between mb-5">
+            <h1 className="text-xl font-bold">Budgets</h1>
+            <span
+              className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer"
+              onClick={() => router.push("/budget")}
+            >
+              See Details <IconCaret />
+            </span>
+          </div>
+          <div className="w-full max-w-80">
+            <ChartPieDonut />
+          </div>
+          </section>
+          <section className="rounded-2xl bg-white">D</section>
+        </div>
       </div>
     </div>
   );

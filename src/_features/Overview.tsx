@@ -1,9 +1,12 @@
+"use client";
 import React from "react";
 import IconCaret from "../icons/icon-caret-right.svg";
 import PotIcon from "../icons/icon-pot.svg";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Overview = () => {
+  const router = useRouter();
   return (
     <div className="p-8 flex flex-col gap-7 bg-beige-100">
       <div className="text-3xl font-semibold">Overview</div>
@@ -25,7 +28,10 @@ const Overview = () => {
         <div className="col-span-11 rounded-2xl bg-white p-8 ">
           <div className="flex justify-between mb-5">
             <h1 className="text-xl font-bold">Pots</h1>
-            <span className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer">
+            <span
+              className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer"
+              onClick={() => router.push("/pots")}
+            >
               See Details <IconCaret />
             </span>
           </div>

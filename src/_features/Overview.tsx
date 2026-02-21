@@ -93,7 +93,7 @@ const Overview = () => {
                 View all <IconCaret />
               </span>
             </div>
-            <div className="pl-6 pr-6 pb-6 overflow-auto h-70">
+            <div className="pl-6 pr-6 pb-6 overflow-auto h-93">
               <div className="border-b mb-5 pb-5 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Image
@@ -223,6 +223,20 @@ const Overview = () => {
               >
                 See Details <IconCaret />
               </span>
+            </div>
+            <div className="pl-6 pr-6 pb-6 flex flex-col gap-2.5">
+              <div className="bg-beige-100 flex justify-between pl-6 pr-6 h-15 rounded-xl items-center text-sm text-gray-500 border-l-5 border-green">
+                <p>Paid Bills</p>
+                <p className="font-bold text-black">$190.00</p>
+              </div>
+              <div className="bg-beige-100 flex justify-between pl-6 pr-6 h-15 rounded-xl items-center text-sm text-gray-500 border-l-5 border-yellow">
+                <p>Total Upcoming</p>
+                <p className="font-bold text-black">$190.00</p>
+              </div>
+              <div className="bg-beige-100 flex justify-between pl-6 pr-6 h-15 rounded-xl items-center text-sm text-gray-500 border-l-5 border-cyan">
+                <p>Due Soon</p>
+                <p className="font-bold text-black">$190.00</p>
+              </div>
             </div>
           </section>
         </div>

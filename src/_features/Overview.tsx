@@ -118,7 +118,7 @@ const Overview = () => {
           </section>
           <section className="rounded-2xl bg-white">
             {/* h-95 overflow-auto */}
-            <div className="flex justify-between p-6">
+            <div className="flex justify-between p-6 pb-0">
               <h1 className="text-xl font-bold">Transactions</h1>
               <button
                 type="button"
@@ -128,13 +128,13 @@ const Overview = () => {
                 View all <IconCaret />
               </button>
             </div>
-            <div className="pl-6 pr-6 pb-6 overflow-auto h-76">
+            <div className="pl-6 pr-6 pb-6 overflow-auto h-82">
               {data.transactions
                 .slice(0, 5)
                 .map((transaction: any, index: number) => (
                   <div
                     key={index}
-                    className="border-b mb-5 pb-5 flex items-center justify-between"
+                    className="border-b last:border-none pb-5 last:pb-0 pt-6 flex items-center justify-between"
                   >
                     <div className="flex items-center gap-3">
                       <Image

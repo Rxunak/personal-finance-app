@@ -6,6 +6,7 @@ import { ChartPieDonut } from "../components/pieChart";
 import { useQuery } from "@tanstack/react-query";
 import { format, addDays, isAfter } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
+import { SpinnerButton } from "../components/spinnerButton";
 
 const Overview = () => {
   const [recurringArray, setRecurringArray] = useState([]);
@@ -45,9 +46,7 @@ const Overview = () => {
     )
     .reduce((sum: number, item: any) => sum + Math.abs(Number(item.amount)), 0);
 
-  console.log(upcomingBills);
-
-  if (isPending) return "Loading...";
+  if (isPending) return <SpinnerButton />;
 
   if (error) return "An error has occured: " + error.message;
 

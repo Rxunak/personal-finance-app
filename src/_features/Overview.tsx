@@ -1,19 +1,51 @@
 "use client";
-import React from "react";
 import IconCaret from "../icons/icon-caret-right.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChartPieDonut } from "../components/pieChart";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { format, addDays, isAfter } from "date-fns";
+import { useEffect, useMemo, useState } from "react";
 
 const Overview = () => {
+  const [recurringArray, setRecurringArray] = useState([]);
   const router = useRouter();
 
   const { isPending, error, data } = useQuery({
     queryKey: ["overviewData"],
     queryFn: () => fetch("/data.json").then((res) => res.json()),
   });
+
+  const filteredTransactions = useMemo(
+    () =>
+      data?.transactions?.filter((item: any) => item.recurring === true) ?? [],
+    [data?.transactions],
+  );
+
+  useEffect(() => {
+    setRecurringArray(filteredTransactions);
+  }, [filteredTransactions]);
+
+  const paidBills = recurringArray
+    .filter((item: any) => item.status === "paid")
+    .reduce((sum: number, item: any) => sum + Math.abs(Number(item.amount)), 0);
+
+  const upcomingBills = recurringArray
+    .filter(
+      (item: any) =>
+        item.status !== "paid" && isAfter(new Date(item.dueDate), new Date()),
+    )
+    .reduce((sum: number, item: any) => sum + Math.abs(Number(item.amount)), 0);
+
+  const dueSoonBiils = recurringArray
+    .filter(
+      (item: any) =>
+        item.status !== "paid" &&
+        isAfter(new Date(item.dueDate), addDays(new Date(), 7)),
+    )
+    .reduce((sum: number, item: any) => sum + Math.abs(Number(item.amount)), 0);
+
+  console.log(upcomingBills);
 
   if (isPending) return "Loading...";
 
@@ -24,10 +56,8 @@ const Overview = () => {
 
   const totalBudget = data.budgets.reduce(
     (sum: number, element: any) => sum + Number(element.maximum),
-    0
+    0,
   );
-
-  console.log(totalBudget);
 
   return (
     <div className="pl-8 pr-8 flex flex-col gap-7 bg-beige-100">
@@ -221,17 +251,32 @@ const Overview = () => {
             <div className="px-6 pb-6 flex flex-col gap-2.5 h-40 overflow-y-auto">
               <div className="shrink-0 bg-beige-100 flex justify-between px-6 h-15 rounded-xl items-center text-sm text-gray-500 border-l-[5px] border-green">
                 <p>Paid Bills</p>
-                <p className="font-bold text-black">$190.00</p>
+                <p className="font-bold text-black">
+                  {paidBills.toLocaleString("en-GB", {
+                    style: "currency",
+                    currency: "GBP",
+                  })}
+                </p>
               </div>
 
               <div className="shrink-0 bg-beige-100 flex justify-between px-6 h-15 rounded-xl items-center text-sm text-gray-500 border-l-[5px] border-yellow">
                 <p>Total Upcoming</p>
-                <p className="font-bold text-black">$190.00</p>
+                <p className="font-bold text-black">
+                  {upcomingBills.toLocaleString("en-GB", {
+                    style: "currency",
+                    currency: "GBP",
+                  })}
+                </p>
               </div>
 
               <div className="shrink-0 bg-beige-100 flex justify-between px-6 h-15 rounded-xl items-center text-sm text-gray-500 border-l-[5px] border-cyan">
                 <p>Due Soon</p>
-                <p className="font-bold text-black">$190.00</p>
+                <p className="font-bold text-black">
+                  {dueSoonBiils.toLocaleString("en-GB", {
+                    style: "currency",
+                    currency: "GBP",
+                  })}
+                </p>
               </div>
             </div>
           </section>

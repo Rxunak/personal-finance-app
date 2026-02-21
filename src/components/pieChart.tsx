@@ -59,11 +59,11 @@ const chartConfig = {
 
 export function ChartPieDonut() {
   return (
-    <Card className="flex flex-col w-80 ">
-      <CardContent className="flex-1 pb-0">
+    <Card className="flex flex-col w-80 h-full ">
+      <CardContent className="flex-1 pb-0 h-full">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square h-80 w-full max-h-none"
+          className="mx-auto aspect-square h-full w-full"
         >
           <PieChart>
             <ChartTooltip
@@ -74,8 +74,8 @@ export function ChartPieDonut() {
               data={chartData}
               dataKey="allocatedMoney"
               nameKey="budget"
-              innerRadius={95}
-              outerRadius={140}
+              innerRadius={80}
+              outerRadius={125}
             >
               <Label
                 content={({ viewBox }) => {

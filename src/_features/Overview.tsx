@@ -22,13 +22,12 @@ const Overview = () => {
   //Data Extraction for Pots
   const savingPot = data.pots.find((item: any) => item.name === "Savings");
 
-  data.transactions.slice(0, 5).map((item) => {
-    if (Math.sign(item.amount) === 1) {
-      console.log(`+${item.amount}`);
-    } else if (Math.sign(item.amount) === -1) {
-      console.log(item.amount);
-    }
-  });
+  const totalBudget = data.budgets.reduce(
+    (sum: number, element: any) => sum + Number(element.maximum),
+    0
+  );
+
+  console.log(totalBudget);
 
   return (
     <div className="pl-8 pr-8 flex flex-col gap-7 bg-beige-100">
@@ -180,7 +179,7 @@ const Overview = () => {
             </div>
             <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-evenly">
               <div className="w-full max-w-60 mx-auto lg:mx-0">
-                <ChartPieDonut />
+                <ChartPieDonut total={totalBudget} />
               </div>
               <div>
                 <div className="flex flex-col gap-5 h-full justify-center">

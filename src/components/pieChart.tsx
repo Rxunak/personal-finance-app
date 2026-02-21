@@ -20,6 +20,10 @@ import {
 
 export const description = "A donut chart";
 
+type ChartPieDonutProps = {
+  total?: number;
+};
+
 const chartData = [
   { budget: "Entertainment", allocatedMoney: 50, fill: "var(--color-green)" },
   { budget: "Bills", allocatedMoney: 750, fill: "var(--color-cyan)" },
@@ -57,7 +61,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function ChartPieDonut() {
+export function ChartPieDonut({ total = 0 }: ChartPieDonutProps) {
   return (
     <Card className="flex flex-col w-60 h-full ">
       <CardContent className="flex-1 pb-0 h-full">
@@ -92,14 +96,20 @@ export function ChartPieDonut() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {"$338"}
+                          {total.toLocaleString("en-GB", {
+                            style: "currency",
+                            currency: "GBP",
+                          })}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          of $975 limit
+                          {`of ${total.toLocaleString("en-GB", {
+                            style: "currency",
+                            currency: "GBP",
+                          })} limit`}
                         </tspan>
                       </text>
                     );

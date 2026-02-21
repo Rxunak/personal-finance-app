@@ -83,7 +83,67 @@ const Overview = () => {
               </div>
             </div>
           </section>
-          <section className="rounded-2xl bg-white">C</section>
+          <section className="rounded-2xl bg-white">
+            <div className="flex justify-between p-6">
+              <h1 className="text-xl font-bold">Transactions</h1>
+              <span
+                className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer"
+                onClick={() => router.push("/transactions")}
+              >
+                View all <IconCaret />
+              </span>
+            </div>
+            <div className="pl-6 pr-6 pb-6">
+              <div className="border-b mb-5 pb-5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/images/avatars/emma-richardson.jpg"
+                    width={40}
+                    height={40}
+                    alt="ProfileImage"
+                    className="rounded-full"
+                  />
+                  <p className="text-sm font-bold">Emma Richardson</p>
+                </div>
+                <div className="flex flex-col gap-2 items-end">
+                  <p className="text-sm font-bold">+$75.50</p>
+                  <p className="text-xs">19 Aug 2024</p>
+                </div>
+              </div>
+              <div className="border-b mb-5 pb-5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/images/avatars/emma-richardson.jpg"
+                    width={40}
+                    height={40}
+                    alt="ProfileImage"
+                    className="rounded-full"
+                  />
+                  <p className="text-sm font-bold">Emma Richardson</p>
+                </div>
+                <div className="flex flex-col gap-2 items-end">
+                  <p className="text-sm font-bold">+$75.50</p>
+                  <p className="text-xs">19 Aug 2024</p>
+                </div>
+              </div>
+              <div className="border-b mb-5 pb-5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/images/avatars/emma-richardson.jpg"
+                    width={40}
+                    height={40}
+                    alt="ProfileImage"
+                    className="rounded-full"
+                  />
+                  <p className="text-sm font-bold">Emma Richardson</p>
+                </div>
+                <div className="flex flex-col gap-2 items-end">
+                  <p className="text-sm font-bold">+$75.50</p>
+                  <p className="text-xs">19 Aug 2024</p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
         <div className="space-y-4 lg:col-span-5">
           <section className="rounded-2xl bg-white p-8">

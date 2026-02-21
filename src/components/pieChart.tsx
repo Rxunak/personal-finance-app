@@ -59,7 +59,7 @@ const chartConfig = {
 
 export function ChartPieDonut() {
   return (
-    <Card className="flex flex-col w-80 h-full ">
+    <Card className="flex flex-col w-60 h-full ">
       <CardContent className="flex-1 pb-0 h-full">
         <ChartContainer
           config={chartConfig}
@@ -74,8 +74,8 @@ export function ChartPieDonut() {
               data={chartData}
               dataKey="allocatedMoney"
               nameKey="budget"
-              innerRadius={80}
-              outerRadius={125}
+              innerRadius={70}
+              outerRadius={110}
             >
               <Label
                 content={({ viewBox }) => {

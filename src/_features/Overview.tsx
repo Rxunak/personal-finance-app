@@ -3,19 +3,16 @@ import IconCaret from "../icons/icon-caret-right.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChartPieDonut } from "../components/pieChart";
-import { useQuery } from "@tanstack/react-query";
 import { format, addDays, isAfter } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { SpinnerButton } from "../components/spinnerButton";
+import { useFinanceData } from "../../hooks/use-finance-data";
 
 const Overview = () => {
   const [recurringArray, setRecurringArray] = useState([]);
   const router = useRouter();
 
-  const { isPending, error, data } = useQuery({
-    queryKey: ["overviewData"],
-    queryFn: () => fetch("/data.json").then((res) => res.json()),
-  });
+  const { isPending, error, data } = useFinanceData();
 
   const filteredTransactions = useMemo(
     () =>

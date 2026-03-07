@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { SearchBar } from "../components/searchBar";
 import { Combobox } from "../components/ui/combobox";
 import { ComboboxCon } from "../components/comboboxCon";
@@ -12,6 +12,14 @@ import { PaginationComponent } from "../components/pagination";
 
 const Transaction = () => {
   const { isPending, error, data } = useFinanceData();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+
+  const transactions = data?.transactions ?? [];
+
+  const lastItemIndex = currentPage * itemsPerPage;
+  const firstItemIndex = lastItemIndex - itemsPerPage;
+  const currentItems = transactions.slice(firstItemIndex, lastItemIndex);
 
   if (isPending) return <SpinnerButton />;
 
@@ -37,10 +45,15 @@ const Transaction = () => {
           </div>
         </div>
         <div className="h-auto overflow-scroll">
-          <DataTable columns={columns} data={data.transactions} />
+          <DataTable columns={columns} data={currentItems} />
         </div>
-        <div className="outline">
-          <PaginationComponent />
+        <div className="">
+          <PaginationComponent
+            totalItems={data.transactions.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
       </section>
     </div>

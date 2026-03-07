@@ -1,10 +1,8 @@
-import React from 'react'
-import Transaction from '../../_features/Transaction'
+import React from "react";
+import Transaction from "../../_features/Transaction";
 
 const TransactionPage = () => {
-  return (
-    <div>{<Transaction/>}</div>
-  )
-}
+  return <div>{<Transaction />}</div>;
+};
 
-export default TransactionPage
+export default TransactionPage;

@@ -2,7 +2,9 @@ import React from "react";
 import { SearchBar } from "../components/searchBar";
 import { Combobox } from "../components/ui/combobox";
 import { ComboboxCon } from "../components/comboboxCon";
-import { sortBy, category } from "../constants";
+import { sortBy, category, payments } from "../constants";
+import { columns, Payment } from "../app/transactions/columns";
+import { DataTable } from "../app/transactions/data-table";
 
 const Transaction = () => {
   return (
@@ -21,11 +23,13 @@ const Transaction = () => {
 
             <div className="flex items-center gap-1.5">
               <p className="text-base text-grey-500">Category</p>{" "}
-              <ComboboxCon options={category} width="150px" />
+              <ComboboxCon options={category} width="160px" />
             </div>
           </div>
         </div>
-        <div className="outline">An</div>
+        <div className="">
+          <DataTable columns={columns} data={payments} />
+        </div>
         <div className="outline">An</div>
       </section>
     </div>

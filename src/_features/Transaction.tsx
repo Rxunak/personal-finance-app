@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { SearchBar } from "../components/searchBar";
-import { Combobox } from "../components/ui/combobox";
 import { ComboboxCon } from "../components/comboboxCon";
-import { sortBy, category, payments } from "../constants";
-import { columns, Payment } from "../app/transactions/columns";
+import { sortBy, category } from "../constants";
+import { columns } from "../app/transactions/columns";
 import { DataTable } from "../app/transactions/data-table";
 import { SpinnerButton } from "../components/spinnerButton";
 import { useFinanceData } from "../../hooks/use-finance-data";
@@ -47,7 +46,7 @@ const Transaction = () => {
         <div className="h-auto overflow-scroll">
           <DataTable columns={columns} data={currentItems} />
         </div>
-        <div className="">
+        <div className="mt-auto">
           <PaginationComponent
             totalItems={data.transactions.length}
             itemsPerPage={itemsPerPage}

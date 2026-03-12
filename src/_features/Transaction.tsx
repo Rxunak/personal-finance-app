@@ -14,6 +14,7 @@ const Transaction = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(8);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSortAction, setSelectedSortAction] = useState("");
 
   const transactions = useMemo(() => {
     return data?.transactions ?? [];
@@ -32,6 +33,38 @@ const Transaction = () => {
     );
   }, [transactions, selectedCategory]);
 
+  console.log(filterdTransaction);
+
+  switch (selectedSortAction) {
+    case "Latest":
+      filterdTransaction.sort(
+        (a: any, b: any) =>
+          new Date(b.date).getTime() - new Date(a.date).getTime(),
+      );
+      break;
+    case "Oldest":
+      filterdTransaction.sort(
+        (a: any, b: any) =>
+          new Date(a.date).getTime() - new Date(b.date).getTime(),
+      );
+      break;
+    case "A to Z":
+      filterdTransaction.sort((a: any, b: any) => a.name.localeCompare(b.name));
+      break;
+    case "Z to A":
+      filterdTransaction.sort((a: any, b: any) => b.name.localeCompare(a.name));
+      break;
+    case "Highest":
+      filterdTransaction.sort((a: any, b: any) => b.amount - a.amount);
+      break;
+    case "Lowest":
+      filterdTransaction.sort((a: any, b: any) => a.amount - b.amount);
+      break;
+
+    default:
+      break;
+  }
+
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
   const currentItems = filterdTransaction.slice(firstItemIndex, lastItemIndex);
@@ -40,8 +73,8 @@ const Transaction = () => {
     setSelectedCategory(items);
   };
 
-  const sortByFil = () => {
-    console.log("h");
+  const sortByFil = (items: string) => {
+    setSelectedSortAction(items);
   };
 
   if (isPending) return <SpinnerButton />;

@@ -7,7 +7,7 @@ export const sortBy = [
   "Lowest",
 ];
 
-type Payment = {
+export type Payment = {
   id: string;
   avatar: string;
   name: string;
@@ -18,6 +18,19 @@ type Payment = {
   dueDate: string;
   status: string;
 };
+
+export interface TransactionArray {
+  avatar: string;
+  name: string;
+  category: string;
+  date: string;
+  amount: number;
+  recurring: boolean;
+
+  dueDate?: string;
+  status?: "paid" | "unpaid" | "overdue";
+  paidDate?: string | null;
+}
 
 export const category = [
   "All transactions",
@@ -130,3 +143,5 @@ export const payments: Payment[] = [
     status: "",
   },
 ];
+
+//Array Types

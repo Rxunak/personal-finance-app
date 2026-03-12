@@ -31,8 +31,6 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  console.log(data);
-
   return (
     <div className="overflow-hidden rounded-md">
       <Table className="">
@@ -64,7 +62,6 @@ export function DataTable<TData, TValue>({
                 {row.getVisibleCells().map((cell, index) => {
                   const isLast = index === row.getVisibleCells().length - 1;
 
-                  console.log(row);
                   return (
                     <TableCell
                       key={cell.id}

@@ -12,9 +12,10 @@ import {
 type ComboboxConProps = {
   options: string[];
   width: string;
+  onSelect: (item: string) => void;
 };
 
-export function ComboboxCon({ options, width }: ComboboxConProps) {
+export function ComboboxCon({ options, width, onSelect }: ComboboxConProps) {
   return (
     <div style={{ width }}>
       <Combobox items={options}>
@@ -26,7 +27,12 @@ export function ComboboxCon({ options, width }: ComboboxConProps) {
           <ComboboxEmpty>No items found.</ComboboxEmpty>
           <ComboboxList>
             {(item) => (
-              <ComboboxItem key={item} value={item} className="text-beige-500">
+              <ComboboxItem
+                key={item}
+                value={item}
+                className="text-beige-500"
+                onClick={() => onSelect(item)}
+              >
                 {item}
               </ComboboxItem>
             )}

@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { SearchBar } from "../components/searchBar";
 import { ComboboxCon } from "../components/comboboxCon";
-import { sortBy, category } from "../constants";
+import { sortBy, category, TransactionArray } from "../constants";
 import { columns } from "../app/transactions/columns";
 import { DataTable } from "../app/transactions/data-table";
 import { SpinnerButton } from "../components/spinnerButton";
@@ -12,13 +12,37 @@ import { PaginationComponent } from "../components/pagination";
 const Transaction = () => {
   const { isPending, error, data } = useFinanceData();
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [itemsPerPage] = useState(8);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  const transactions = data?.transactions ?? [];
+  const transactions = useMemo(() => {
+    return data?.transactions ?? [];
+  }, [data]);
+
+  const filterdTransaction = useMemo(() => {
+    if (
+      selectedCategory.length === 0 ||
+      selectedCategory === "All transactions"
+    ) {
+      return transactions;
+    }
+
+    return transactions.filter(
+      (item: { category: string }) => item.category === selectedCategory,
+    );
+  }, [transactions, selectedCategory]);
 
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentItems = transactions.slice(firstItemIndex, lastItemIndex);
+  const currentItems = filterdTransaction.slice(firstItemIndex, lastItemIndex);
+
+  const categoryFil = (items: string) => {
+    setSelectedCategory(items);
+  };
+
+  const sortByFil = () => {
+    console.log("h");
+  };
 
   if (isPending) return <SpinnerButton />;
 
@@ -34,12 +58,20 @@ const Transaction = () => {
           <div className="flex justify-end gap-10 w-xl ">
             <div className="flex items-center gap-1.5">
               <p className="text-base text-grey-500">Sort by</p>{" "}
-              <ComboboxCon options={sortBy} width="100px" />
+              <ComboboxCon
+                options={sortBy}
+                onSelect={sortByFil}
+                width="100px"
+              />
             </div>
 
             <div className="flex items-center gap-1.5">
               <p className="text-base text-grey-500">Category</p>{" "}
-              <ComboboxCon options={category} width="160px" />
+              <ComboboxCon
+                options={category}
+                onSelect={categoryFil}
+                width="160px"
+              />
             </div>
           </div>
         </div>

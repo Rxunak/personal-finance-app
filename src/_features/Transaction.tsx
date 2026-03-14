@@ -15,59 +15,70 @@ const Transaction = () => {
   const [itemsPerPage] = useState(8);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSortAction, setSelectedSortAction] = useState("");
+  const [query, setQuery] = useState("");
 
   const transactions = useMemo(() => {
     return data?.transactions ?? [];
   }, [data]);
 
-  const filterdTransaction = useMemo(() => {
-    if (
-      selectedCategory.length === 0 ||
-      selectedCategory === "All transactions"
-    ) {
-      return transactions;
+  const actionedTransactions = useMemo(() => {
+    let results = [...transactions];
+
+    if (query.trim()) {
+      results = results.filter((item: { name: string }) =>
+        item.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+      );
     }
 
-    return transactions.filter(
-      (item: { category: string }) => item.category === selectedCategory,
-    );
-  }, [transactions, selectedCategory]);
-
-  console.log(filterdTransaction);
-
-  switch (selectedSortAction) {
-    case "Latest":
-      filterdTransaction.sort(
-        (a: any, b: any) =>
-          new Date(b.date).getTime() - new Date(a.date).getTime(),
+    if (selectedCategory && selectedCategory !== "All transactions") {
+      results = results.filter(
+        (item: { category: string }) => item.category === selectedCategory,
       );
-      break;
-    case "Oldest":
-      filterdTransaction.sort(
-        (a: any, b: any) =>
-          new Date(a.date).getTime() - new Date(b.date).getTime(),
-      );
-      break;
-    case "A to Z":
-      filterdTransaction.sort((a: any, b: any) => a.name.localeCompare(b.name));
-      break;
-    case "Z to A":
-      filterdTransaction.sort((a: any, b: any) => b.name.localeCompare(a.name));
-      break;
-    case "Highest":
-      filterdTransaction.sort((a: any, b: any) => b.amount - a.amount);
-      break;
-    case "Lowest":
-      filterdTransaction.sort((a: any, b: any) => a.amount - b.amount);
-      break;
+    }
 
-    default:
-      break;
-  }
+    switch (selectedSortAction) {
+      case "Latest":
+        results = results.sort(
+          (a: any, b: any) =>
+            new Date(b.date).getTime() - new Date(a.date).getTime(),
+        );
+        break;
+      case "Oldest":
+        results = results.sort(
+          (a: any, b: any) =>
+            new Date(a.date).getTime() - new Date(b.date).getTime(),
+        );
+        break;
+      case "A to Z":
+        results = results.sort((a: any, b: any) =>
+          a.name.localeCompare(b.name),
+        );
+        break;
+      case "Z to A":
+        results = results.sort((a: any, b: any) =>
+          b.name.localeCompare(a.name),
+        );
+        break;
+      case "Highest":
+        results = results.sort((a: any, b: any) => b.amount - a.amount);
+        break;
+      case "Lowest":
+        results = results.sort((a: any, b: any) => a.amount - b.amount);
+        break;
+
+      default:
+        break;
+    }
+
+    return results;
+  }, [query, selectedCategory, transactions, selectedSortAction]);
 
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentItems = filterdTransaction.slice(firstItemIndex, lastItemIndex);
+  const currentItems = actionedTransactions.slice(
+    firstItemIndex,
+    lastItemIndex,
+  );
 
   const categoryFil = (items: string) => {
     setSelectedCategory(items);
@@ -75,6 +86,10 @@ const Transaction = () => {
 
   const sortByFil = (items: string) => {
     setSelectedSortAction(items);
+  };
+
+  const setQueryValue = (value: string) => {
+    setQuery(value);
   };
 
   if (isPending) return <SpinnerButton />;
@@ -86,7 +101,7 @@ const Transaction = () => {
       <section className="bg-white p-8 flex flex-col gap-7 h-185 rounded-2xl">
         <div className="flex justify-between">
           <div className="w-sm">
-            <SearchBar />
+            <SearchBar setQuery={setQuery} query={query} />
           </div>
           <div className="flex justify-end gap-10 w-xl ">
             <div className="flex items-center gap-1.5">

@@ -13,7 +13,12 @@ import { Calculator, Calendar, Smile } from "lucide-react";
 import { useFinanceData } from "../../hooks/use-finance-data";
 import { useEffect, useState } from "react";
 
-export function SearchBar() {
+type SearchBarProps = {
+  setQuery: any;
+  query: string;
+};
+
+export function SearchBar({ setQuery, query }: SearchBarProps) {
   //   const { data } = useFinanceData();
   //   const [query, setQuery] = useState("");
   //   const [searchData, setSearchData] = useState<any[]>([]);
@@ -29,8 +34,8 @@ export function SearchBar() {
   return (
     <Command className="max-w-sm rounded-md">
       <CommandInput
-        // value={query}
-        // onValueChange={setQuery}
+        value={query}
+        onValueChange={setQuery}
         placeholder={"Search transactions"}
         className="text-black text-base"
       />

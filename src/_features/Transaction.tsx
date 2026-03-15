@@ -96,7 +96,7 @@ const Transaction = () => {
 
   if (error) return "An error has occured: " + error.message;
   return (
-    <div className="bg-beige-100 pl-8 pr-8 outline">
+    <div className="bg-beige-100 pl-8 pr-8">
       <header className="text-3xl font-semibold pt-6 mb-8">Transactions</header>
       <section className="bg-white p-8 flex flex-col gap-7 h-185 rounded-2xl">
         <div className="flex justify-between">

@@ -101,7 +101,11 @@ const Transaction = () => {
       <section className="bg-white p-8 flex flex-col gap-7 h-185 rounded-2xl">
         <div className="flex justify-between">
           <div className="w-sm">
-            <SearchBar setQuery={setQuery} query={query} />
+            <SearchBar
+              setQuery={setQuery}
+              query={query}
+              actionedTransactions={actionedTransactions}
+            />
           </div>
           <div className="flex justify-end gap-10 w-xl ">
             <div className="flex items-center gap-1.5">

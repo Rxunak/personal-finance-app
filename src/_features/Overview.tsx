@@ -2,21 +2,25 @@
 import IconCaret from "../icons/icon-caret-right.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChartPieDonut } from "../components/pieChart";
 import { format, addDays, isAfter } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { SpinnerButton } from "../components/spinnerButton";
-import { useFinanceData } from "../../hooks/use-finance-data";
+import {
+  type Pot,
+  type Transaction,
+  useFinanceData,
+} from "../../hooks/use-finance-data";
+import BudgetSummaryCard from "../components/budget-summary-card";
 
 const Overview = () => {
-  const [recurringArray, setRecurringArray] = useState([]);
+  const [recurringArray, setRecurringArray] = useState<Transaction[]>([]);
   const router = useRouter();
 
   const { isPending, error, data } = useFinanceData();
 
   const filteredTransactions = useMemo(
     () =>
-      data?.transactions?.filter((item: any) => item.recurring === true) ?? [],
+      data?.transactions?.filter((item) => item.recurring) ?? [],
     [data?.transactions],
   );
 
@@ -25,35 +29,33 @@ const Overview = () => {
   }, [filteredTransactions]);
 
   const paidBills = recurringArray
-    .filter((item: any) => item.status === "paid")
-    .reduce((sum: number, item: any) => sum + Math.abs(Number(item.amount)), 0);
+    .filter((item) => item.status === "paid")
+    .reduce((sum: number, item) => sum + Math.abs(Number(item.amount)), 0);
 
   const upcomingBills = recurringArray
     .filter(
-      (item: any) =>
-        item.status !== "paid" && isAfter(new Date(item.dueDate), new Date()),
+      (item) =>
+        item.status !== "paid" &&
+        item.dueDate &&
+        isAfter(new Date(item.dueDate), new Date()),
     )
-    .reduce((sum: number, item: any) => sum + Math.abs(Number(item.amount)), 0);
+    .reduce((sum: number, item) => sum + Math.abs(Number(item.amount)), 0);
 
   const dueSoonBiils = recurringArray
     .filter(
-      (item: any) =>
+      (item) =>
         item.status !== "paid" &&
+        item.dueDate &&
         isAfter(new Date(item.dueDate), addDays(new Date(), 7)),
     )
-    .reduce((sum: number, item: any) => sum + Math.abs(Number(item.amount)), 0);
+    .reduce((sum: number, item) => sum + Math.abs(Number(item.amount)), 0);
 
   if (isPending) return <SpinnerButton />;
 
   if (error) return "An error has occured: " + error.message;
 
   //Data Extraction for Pots
-  const savingPot = data.pots.find((item: any) => item.name === "Savings");
-
-  const totalBudget = data.budgets.reduce(
-    (sum: number, element: any) => sum + Number(element.maximum),
-    0,
-  );
+  const savingPot = data.pots.find((item) => item.name === "Savings") ?? data.pots[0];
 
   return (
     <div className="pl-8 pr-8 flex flex-col gap-7 bg-beige-100">
@@ -121,7 +123,7 @@ const Overview = () => {
                 </span>
               </div>
               <div className="grid grid-cols-2 auto-rows-fr gap-4 h-full grow-3">
-                {data.pots.slice(0, 4).map((pot: any, index: number) => (
+                {data.pots.slice(0, 4).map((pot: Pot, index: number) => (
                   <span key={index} className="flex h-full">
                     <span
                       className="border-l-4 rounded-xs w-1 self-stretch"
@@ -156,7 +158,7 @@ const Overview = () => {
             <div className="pl-6 pr-6 pb-6 overflow-auto h-82">
               {data.transactions
                 .slice(0, 5)
-                .map((transaction: any, index: number) => (
+                .map((transaction: Transaction, index: number) => (
                   <div
                     key={index}
                     className="border-b last:border-none pb-5 last:pb-0 pt-6 flex items-center justify-between"
@@ -192,46 +194,10 @@ const Overview = () => {
           </section>
         </div>
         <div className="space-y-4 lg:col-span-5">
-          <section className="rounded-2xl bg-white p-8">
-            <div className="flex justify-between">
-              <h1 className="text-xl font-bold">Budgets</h1>
-              <button
-                type="button"
-                className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer"
-                onClick={() => router.push("/budget")}
-              >
-                See Details <IconCaret />
-              </button>
-            </div>
-            <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-evenly">
-              <div className="w-full max-w-60 mx-auto lg:mx-0">
-                <ChartPieDonut total={totalBudget} />
-              </div>
-              <div>
-                <div className="flex flex-col gap-5 h-full justify-center">
-                  {data.budgets.map((budget: any, index: number) => (
-                    <span key={index} className="flex h-auto">
-                      <span
-                        className="border-l-4 rounded-xs w-1 h-13 self-stretch"
-                        style={{ borderLeftColor: budget.theme }}
-                      ></span>
-                      <div className="flex flex-col gap-1 justify-center">
-                        <p className="text-grey-500 text-xs  pl-4">
-                          {budget.category}
-                        </p>
-                        <p className="text-black font-bold pl-4">
-                          {budget.maximum.toLocaleString("en-GB", {
-                            style: "currency",
-                            currency: "GBP",
-                          })}
-                        </p>
-                      </div>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
+          <BudgetSummaryCard
+            budgets={data.budgets}
+            onAction={() => router.push("/budget")}
+          />
           <section className="rounded-2xl bg-white h-59">
             {/* h-46 overflow-auto */}
             <div className="flex justify-between p-6">

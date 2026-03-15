@@ -86,7 +86,7 @@ export default function BudgetSummaryCard({
               : budgets.map((budget: any, index: any) => (
                   <span
                     key={`${budget.category}-${index}`}
-                    className="flex h-auto"
+                    className="flex h-auto border-b pb-5 last:border-none last:pb-0"
                   >
                     <span
                       className="border-l-4 rounded-xs w-1 h-6 self-stretch"

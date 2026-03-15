@@ -22,7 +22,7 @@ const Budget = () => {
         </button>
       </div>
       <main className="flex gap-5">
-        <div className="border w-2/5">
+        <div className="w-2/5">
           <BudgetSummaryCard budgets={data.budgets} flexCol={"flex-col"} />
         </div>
         <div className="border w-3/5">Raunak</div>

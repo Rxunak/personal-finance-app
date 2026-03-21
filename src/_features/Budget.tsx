@@ -6,8 +6,12 @@ import { SpinnerButton } from "../components/spinnerButton";
 import BudgetSummaryCard from "../components/budget-summary-card";
 import { Ellipsis } from "lucide-react";
 import { ProgressWithLabel } from "../components/progressBar";
+import IconCaret from "../icons/icon-caret-right.svg";
+import { useRouter } from "next/navigation";
 
 const Budget = () => {
+  const router = useRouter();
+
   const { isPending, error, data } = useFinanceData();
 
   if (isPending) return <SpinnerButton />;
@@ -47,13 +51,24 @@ const Budget = () => {
                   <p className="font-bold text-xl">$15.00</p>
                 </div>
               </div>
-
               <div className="w-1/2 h-15 flex gap-4">
                 <span className="bg-grey-500 rounded-2xl w-1.5 h-full" />
                 <div className="flex flex-col justify-between">
                   <p className="text-gray-500">Remaining</p>
                   <p className="font-bold text-xl">$35.00</p>
                 </div>
+              </div>
+            </div>
+            <div className="bg-beige-100 rounded-md p-6">
+              <div className="flex justify-between">
+                <h1 className="font-bold text-xl">Latest Spending</h1>
+                <button
+                  type="button"
+                  className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer"
+                  onClick={() => router.push("/transactions")}
+                >
+                  See Details <IconCaret />
+                </button>
               </div>
             </div>
           </div>

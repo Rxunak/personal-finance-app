@@ -67,7 +67,7 @@ export default function BudgetSummaryCard({
                     className="flex h-auto"
                   >
                     <span
-                      className="border-l-4 rounded-xs w-1 h-13 self-stretch"
+                      className={`border-l-4 rounded-xs w-1 h-13 self-stretch bg-${budget.theme}`}
                       style={{ borderLeftColor: budget.theme }}
                     ></span>
                     <div className="flex flex-col gap-1 justify-center">

@@ -59,7 +59,7 @@ const Overview = () => {
     data.pots.find((item) => item.name === "Savings") ?? data.pots[0];
 
   return (
-    <div className="pl-8 pr-8 flex flex-col gap-7 bg-beige-100">
+    <div className="pl-8 pr-8 flex flex-col gap-7 bg-beige-100 h-full">
       <div className="text-3xl font-semibold pt-6">Overview</div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="h-25 rounded-2xl bg-grey-900 flex flex-col justify-center p-7 gap-3 text-white">
@@ -93,7 +93,7 @@ const Overview = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-        <div className="space-y-4 lg:col-span-7">
+        <div className="space-y-4 lg:col-span-7 border h-auto">
           <section className="rounded-2xl bg-white p-8">
             <div className="flex justify-between mb-5">
               <h1 className="text-xl font-bold">Pots</h1>
@@ -144,14 +144,19 @@ const Overview = () => {
               </div>
             </div>
           </section>
-          <TransactionsCard transactionData={data.transactions} />
+          <TransactionsCard
+            title={"Transactions"}
+            transactionData={data.transactions}
+            backgroundColor={"white"}
+            sliceAmount={5}
+          />
         </div>
         <div className="space-y-4 lg:col-span-5">
           <BudgetSummaryCard
             budgets={data.budgets}
             onAction={() => router.push("/budget")}
           />
-          <section className="rounded-2xl bg-white h-59">
+          <section className="rounded-2xl bg-white h-auto">
             {/* h-46 overflow-auto */}
             <div className="flex justify-between p-6">
               <h1 className="text-xl font-bold">Recurring Bills</h1>
@@ -163,7 +168,7 @@ const Overview = () => {
                 See Details <IconCaret />
               </button>
             </div>
-            <div className="px-6 pb-6 flex flex-col gap-2.5 h-40 overflow-y-auto">
+            <div className="px-6 pb-6 flex flex-col gap-2.5 h-full overflow-y-auto">
               <div className="shrink-0 bg-beige-100 flex justify-between px-6 h-15 rounded-xl items-center text-sm text-gray-500 border-l-[5px] border-green">
                 <p>Paid Bills</p>
                 <p className="font-bold text-black">

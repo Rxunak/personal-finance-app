@@ -1,18 +1,19 @@
 "use client";
-
 import React from "react";
 import { useFinanceData } from "@/hooks/use-finance-data";
 import { SpinnerButton } from "../components/spinnerButton";
 import BudgetSummaryCard from "../components/budget-summary-card";
 import { Ellipsis } from "lucide-react";
 import { ProgressWithLabel } from "../components/progressBar";
-import IconCaret from "../icons/icon-caret-right.svg";
 import { useRouter } from "next/navigation";
+import TransactionsCard from "../components/transactionsCard";
 
 const Budget = () => {
   const router = useRouter();
 
   const { isPending, error, data } = useFinanceData();
+
+  console.log(data?.budgets);
 
   if (isPending) return <SpinnerButton />;
 
@@ -31,47 +32,98 @@ const Budget = () => {
         <div className="w-2/5">
           <BudgetSummaryCard budgets={data.budgets} flexCol={"flex-col"} />
         </div>
-        <div className="border w-3/5">
-          <div className="h-auto bg-white rounded-md p-5 flex flex-col gap-5">
-            <div className="flex gap-3 items-center">
-              <span className="w-5 h-5 border rounded-2xl bg-green"></span>
-              <p className="font-bold text-xl">Entertainment</p>
-              <p className="ml-auto">
-                <Ellipsis />
-              </p>
-            </div>
-            <div>
-              <ProgressWithLabel />
-            </div>
-            <div className="flex">
-              <div className="w-1/2 h-15 flex gap-4">
-                <span className="bg-green rounded-2xl w-1.5 h-full" />
-                <div className="flex flex-col justify-between">
-                  <p className="text-gray-500">Spent</p>
-                  <p className="font-bold text-xl">$15.00</p>
+
+        <div className="w-3/5">
+          {data.budgets.map((budget: any, index: number) => {
+            const total: any = [];
+            let remainingAmount: any;
+
+            data.transactions.filter((item: any) => {
+              if (item.category === budget.category) {
+                total.push(item.amount);
+              }
+            });
+
+            const sum = total
+              .slice(0, 3)
+              .reduce(
+                (previousValue: any, currentValue: any, index: any) =>
+                  previousValue + currentValue,
+                0,
+              );
+
+            if (Math.abs(sum) < budget.maximum) {
+              console.log(total.slice(0, 3));
+            }
+
+            return (
+              <div
+                key={index}
+                className="h-auto bg-white rounded-2xl p-5 flex flex-col gap-5 mb-5"
+              >
+                <div className="flex gap-3 items-center">
+                  <span
+                    className="w-5 h-5 border rounded-2xl"
+                    style={{ background: budget.theme }}
+                  ></span>
+                  <p className="font-bold text-xl">{budget.category}</p>
+                  <p className="ml-auto">
+                    <Ellipsis />
+                  </p>
                 </div>
-              </div>
-              <div className="w-1/2 h-15 flex gap-4">
-                <span className="bg-grey-500 rounded-2xl w-1.5 h-full" />
-                <div className="flex flex-col justify-between">
-                  <p className="text-gray-500">Remaining</p>
-                  <p className="font-bold text-xl">$35.00</p>
+                <div>
+                  <ProgressWithLabel
+                    barColor={budget.theme}
+                    maximumAmount={budget.maximum}
+                    barValue={Math.abs(sum)}
+                  />
                 </div>
+                <div className="flex">
+                  <div className="w-1/2 h-15 flex gap-4">
+                    <span
+                      className="rounded-2xl w-1.5 h-full"
+                      style={{ background: budget.theme }}
+                    />
+                    <div className="flex flex-col justify-between">
+                      <p className="text-gray-500">Spent</p>
+                      <p className="font-bold text-xl">
+                        {Math.abs(sum).toLocaleString("en-GB", {
+                          style: "currency",
+                          currency: "GBP",
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-1/2 h-15 flex gap-4">
+                    <span className="bg-grey-100 rounded-2xl w-1.5 h-full" />
+                    <div className="flex flex-col justify-between">
+                      <p className="text-gray-500">Remaining</p>
+                      <p className="font-bold text-xl">
+                        {Math.abs(sum) > budget.maximum
+                          ? "£0"
+                          : (budget.maximum - Math.abs(sum)).toLocaleString(
+                              "en-GB",
+                              {
+                                style: "currency",
+                                currency: "GBP",
+                              },
+                            )}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <TransactionsCard
+                  title={"Latest Spending"}
+                  transactionData={data.transactions.filter(
+                    (item: any) => item.category === budget.category,
+                  )}
+                  backgroundColor={"beige-100"}
+                  sliceAmount={3}
+                  budgetCard={true}
+                />
               </div>
-            </div>
-            <div className="bg-beige-100 rounded-md p-6">
-              <div className="flex justify-between">
-                <h1 className="font-bold text-xl">Latest Spending</h1>
-                <button
-                  type="button"
-                  className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer"
-                  onClick={() => router.push("/transactions")}
-                >
-                  See Details <IconCaret />
-                </button>
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </main>
     </div>

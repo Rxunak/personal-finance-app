@@ -39,6 +39,23 @@ const Budget = () => {
             <div>
               <ProgressWithLabel />
             </div>
+            <div className="flex">
+              <div className="w-1/2 h-15 flex gap-4">
+                <span className="bg-green rounded-2xl w-1.5 h-full" />
+                <div className="flex flex-col justify-between">
+                  <p className="text-gray-500">Spent</p>
+                  <p className="font-bold text-xl">$15.00</p>
+                </div>
+              </div>
+
+              <div className="w-1/2 h-15 flex gap-4">
+                <span className="bg-grey-500 rounded-2xl w-1.5 h-full" />
+                <div className="flex flex-col justify-between">
+                  <p className="text-gray-500">Remaining</p>
+                  <p className="font-bold text-xl">$35.00</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>

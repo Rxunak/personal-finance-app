@@ -7,7 +7,7 @@ export function ProgressWithLabel() {
       <Field.Label htmlFor="progress-upload" className="flex">
         <span className="text-grey-500">Maximum of $50.00</span>
       </Field.Label>
-      <Progress value={50} id="progress-upload" />
+      <Progress value={50} id="progress-upload" className="bg-beige-100" />
     </Field.Root>
   );
 }

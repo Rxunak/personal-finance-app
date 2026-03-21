@@ -27,6 +27,7 @@ export function ProgressWithLabel({
         id="progress-upload"
         className="bg-beige-100"
         barColor={barColor}
+        maximumAmount={maximumAmount}
       />
     </Field.Root>
   );

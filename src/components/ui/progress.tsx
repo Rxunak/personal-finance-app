@@ -9,6 +9,7 @@ function Progress({
   className,
   value,
   barColor,
+  maximumAmount,
   ...props
 }: React.ComponentProps<typeof ProgressPrimitive.Root>) {
   return (
@@ -24,7 +25,7 @@ function Progress({
         data-slot="progress-indicator"
         className="h-full w-full origin-left transition-all rounded-sm"
         style={{
-          transform: `scaleX(${Math.max(0, Math.min((value || 0) / 100, 1))})`,
+          transform: `scaleX(${Math.max(0, Math.min((value || 0) / (maximumAmount ?? 1), 1))})`,
           background: barColor,
         }}
       />

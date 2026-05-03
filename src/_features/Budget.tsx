@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useFinanceData } from "@/hooks/use-finance-data";
 import { SpinnerButton } from "../components/spinnerButton";
 import BudgetSummaryCard from "../components/budget-summary-card";
@@ -7,13 +7,14 @@ import { Ellipsis } from "lucide-react";
 import { ProgressWithLabel } from "../components/progressBar";
 import { useRouter } from "next/navigation";
 import TransactionsCard from "../components/transactionsCard";
+import { BudgetForm } from "../components/form";
+import { Dialog, DialogContent, DialogTitle } from "../components/ui/dialog";
 
 const Budget = () => {
   const router = useRouter();
 
   const { isPending, error, data } = useFinanceData();
-
-  console.log(data?.budgets);
+  const [addNewBudget, setAddNewBudget] = useState(false);
 
   if (isPending) return <SpinnerButton />;
 
@@ -24,10 +25,19 @@ const Budget = () => {
         <header className="text-3xl font-semibold flex items-center">
           Budgets
         </header>
-        <button className="flex h-12 w-40 items-center justify-center rounded-md bg-black text-white text-sm cursor-pointer">
+        <button
+          className="flex h-12 w-40 items-center justify-center rounded-md bg-black text-white text-sm cursor-pointer"
+          onClick={() => setAddNewBudget(!addNewBudget)}
+        >
           + Add New Budget
         </button>
       </div>
+      <Dialog open={addNewBudget} onOpenChange={setAddNewBudget}>
+        <DialogContent className="max-w-fit bg-transparent p-0 shadow-none border border-white">
+          <DialogTitle className="sr-only">Add New Budget</DialogTitle>
+          <BudgetForm />
+        </DialogContent>
+      </Dialog>
       <main className="flex gap-5  h-9/10">
         <div className="w-2/5 h-full">
           <BudgetSummaryCard budgets={data.budgets} flexCol={"flex-col"} />

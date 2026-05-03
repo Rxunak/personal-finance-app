@@ -33,7 +33,7 @@ const Budget = () => {
         </button>
       </div>
       <Dialog open={addNewBudget} onOpenChange={setAddNewBudget}>
-        <DialogContent className="max-w-fit bg-transparent p-0 shadow-none border border-white">
+        <DialogContent className="w-full bg-transparent p-0 shadow-none border-none">
           <DialogTitle className="sr-only">Add New Budget</DialogTitle>
           <BudgetForm />
         </DialogContent>

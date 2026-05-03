@@ -7,6 +7,16 @@ export const sortBy = [
   "Lowest",
 ];
 
+export const budgetCategory = [
+  "Entertainment",
+  "Bills",
+  "Groceries",
+  "Dining Out",
+  "Transportation",
+  "personal Care",
+  "Education",
+];
+
 export type Payment = {
   id: string;
   avatar: string;

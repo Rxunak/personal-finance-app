@@ -1,9 +1,11 @@
 "use client";
 
+import { useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { budgetCategory } from "../constants";
 
 import { Button } from "./ui/button";
 import {
@@ -23,14 +25,13 @@ import {
   FieldLabel,
 } from "../components/ui/field";
 
-import { Input } from "./ui/input";
-
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
   InputGroupTextarea,
 } from "../components/ui/input-group";
+import { ComboboxCon } from "./comboboxCon";
 
 const formSchema = z.object({
   title: z
@@ -44,6 +45,7 @@ const formSchema = z.object({
 });
 
 export function BudgetForm() {
+  const cardRef = useRef<HTMLDivElement>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,10 +72,13 @@ export function BudgetForm() {
   }
 
   return (
-    <Card className="w-full sm:max-w-md bg-white">
-      <CardHeader>
-        <CardTitle>Add New Budget</CardTitle>
-        <CardDescription>
+    <Card
+      ref={cardRef}
+      className="w-full sm:max-w-md bg-white p-6 rounded-2xl"
+    >
+      <CardHeader className="p-0">
+        <CardTitle className="text-3xl font-bold">Add New Budget</CardTitle>
+        <CardDescription className="text-xs">
           Choose a category to set a spending budget. These categories can help
           you monitor spending.
         </CardDescription>
@@ -87,14 +92,14 @@ export function BudgetForm() {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="form-rhf-demo-title">
-                    Bug Title
+                    Budget Category
                   </FieldLabel>
-                  <Input
-                    {...field}
-                    id="form-rhf-demo-title"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Login button not working on mobile"
-                    autoComplete="off"
+                  <ComboboxCon
+                    options={budgetCategory}
+                    value={field.value}
+                    onSelect={field.onChange}
+                    portalContainer={cardRef.current}
+                    width="100%"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -138,7 +143,7 @@ export function BudgetForm() {
           </FieldGroup>
         </form>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="p-0">
         <Field orientation="horizontal">
           <Button type="submit" form="form-rhf-demo">
             Submit

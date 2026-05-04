@@ -16,6 +16,8 @@ const Budget = () => {
   const { isPending, error, data } = useFinanceData();
   const [addNewBudget, setAddNewBudget] = useState(false);
 
+  //hello
+
   if (isPending) return <SpinnerButton />;
 
   if (error) return "An error has occured: " + error.message;
@@ -35,7 +37,7 @@ const Budget = () => {
       <Dialog open={addNewBudget} onOpenChange={setAddNewBudget}>
         <DialogContent className="w-full bg-transparent p-0 shadow-none border-none">
           <DialogTitle className="sr-only">Add New Budget</DialogTitle>
-          <BudgetForm />
+          <BudgetForm usedThemeColors={data.budgets.map((budget) => budget.theme)} />
         </DialogContent>
       </Dialog>
       <main className="flex gap-5  h-9/10">

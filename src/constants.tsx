@@ -17,6 +17,16 @@ export const budgetCategory = [
   "Education",
 ];
 
+export const budgetThemes = [
+  { label: "Green", value: "#277C78", color: "#277C78" },
+  { label: "Yellow", value: "#F2CDAC", color: "#F2CDAC" },
+  { label: "Cyan", value: "#82C9D7", color: "#82C9D7" },
+  { label: "Navy", value: "#626070", color: "#626070" },
+  { label: "Red", value: "#C94736", color: "#C94736" },
+  { label: "Purple", value: "#826CB0", color: "#826CB0" },
+  { label: "Turquoise", value: "#597C7C", color: "#597C7C" },
+];
+
 export type Payment = {
   id: string;
   avatar: string;

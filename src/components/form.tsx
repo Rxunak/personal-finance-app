@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-import { budgetCategory } from "../constants";
+import { budgetCategory, budgetThemes } from "../constants";
 
 import { Button } from "./ui/button";
 import {
@@ -19,38 +19,53 @@ import {
 
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "../components/ui/field";
 
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroupTextarea,
-} from "../components/ui/input-group";
-import { ComboboxCon } from "./comboboxCon";
+import { InputGroup } from "../components/ui/input-group";
+import { Input } from "./ui/input";
+import { ComboboxCon, type ComboboxOption } from "./comboboxCon";
 
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(5, "Bug title must be at least 5 characters.")
-    .max(32, "Bug title must be at most 32 characters."),
-  description: z
-    .string()
-    .min(20, "Description must be at least 20 characters.")
-    .max(100, "Description must be at most 100 characters."),
-});
+const createFormSchema = (usedThemeColors: string[]) =>
+  z.object({
+    title: z
+      .string()
+      .min(1, "Budget is required.")
+      .max(32, "Budget must be at most 32 characters."),
+    theme: z
+      .string()
+      .min(1, "Theme is required.")
+      .max(32, "Theme must be at most 32 characters.")
+      .refine(
+        (value) => !usedThemeColors.includes(value),
+        "This theme has already been used.",
+      ),
+    maximumSpend: z
+      .string()
+      .min(1, "Maximum spend is required.")
+      .max(32, "Maximum spend must be at most 32 characters.")
+      .regex(/^\d+(\.\d+)?$/, "Maximum spend must be a valid number."),
+  });
 
-export function BudgetForm() {
+type BudgetFormProps = {
+  usedThemeColors: string[];
+};
+
+export function BudgetForm({ usedThemeColors }: BudgetFormProps) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const formSchema = createFormSchema(usedThemeColors);
+  const themeOptions: ComboboxOption[] = budgetThemes.map((theme) => ({
+    ...theme,
+    disabled: usedThemeColors.includes(theme.value),
+  }));
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      description: "",
+      theme: "",
+      maximumSpend: "",
     },
   });
 
@@ -74,7 +89,7 @@ export function BudgetForm() {
   return (
     <Card
       ref={cardRef}
-      className="w-full sm:max-w-md bg-white p-6 rounded-2xl"
+      className="w-full sm:max-w-md bg-white p-6 rounded-2xl flex flex-col gap-5"
     >
       <CardHeader className="p-0">
         <CardTitle className="text-3xl font-bold">Add New Budget</CardTitle>
@@ -85,12 +100,12 @@ export function BudgetForm() {
       </CardHeader>
       <CardContent>
         <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
+          <FieldGroup className="gap-4">
             <Controller
               name="title"
               control={form.control}
               render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
+                <Field data-invalid={fieldState.invalid} className="gap-1">
                   <FieldLabel htmlFor="form-rhf-demo-title">
                     Budget Category
                   </FieldLabel>
@@ -108,32 +123,49 @@ export function BudgetForm() {
               )}
             />
             <Controller
-              name="description"
+              name="maximumSpend"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-description">
-                    Description
+                  <FieldLabel htmlFor="form-rhf-demo-maximum-spend">
+                    Maximum Spend
                   </FieldLabel>
-                  <InputGroup>
-                    <InputGroupTextarea
-                      {...field}
-                      id="form-rhf-demo-description"
-                      placeholder="I'm having an issue with the login button on mobile."
-                      rows={6}
-                      className="min-h-24 resize-none"
+                  <InputGroup className="w-full h-full">
+                    <Input
+                      id="form-rhf-demo-maximum-spend"
+                      placeholder="£ e.g. 2000"
+                      inputMode="decimal"
                       aria-invalid={fieldState.invalid}
+                      className="h-12 border-beige-500"
+                      value={field.value}
+                      onChange={(event) => {
+                        const sanitizedValue = event.target.value
+                          .replace(/[^0-9.]/g, "")
+                          .replace(/(\..*)\./g, "$1");
+
+                        field.onChange(sanitizedValue);
+                      }}
                     />
-                    <InputGroupAddon align="block-end">
-                      <InputGroupText className="tabular-nums">
-                        {field.value.length}/100 characters
-                      </InputGroupText>
-                    </InputGroupAddon>
                   </InputGroup>
-                  <FieldDescription>
-                    Include steps to reproduce, expected behavior, and what
-                    actually happened.
-                  </FieldDescription>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="theme"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid} className="gap-1">
+                  <FieldLabel htmlFor="form-rhf-demo-theme">Theme</FieldLabel>
+                  <ComboboxCon
+                    options={themeOptions}
+                    value={field.value}
+                    onSelect={field.onChange}
+                    portalContainer={cardRef.current}
+                    width="100%"
+                  />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -144,8 +176,8 @@ export function BudgetForm() {
         </form>
       </CardContent>
       <CardFooter className="p-0">
-        <Field orientation="horizontal">
-          <Button type="submit" form="form-rhf-demo">
+        <Field orientation="horizontal" className="w-full">
+          <Button type="submit" form="form-rhf-demo" className="h-12 w-full">
             Submit
           </Button>
         </Field>

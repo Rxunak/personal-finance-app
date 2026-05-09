@@ -7,6 +7,7 @@ import { Ellipsis } from "lucide-react";
 import { ProgressWithLabel } from "../components/progressBar";
 import TransactionsCard from "../components/transactionsCard";
 import { BudgetForm, type BudgetFormValues } from "../components/form";
+import { DeleteConfirmationDialog } from "../components/delete-confirmation-dialog";
 import { Dialog, DialogContent, DialogTitle } from "../components/ui/dialog";
 
 type BudgetItem = {
@@ -20,6 +21,8 @@ const Budget = () => {
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [isBudgetDialogOpen, setIsBudgetDialogOpen] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState<BudgetItem | null>(null);
+  const [budgetPendingDelete, setBudgetPendingDelete] =
+    useState<BudgetItem | null>(null);
   const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -48,6 +51,11 @@ const Budget = () => {
     setSelectedBudget(budget);
     setOpenMenuIndex(null);
     setIsBudgetDialogOpen(true);
+  };
+
+  const openDeleteDialog = (budget: BudgetItem) => {
+    setBudgetPendingDelete(budget);
+    setOpenMenuIndex(null);
   };
 
   const handleDialogChange = (open: boolean) => {
@@ -99,6 +107,17 @@ const Budget = () => {
           />
         </DialogContent>
       </Dialog>
+      <DeleteConfirmationDialog
+        open={!!budgetPendingDelete}
+        onOpenChange={(open) => {
+          if (!open) {
+            setBudgetPendingDelete(null);
+          }
+        }}
+        itemName={budgetPendingDelete?.category ?? ""}
+        itemType="budget"
+        onConfirm={() => setBudgetPendingDelete(null)}
+      />
       <main className="flex gap-5  h-9/10">
         <div className="w-2/5 h-full">
           <BudgetSummaryCard budgets={data.budgets} flexCol={"flex-col"} />
@@ -165,7 +184,7 @@ const Budget = () => {
                         <button
                           type="button"
                           className="flex w-full cursor-pointer items-center px-5 py-4 text-left text-lg text-red transition-colors hover:bg-red/5"
-                          onClick={() => setOpenMenuIndex(null)}
+                          onClick={() => openDeleteDialog(budget)}
                         >
                           Delete Budget
                         </button>

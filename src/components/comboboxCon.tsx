@@ -71,7 +71,11 @@ export function ComboboxCon({
         }}
       >
         <ComboboxInput
-          placeholder={normalizedOptions[0]?.label ?? "Select an option"}
+          placeholder={
+            selectedOption?.label ??
+            normalizedOptions[0]?.label ??
+            "Select an option"
+          }
           readOnly
           className="h-12 cursor-pointer border border-beige-500"
         >

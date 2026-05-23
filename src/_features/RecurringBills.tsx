@@ -1,21 +1,84 @@
 "use client";
 
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { ReceiptPoundSterling } from "lucide-react";
 import { DataTable } from "../components/data-table";
 import { recurringColumns } from "../app/recurringBills/recurringColumns";
-import { useFinanceData } from "@/hooks/use-finance-data";
+import { type Transaction, useFinanceData } from "@/hooks/use-finance-data";
 import { SpinnerButton } from "../components/spinnerButton";
+import { ComboboxCon } from "../components/comboboxCon";
+import { sortBy } from "../constants";
+import { SearchBar } from "../components/searchBar";
 
 const RecurringBills = () => {
+  const [selectedSortAction, setSelectedSortAction] = useState("");
+  const [query, setQuery] = useState("");
   const { isPending, error, data } = useFinanceData();
+
+  const transactions = useMemo(() => {
+    return data?.transactions ?? [];
+  }, [data]);
+
+  const filteredRecurring = useMemo(() => {
+    let newResults = [...transactions];
+
+    newResults = newResults.filter(
+      (item: Transaction) => item.recurring === true,
+    );
+
+    if (query.trim()) {
+      newResults = newResults.filter((item: Transaction) =>
+        item.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+      );
+    }
+
+    switch (selectedSortAction) {
+      case "Latest":
+        newResults = [...newResults].sort(
+          (a: Transaction, b: Transaction) =>
+            new Date(b.date).getTime() - new Date(a.date).getTime(),
+        );
+        break;
+      case "Oldest":
+        newResults = [...newResults].sort(
+          (a: Transaction, b: Transaction) =>
+            new Date(a.date).getTime() - new Date(b.date).getTime(),
+        );
+        break;
+      case "A to Z":
+        newResults = [...newResults].sort((a: Transaction, b: Transaction) =>
+          a.name.localeCompare(b.name),
+        );
+        break;
+      case "Z to A":
+        newResults = [...newResults].sort((a: Transaction, b: Transaction) =>
+          b.name.localeCompare(a.name),
+        );
+        break;
+      case "Highest":
+        newResults = [...newResults].sort(
+          (a: Transaction, b: Transaction) => b.amount - a.amount,
+        );
+        break;
+      case "Lowest":
+        newResults = [...newResults].sort(
+          (a: Transaction, b: Transaction) => a.amount - b.amount,
+        );
+        break;
+      default:
+        break;
+    }
+
+    return newResults;
+  }, [query, selectedSortAction, transactions]);
+
+  const sortByFil = (items: string) => {
+    setSelectedSortAction(items);
+  };
+
   if (isPending) return <SpinnerButton />;
 
   if (error) return "An error has occured: " + error.message;
-
-  const filteredRecurring = data.transactions.filter(
-    (list) => list.recurring === true,
-  );
 
   return (
     <div className="pl-8 pr-8 flex flex-col gap-7 bg-beige-100 h-lvh">
@@ -47,7 +110,14 @@ const RecurringBills = () => {
           </div>
         </div>
         <div className="bg-white rounded-2xl p-8 h-180 w-3/5 overflow-auto">
-          <div>Search</div>
+          <div className="flex justify-between mb-10">
+            <SearchBar
+              setQuery={setQuery}
+              query={query}
+              actionedTransactions={filteredRecurring}
+            />
+            <ComboboxCon options={sortBy} onSelect={sortByFil} width="100px" />
+          </div>
 
           <div>
             <DataTable columns={recurringColumns} data={filteredRecurring} />

@@ -19,6 +19,42 @@ const Budget = () => {
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [isBudgetDialogOpen, setIsBudgetDialogOpen] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState<BudgetItem | null>(null);
+  const [newBudgetData, setNewBudgetData] = useState<BudgetItem[]>(() => {
+    if (typeof window === "undefined") {
+      return [];
+    }
+
+    const storedBudgetData = window.localStorage.getItem("newBudget");
+
+    if (!storedBudgetData) {
+      return [];
+    }
+
+    try {
+      const budgetData = JSON.parse(storedBudgetData) as
+        | BudgetItem[]
+        | BudgetItem
+        | BudgetFormValues[]
+        | BudgetFormValues;
+      const budgetArray = Array.isArray(budgetData) ? budgetData : [budgetData];
+
+      return budgetArray.map((budget) => {
+        if ("category" in budget && "maximum" in budget) {
+          return budget;
+        }
+
+        return {
+          category: budget.title,
+          maximum: Number(budget.maximumSpend),
+          theme: budget.theme,
+        };
+      });
+    } catch (error) {
+      console.error("Invalid budget data in localStorage", error);
+      return [];
+    }
+  });
+
   const [budgetPendingDelete, setBudgetPendingDelete] =
     useState<BudgetItem | null>(null);
 
@@ -46,6 +82,26 @@ const Budget = () => {
     }
   };
 
+  const handleBudgetSubmit = (formData: BudgetFormValues) => {
+    const normalizedBudget: BudgetItem = {
+      category: formData.title,
+      maximum: Number(formData.maximumSpend),
+      theme: formData.theme,
+    };
+
+    const updatedBudgetData =
+      dialogMode === "edit" && selectedBudget
+        ? newBudgetData.map((budget) =>
+            budget.category === selectedBudget.category
+              ? normalizedBudget
+              : budget,
+          )
+        : [...newBudgetData, normalizedBudget];
+
+    setNewBudgetData(updatedBudgetData);
+    window.localStorage.setItem("newBudget", JSON.stringify(updatedBudgetData));
+  };
+
   const initialValues = useMemo<BudgetFormValues | undefined>(
     () =>
       selectedBudget
@@ -61,6 +117,9 @@ const Budget = () => {
   if (isPending) return <SpinnerButton />;
 
   if (error) return "An error has occured: " + error.message;
+  if (!data) return null;
+
+  const budgetsToRender = [...data.budgets, ...newBudgetData];
   return (
     <div className="bg-beige-100 pl-8 pr-8 pb-8 h-lvh">
       <div className="flex flex-row justify-between pt-6 mb-8">
@@ -81,8 +140,9 @@ const Budget = () => {
           </DialogTitle>
           <BudgetForm
             mode={dialogMode}
-            usedThemeColors={data.budgets.map((budget) => budget.theme)}
+            usedThemeColors={budgetsToRender.map((budget) => budget.theme)}
             initialValues={initialValues}
+            onSubmit={handleBudgetSubmit}
             onClose={() => handleDialogChange(false)}
           />
         </DialogContent>
@@ -100,11 +160,11 @@ const Budget = () => {
       />
       <main className="flex gap-5  h-9/10">
         <div className="w-2/5 h-full">
-          <BudgetSummaryCard budgets={data.budgets} flexCol={"flex-col"} />
+          <BudgetSummaryCard budgets={budgetsToRender} flexCol={"flex-col"} />
         </div>
 
-        <div className="w-3/5 h-full overflow-auto">
-          {data.budgets.map((budget: BudgetItem, index: number) => {
+        <div className="w-3/5 h-full overflow-auto no-scrollbar">
+          {budgetsToRender.map((budget: BudgetItem, index: number) => {
             const budgetTransactions = data.transactions.filter(
               (item: Transaction) => item.category === budget.category,
             );

@@ -93,7 +93,7 @@ const Overview = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 h-full">
-        <div className="space-y-4 lg:col-span-7 overflow-auto h-5/6 ">
+        <div className="space-y-4 lg:col-span-7 overflow-auto h-5/6 no-scrollbar">
           <section className="rounded-2xl bg-white p-8">
             <div className="flex justify-between mb-5">
               <h1 className="text-xl font-bold">Pots</h1>
@@ -114,7 +114,7 @@ const Overview = () => {
                   alt="PotIcon"
                 />
                 <span className="text-sm text-grey-500 flex flex-col gap-2.5">
-                  {savingPot.name}{" "}
+                  <h1>Total Saved</h1>
                   <p className="text-black font-bold text-3xl">
                     {savingPot.total.toLocaleString("en-GB", {
                       style: "currency",
@@ -151,7 +151,7 @@ const Overview = () => {
             sliceAmount={5}
           />
         </div>
-        <div className="space-y-4 lg:col-span-5 h-5/6 overflow-auto">
+        <div className="space-y-4 lg:col-span-5 h-5/6 overflow-auto no-scrollbar">
           <BudgetSummaryCard
             budgets={data.budgets}
             onAction={() => router.push("/budget")}

@@ -6,7 +6,10 @@ import { sortBy, category } from "../constants";
 import { columns } from "../app/transactions/columns";
 import { DataTable } from "../components/data-table";
 import { SpinnerButton } from "../components/spinnerButton";
-import { type Transaction as TransactionItem, useFinanceData } from "../../hooks/use-finance-data";
+import {
+  type Transaction as TransactionItem,
+  useFinanceData,
+} from "../../hooks/use-finance-data";
 import { PaginationComponent } from "../components/pagination";
 
 const Transaction = () => {
@@ -131,7 +134,7 @@ const Transaction = () => {
             </div>
           </div>
         </div>
-        <div className="h-auto overflow-scroll">
+        <div className="h-auto overflow-scroll no-scrollbar">
           <DataTable columns={columns} data={currentItems} />
         </div>
         <div className="mt-auto">

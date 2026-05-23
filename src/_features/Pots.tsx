@@ -105,7 +105,7 @@ const Pots = () => {
         pot={potBalanceTarget}
       />
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto no-scrollbar">
         <main className="grid grid-cols-2 gap-5 pb-2">
           {data.pots.map((pot: Pot, index: number) => {
             const percentageSaved = Math.min(

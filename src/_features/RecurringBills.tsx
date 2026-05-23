@@ -109,7 +109,7 @@ const RecurringBills = () => {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-2xl p-8 h-180 w-3/5 overflow-auto">
+        <div className="bg-white rounded-2xl p-8 h-180 w-3/5 overflow-auto no-scrollbar">
           <div className="flex justify-between mb-10">
             <SearchBar
               setQuery={setQuery}

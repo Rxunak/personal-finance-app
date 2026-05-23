@@ -1,22 +1,10 @@
 "use client";
 
-import { category } from "@/src/constants";
+import { type Transaction } from "@/hooks/use-finance-data";
 import { ColumnDef } from "@tanstack/react-table";
-import { format, addDays, isAfter } from "date-fns";
+import { format } from "date-fns";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
-  id: string;
-  avatar: string;
-  name: string;
-  category: string;
-  amount: number;
-  date: string;
-  recurring: boolean;
-};
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "name",
     cell: ({ row }) => {
@@ -58,12 +46,10 @@ export const columns: ColumnDef<Payment>[] = [
         <p
           className={`text-sm font-bold ${Math.sign(row.original.amount) === 1 ? "text-green" : "text-black"}`}
         >
-          {Math.sign(row.original.amount) === 1
-            ? `+${row.original.amount.toLocaleString("en-GB", { style: "currency", currency: "GBP" })}`
-            : row.original.amount.toLocaleString("en-GB", {
-                style: "currency",
-                currency: "GBP",
-              })}
+          {Math.abs(row.original.amount).toLocaleString("en-GB", {
+            style: "currency",
+            currency: "GBP",
+          })}
         </p>
       );
     },

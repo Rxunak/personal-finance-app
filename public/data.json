@@ -11,7 +11,10 @@
       "category": "General",
       "date": "2026-02-19T14:23:11Z",
       "amount": 75.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/savory-bites-bistro.jpg",
@@ -19,7 +22,10 @@
       "category": "Dining Out",
       "date": "2026-02-19T20:23:11Z",
       "amount": -55.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/daniel-carter.jpg",
@@ -27,7 +33,10 @@
       "category": "General",
       "date": "2026-02-18T09:45:32Z",
       "amount": -42.30,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/sun-park.jpg",
@@ -35,7 +44,10 @@
       "category": "General",
       "date": "2026-02-17T16:12:05Z",
       "amount": 120.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/urban-services-hub.jpg",
@@ -43,7 +55,10 @@
       "category": "General",
       "date": "2026-02-17T21:08:09Z",
       "amount": -65.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/liam-hughes.jpg",
@@ -51,7 +66,10 @@
       "category": "Groceries",
       "date": "2026-02-15T18:20:33Z",
       "amount": 65.75,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/lily-ramirez.jpg",
@@ -59,7 +77,10 @@
       "category": "General",
       "date": "2026-02-14T13:05:27Z",
       "amount": 50.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/ethan-clark.jpg",
@@ -67,7 +88,10 @@
       "category": "Dining Out",
       "date": "2026-02-13T20:15:59Z",
       "amount": -32.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/james-thompson.jpg",
@@ -75,7 +99,10 @@
       "category": "Entertainment",
       "date": "2026-02-11T15:45:38Z",
       "amount": -5.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/pixel-playground.jpg",
@@ -94,7 +121,10 @@
       "category": "Dining Out",
       "date": "2026-02-10T19:22:51Z",
       "amount": -45.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/sofia-peterson.jpg",
@@ -102,7 +132,10 @@
       "category": "Transportation",
       "date": "2026-02-08T08:55:17Z",
       "amount": -15.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/mason-martinez.jpg",
@@ -110,7 +143,10 @@
       "category": "Lifestyle",
       "date": "2026-02-07T17:40:29Z",
       "amount": -35.25,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/green-plate-eatery.jpg",
@@ -118,7 +154,10 @@
       "category": "Groceries",
       "date": "2026-02-06T08:25:44Z",
       "amount": -78.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/sebastian-cook.jpg",
@@ -126,7 +165,10 @@
       "category": "Transportation",
       "date": "2026-02-06T10:05:44Z",
       "amount": -22.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/william-harris.jpg",
@@ -134,7 +176,10 @@
       "category": "Personal Care",
       "date": "2026-02-05T14:30:56Z",
       "amount": -10.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/elevate-education.jpg",
@@ -175,7 +220,10 @@
       "category": "Bills",
       "date": "2026-02-02T13:31:11Z",
       "amount": -50.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/swift-ride-share.jpg",
@@ -183,7 +231,10 @@
       "category": "Transportation",
       "date": "2026-02-01T18:40:33Z",
       "amount": -18.75,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/aqua-flow-utilities.jpg",
@@ -213,7 +264,10 @@
       "category": "Dining Out",
       "date": "2026-01-29T13:51:29Z",
       "amount": -28.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/flavor-fiesta.jpg",
@@ -221,7 +275,10 @@
       "category": "Dining Out",
       "date": "2026-01-27T20:15:06Z",
       "amount": -42.75,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/harper-edwards.jpg",
@@ -229,7 +286,10 @@
       "category": "Shopping",
       "date": "2026-01-26T09:43:23Z",
       "amount": -89.99,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/buzz-marketing-group.jpg",
@@ -237,7 +297,10 @@
       "category": "General",
       "date": "2026-01-26T14:40:23Z",
       "amount": 3358.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/technova-innovations.jpg",
@@ -245,7 +308,10 @@
       "category": "Shopping",
       "date": "2026-01-25T16:25:37Z",
       "amount": -29.99,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/bytewise.jpg",
@@ -275,7 +341,10 @@
       "category": "General",
       "date": "2026-01-20T17:30:55Z",
       "amount": -25.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/daniel-carter.jpg",
@@ -283,7 +352,10 @@
       "category": "General",
       "date": "2026-01-19T12:45:09Z",
       "amount": 50.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/sun-park.jpg",
@@ -291,7 +363,10 @@
       "category": "General",
       "date": "2026-01-18T19:20:23Z",
       "amount": -38.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/harper-edwards.jpg",
@@ -299,7 +374,10 @@
       "category": "Shopping",
       "date": "2026-01-17T14:55:37Z",
       "amount": -29.99,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/liam-hughes.jpg",
@@ -307,7 +385,10 @@
       "category": "Groceries",
       "date": "2026-01-16T10:10:51Z",
       "amount": -52.75,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/lily-ramirez.jpg",
@@ -315,7 +396,10 @@
       "category": "General",
       "date": "2026-01-15T16:35:04Z",
       "amount": 75.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/ethan-clark.jpg",
@@ -323,7 +407,10 @@
       "category": "Dining Out",
       "date": "2026-01-14T20:50:18Z",
       "amount": -41.25,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/rina-sato.jpg",
@@ -331,7 +418,10 @@
       "category": "Entertainment",
       "date": "2026-01-13T09:15:32Z",
       "amount": -10.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/james-thompson.jpg",
@@ -339,7 +429,10 @@
       "category": "Bills",
       "date": "2026-01-12T13:40:46Z",
       "amount": -95.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/ella-phillips.jpg",
@@ -347,7 +440,10 @@
       "category": "Dining Out",
       "date": "2026-01-11T18:05:59Z",
       "amount": -33.75,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/yuna-kim.jpg",
@@ -355,7 +451,10 @@
       "category": "Dining Out",
       "date": "2026-01-10T12:30:13Z",
       "amount": -27.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/sofia-peterson.jpg",
@@ -363,7 +462,10 @@
       "category": "Transportation",
       "date": "2026-01-09T08:55:27Z",
       "amount": -12.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/mason-martinez.jpg",
@@ -371,7 +473,10 @@
       "category": "Lifestyle",
       "date": "2026-01-08T15:20:41Z",
       "amount": -65.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/sebastian-cook.jpg",
@@ -379,7 +484,10 @@
       "category": "Transportation",
       "date": "2026-01-07T11:45:55Z",
       "amount": -20.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/william-harris.jpg",
@@ -387,7 +495,10 @@
       "category": "General",
       "date": "2026-01-06T17:10:09Z",
       "amount": 20.00,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     },
     {
       "avatar": "/images/avatars/elevate-education.jpg",
@@ -428,7 +539,10 @@
       "category": "Transportation",
       "date": "2026-01-02T19:50:05Z",
       "amount": -16.50,
-      "recurring": false
+      "recurring": false,
+      "dueDate": null,
+      "status": null,
+      "paidDate": null
     }
   ],
   "budgets": [
@@ -484,36 +598,37 @@
       "total": 531.00,
       "theme": "#826CB0"
     },
-     {
+    {
       "name": "Holiday",
       "target": 1440.00,
       "total": 531.00,
       "theme": "#826CB0"
     },
-     {
+    {
       "name": "Holiday",
       "target": 1440.00,
       "total": 531.00,
       "theme": "#826CB0"
     },
-     {
+    {
       "name": "Holiday",
       "target": 1440.00,
       "total": 531.00,
       "theme": "#826CB0"
     },
-     {
+    {
       "name": "Holiday",
       "target": 1440.00,
       "total": 531.00,
       "theme": "#826CB0"
     },
-     {
+    {
       "name": "Holiday",
       "target": 1440.00,
       "total": 531.00,
       "theme": "#826CB0"
-    }, {
+    },
+    {
       "name": "Holiday",
       "target": 1440.00,
       "total": 531.00,

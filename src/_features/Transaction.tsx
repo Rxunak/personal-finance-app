@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { SearchBar } from "../components/searchBar";
 import { ComboboxCon } from "../components/comboboxCon";
-import { sortBy, category, TransactionArray } from "../constants";
+import { sortBy, category } from "../constants";
 import { columns } from "../app/transactions/columns";
-import { DataTable } from "../app/transactions/data-table";
+import { DataTable } from "../components/data-table";
 import { SpinnerButton } from "../components/spinnerButton";
-import { useFinanceData } from "../../hooks/use-finance-data";
+import { type Transaction as TransactionItem, useFinanceData } from "../../hooks/use-finance-data";
 import { PaginationComponent } from "../components/pagination";
 
 const Transaction = () => {
@@ -25,45 +25,49 @@ const Transaction = () => {
     let results = [...transactions];
 
     if (query.trim()) {
-      results = results.filter((item: { name: string }) =>
+      results = results.filter((item: TransactionItem) =>
         item.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
       );
     }
 
     if (selectedCategory && selectedCategory !== "All transactions") {
       results = results.filter(
-        (item: { category: string }) => item.category === selectedCategory,
+        (item: TransactionItem) => item.category === selectedCategory,
       );
     }
 
     switch (selectedSortAction) {
       case "Latest":
         results = results.sort(
-          (a: any, b: any) =>
+          (a: TransactionItem, b: TransactionItem) =>
             new Date(b.date).getTime() - new Date(a.date).getTime(),
         );
         break;
       case "Oldest":
         results = results.sort(
-          (a: any, b: any) =>
+          (a: TransactionItem, b: TransactionItem) =>
             new Date(a.date).getTime() - new Date(b.date).getTime(),
         );
         break;
       case "A to Z":
-        results = results.sort((a: any, b: any) =>
+        results = results.sort((a: TransactionItem, b: TransactionItem) =>
           a.name.localeCompare(b.name),
         );
         break;
       case "Z to A":
-        results = results.sort((a: any, b: any) =>
+        results = results.sort((a: TransactionItem, b: TransactionItem) =>
           b.name.localeCompare(a.name),
         );
         break;
       case "Highest":
-        results = results.sort((a: any, b: any) => b.amount - a.amount);
+        results = results.sort(
+          (a: TransactionItem, b: TransactionItem) => b.amount - a.amount,
+        );
         break;
       case "Lowest":
-        results = results.sort((a: any, b: any) => a.amount - b.amount);
+        results = results.sort(
+          (a: TransactionItem, b: TransactionItem) => a.amount - b.amount,
+        );
         break;
 
       default:

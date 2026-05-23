@@ -15,8 +15,8 @@ export type Transaction = {
   date: string;
   amount: number;
   recurring: boolean;
-  dueDate?: string;
-  status?: "paid" | "unpaid" | "overdue";
+  dueDate?: string | null;
+  status?: "paid" | "unpaid" | "overdue" | null;
   paidDate?: string | null;
 };
 

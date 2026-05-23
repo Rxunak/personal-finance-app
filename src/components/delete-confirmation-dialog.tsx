@@ -44,10 +44,10 @@ export function DeleteConfirmationDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[calc(100%-2rem)] max-w-[calc(100%-2rem)] rounded-2xl border-none bg-white p-9 shadow-none sm:max-w-160">
         <DialogHeader className="gap-4 text-left">
-          <DialogTitle className="pr-12 text-3xl font-bold text-neutral-900">
+          <DialogTitle className="pr-12 text-2xl font-bold text-neutral-900">
             Delete '{itemName}'?
           </DialogTitle>
-          <DialogDescription className="text-md text-grey-500">
+          <DialogDescription className="text-sm text-grey-500">
             {resolvedDescription}
           </DialogDescription>
         </DialogHeader>

@@ -1,20 +1,18 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useFinanceData } from "@/hooks/use-finance-data";
+import React, { useMemo, useState } from "react";
+import {
+  type Budget as BudgetItem,
+  type Transaction,
+  useFinanceData,
+} from "@/hooks/use-finance-data";
 import { SpinnerButton } from "../components/spinnerButton";
 import BudgetSummaryCard from "../components/budget-summary-card";
-import { Ellipsis } from "lucide-react";
 import { ProgressWithLabel } from "../components/progressBar";
 import TransactionsCard from "../components/transactionsCard";
 import { BudgetForm, type BudgetFormValues } from "../components/form";
 import { DeleteConfirmationDialog } from "../components/delete-confirmation-dialog";
 import { Dialog, DialogContent, DialogTitle } from "../components/ui/dialog";
-
-type BudgetItem = {
-  category: string;
-  maximum: number;
-  theme: string;
-};
+import { ActionMenu } from "../components/action-menu";
 
 const Budget = () => {
   const { isPending, error, data } = useFinanceData();
@@ -23,22 +21,6 @@ const Budget = () => {
   const [selectedBudget, setSelectedBudget] = useState<BudgetItem | null>(null);
   const [budgetPendingDelete, setBudgetPendingDelete] =
     useState<BudgetItem | null>(null);
-  const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) {
-        setOpenMenuIndex(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const openCreateDialog = () => {
     setDialogMode("create");
@@ -49,13 +31,11 @@ const Budget = () => {
   const openEditDialog = (budget: BudgetItem) => {
     setDialogMode("edit");
     setSelectedBudget(budget);
-    setOpenMenuIndex(null);
     setIsBudgetDialogOpen(true);
   };
 
   const openDeleteDialog = (budget: BudgetItem) => {
     setBudgetPendingDelete(budget);
-    setOpenMenuIndex(null);
   };
 
   const handleDialogChange = (open: boolean) => {
@@ -125,25 +105,16 @@ const Budget = () => {
 
         <div className="w-3/5 h-full overflow-auto">
           {data.budgets.map((budget: BudgetItem, index: number) => {
-            const total: any = [];
-
-            data.transactions.filter((item: any) => {
-              if (item.category === budget.category) {
-                total.push(item.amount);
-              }
-            });
-
-            const sum = total
+            const budgetTransactions = data.transactions.filter(
+              (item: Transaction) => item.category === budget.category,
+            );
+            const sum = budgetTransactions
               .slice(0, 3)
               .reduce(
-                (previousValue: any, currentValue: any, index: any) =>
-                  previousValue + currentValue,
+                (previousValue: number, currentValue: Transaction) =>
+                  previousValue + currentValue.amount,
                 0,
               );
-
-            if (Math.abs(sum) < budget.maximum) {
-              console.log(total.slice(0, 3));
-            }
 
             return (
               <div
@@ -156,41 +127,20 @@ const Budget = () => {
                     style={{ background: budget.theme }}
                   ></span>
                   <p className="font-bold text-xl">{budget.category}</p>
-                  <div
-                    className="relative ml-auto"
-                    ref={openMenuIndex === index ? menuRef : null}
-                  >
-                    <button
-                      type="button"
-                      className="flex cursor-pointer items-center justify-center rounded-full p-1 text-grey-500 transition-colors hover:bg-beige-100"
-                      aria-label={`Open actions for ${budget.category}`}
-                      aria-expanded={openMenuIndex === index}
-                      onClick={() =>
-                        setOpenMenuIndex(openMenuIndex === index ? null : index)
-                      }
-                    >
-                      <Ellipsis />
-                    </button>
-                    {openMenuIndex === index && (
-                      <div className="absolute right-0 top-10 z-20 w-44 overflow-hidden rounded-2xl bg-white shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
-                        <button
-                          type="button"
-                          className="flex w-full cursor-pointer items-center px-5 py-4 text-left text-lg text-beige-500 transition-colors hover:bg-beige-100"
-                          onClick={() => openEditDialog(budget)}
-                        >
-                          Edit Budget
-                        </button>
-                        <div className="mx-4 h-px bg-grey-100" />
-                        <button
-                          type="button"
-                          className="flex w-full cursor-pointer items-center px-5 py-4 text-left text-lg text-red transition-colors hover:bg-red/5"
-                          onClick={() => openDeleteDialog(budget)}
-                        >
-                          Delete Budget
-                        </button>
-                      </div>
-                    )}
-                  </div>
+                  <ActionMenu
+                    ariaLabel={`Open actions for ${budget.category}`}
+                    items={[
+                      {
+                        label: "Edit Budget",
+                        onClick: () => openEditDialog(budget),
+                      },
+                      {
+                        label: "Delete Budget",
+                        onClick: () => openDeleteDialog(budget),
+                        variant: "destructive",
+                      },
+                    ]}
+                  />
                 </div>
                 <div>
                   <ProgressWithLabel
@@ -235,9 +185,7 @@ const Budget = () => {
                 </div>
                 <TransactionsCard
                   title={"Latest Spending"}
-                  transactionData={data.transactions.filter(
-                    (item: any) => item.category === budget.category,
-                  )}
+                  transactionData={budgetTransactions}
                   backgroundColor={"beige-100"}
                   sliceAmount={3}
                   budgetCard={true}

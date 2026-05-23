@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useFinanceData, type Pot } from "@/hooks/use-finance-data";
-import { Ellipsis } from "lucide-react";
 import { PotBalanceDialog } from "../components/pot-balance-dialog";
 import { DeleteConfirmationDialog } from "../components/delete-confirmation-dialog";
 import { PotForm, type PotFormValues } from "../components/pot-form";
 import { Dialog, DialogContent, DialogTitle } from "../components/ui/dialog";
 import { Progress } from "../components/ui/progress";
 import { SpinnerButton } from "../components/spinnerButton";
+import { ActionMenu } from "../components/action-menu";
 
 const Pots = () => {
   const { isPending, error, data } = useFinanceData();
@@ -20,22 +20,6 @@ const Pots = () => {
   );
   const [potBalanceTarget, setPotBalanceTarget] = useState<Pot | null>(null);
   const [potPendingDelete, setPotPendingDelete] = useState<Pot | null>(null);
-  const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) {
-        setOpenMenuIndex(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const openCreateDialog = () => {
     setDialogMode("create");
@@ -46,7 +30,6 @@ const Pots = () => {
   const openEditDialog = (pot: Pot) => {
     setDialogMode("edit");
     setSelectedPot(pot);
-    setOpenMenuIndex(null);
     setIsPotDialogOpen(true);
   };
 
@@ -141,44 +124,20 @@ const Pots = () => {
                     style={{ background: pot.theme }}
                   />
                   <h2 className="text-xl font-bold">{pot.name}</h2>
-                  <div
-                    className="relative ml-auto"
-                    ref={openMenuIndex === index ? menuRef : null}
-                  >
-                    <button
-                      type="button"
-                      className="flex cursor-pointer items-center justify-center rounded-full p-1 text-grey-500 transition-colors hover:bg-beige-100"
-                      aria-label={`Open actions for ${pot.name}`}
-                      aria-expanded={openMenuIndex === index}
-                      onClick={() =>
-                        setOpenMenuIndex(openMenuIndex === index ? null : index)
-                      }
-                    >
-                      <Ellipsis />
-                    </button>
-                    {openMenuIndex === index && (
-                      <div className="absolute right-0 top-10 z-20 w-44 overflow-hidden rounded-2xl bg-white shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
-                        <button
-                          type="button"
-                          className="flex w-full cursor-pointer items-center px-5 py-4 text-left text-lg text-beige-500 transition-colors hover:bg-beige-100"
-                          onClick={() => openEditDialog(pot)}
-                        >
-                          Edit Pot
-                        </button>
-                        <div className="mx-4 h-px bg-grey-100" />
-                        <button
-                          type="button"
-                          className="flex w-full cursor-pointer items-center px-5 py-4 text-left text-lg text-red transition-colors hover:bg-red/5"
-                          onClick={() => {
-                            setPotPendingDelete(pot);
-                            setOpenMenuIndex(null);
-                          }}
-                        >
-                          Delete Pot
-                        </button>
-                      </div>
-                    )}
-                  </div>
+                  <ActionMenu
+                    ariaLabel={`Open actions for ${pot.name}`}
+                    items={[
+                      {
+                        label: "Edit Pot",
+                        onClick: () => openEditDialog(pot),
+                      },
+                      {
+                        label: "Delete Pot",
+                        onClick: () => setPotPendingDelete(pot),
+                        variant: "destructive",
+                      },
+                    ]}
+                  />
                 </div>
 
                 <div className="mb-4 flex items-end justify-between">

@@ -3,16 +3,11 @@
 import { Command, CommandInput } from "../components/ui/command";
 
 type SearchBarProps = {
-  setQuery: any;
+  setQuery: (value: string) => void;
   query: string;
-  actionedTransactions: any[];
 };
 
-export function SearchBar({
-  setQuery,
-  query,
-  actionedTransactions,
-}: SearchBarProps) {
+export function SearchBar({ setQuery, query }: SearchBarProps) {
   return (
     <Command className="max-w-sm rounded-md">
       <CommandInput

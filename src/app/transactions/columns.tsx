@@ -1,18 +1,30 @@
 "use client";
 
 import { type Transaction } from "@/hooks/use-finance-data";
+import Image from "next/image";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import { ActionMenu } from "../../components/action-menu";
 
-export const columns: ColumnDef<Transaction>[] = [
+type TransactionColumnActions = {
+  onEdit: (transaction: Transaction) => void;
+  onDelete: (transaction: Transaction) => void;
+};
+
+export const getTransactionColumns = ({
+  onEdit,
+  onDelete,
+}: TransactionColumnActions): ColumnDef<Transaction>[] => [
   {
     accessorKey: "name",
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-4 font-bold">
-          <img
+          <Image
             src={row.original.avatar}
             alt=""
+            width={40}
+            height={40}
             className="size-10 rounded-2xl"
           />
           {row.original.name}
@@ -54,5 +66,28 @@ export const columns: ColumnDef<Transaction>[] = [
       );
     },
     header: () => <div className="text-right">Amount</div>,
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <ActionMenu
+          ariaLabel={`Open actions for ${row.original.name}`}
+          menuWidthClassName="w-36"
+          items={[
+            {
+              label: "Edit",
+              onClick: () => onEdit(row.original),
+            },
+            {
+              label: "Delete",
+              onClick: () => onDelete(row.original),
+              variant: "destructive",
+            },
+          ]}
+        />
+      </div>
+    ),
+    header: "",
   },
 ];

@@ -45,7 +45,7 @@ export function DeleteConfirmationDialog({
       <DialogContent className="w-[calc(100%-2rem)] max-w-[calc(100%-2rem)] rounded-2xl border-none bg-white p-9 shadow-none sm:max-w-160">
         <DialogHeader className="gap-4 text-left">
           <DialogTitle className="pr-12 text-2xl font-bold text-neutral-900">
-            Delete '{itemName}'?
+            {`Delete "${itemName}"?`}
           </DialogTitle>
           <DialogDescription className="text-sm text-grey-500">
             {resolvedDescription}

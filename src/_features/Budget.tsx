@@ -1,10 +1,10 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   type Budget as BudgetItem,
   type Transaction,
-  useFinanceData,
 } from "@/hooks/use-finance-data";
+import { useLocalFinanceData } from "@/hooks/use-local-finance-data";
 import { SpinnerButton } from "../components/spinnerButton";
 import BudgetSummaryCard from "../components/budget-summary-card";
 import { ProgressWithLabel } from "../components/progressBar";
@@ -15,46 +15,11 @@ import { Dialog, DialogContent, DialogTitle } from "../components/ui/dialog";
 import { ActionMenu } from "../components/action-menu";
 
 const Budget = () => {
-  const { isPending, error, data } = useFinanceData();
+  const { isPending, error, data, upsertBudget, deleteBudget } =
+    useLocalFinanceData();
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [isBudgetDialogOpen, setIsBudgetDialogOpen] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState<BudgetItem | null>(null);
-  const [newBudgetData, setNewBudgetData] = useState<BudgetItem[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
-    }
-
-    const storedBudgetData = window.localStorage.getItem("newBudget");
-
-    if (!storedBudgetData) {
-      return [];
-    }
-
-    try {
-      const budgetData = JSON.parse(storedBudgetData) as
-        | BudgetItem[]
-        | BudgetItem
-        | BudgetFormValues[]
-        | BudgetFormValues;
-      const budgetArray = Array.isArray(budgetData) ? budgetData : [budgetData];
-
-      return budgetArray.map((budget) => {
-        if ("category" in budget && "maximum" in budget) {
-          return budget;
-        }
-
-        return {
-          category: budget.title,
-          maximum: Number(budget.maximumSpend),
-          theme: budget.theme,
-        };
-      });
-    } catch (error) {
-      console.error("Invalid budget data in localStorage", error);
-      return [];
-    }
-  });
-
   const [budgetPendingDelete, setBudgetPendingDelete] =
     useState<BudgetItem | null>(null);
 
@@ -84,22 +49,12 @@ const Budget = () => {
 
   const handleBudgetSubmit = (formData: BudgetFormValues) => {
     const normalizedBudget: BudgetItem = {
+      id: selectedBudget?.id,
       category: formData.title,
       maximum: Number(formData.maximumSpend),
       theme: formData.theme,
     };
-
-    const updatedBudgetData =
-      dialogMode === "edit" && selectedBudget
-        ? newBudgetData.map((budget) =>
-            budget.category === selectedBudget.category
-              ? normalizedBudget
-              : budget,
-          )
-        : [...newBudgetData, normalizedBudget];
-
-    setNewBudgetData(updatedBudgetData);
-    window.localStorage.setItem("newBudget", JSON.stringify(updatedBudgetData));
+    upsertBudget(normalizedBudget);
   };
 
   const initialValues = useMemo<BudgetFormValues | undefined>(
@@ -119,7 +74,7 @@ const Budget = () => {
   if (error) return "An error has occured: " + error.message;
   if (!data) return null;
 
-  const budgetsToRender = [...data.budgets, ...newBudgetData];
+  const budgetsToRender = data.budgets;
   return (
     <div className="bg-beige-100 pl-8 pr-8 pb-8 h-lvh">
       <div className="flex flex-row justify-between pt-6 mb-8">
@@ -156,7 +111,12 @@ const Budget = () => {
         }}
         itemName={budgetPendingDelete?.category ?? ""}
         itemType="budget"
-        onConfirm={() => setBudgetPendingDelete(null)}
+        onConfirm={() => {
+          if (budgetPendingDelete?.id) {
+            deleteBudget(budgetPendingDelete.id);
+          }
+          setBudgetPendingDelete(null);
+        }}
       />
       <main className="flex gap-5  h-9/10">
         <div className="w-2/5 h-full">
@@ -164,7 +124,7 @@ const Budget = () => {
         </div>
 
         <div className="w-3/5 h-full overflow-auto no-scrollbar">
-          {budgetsToRender.map((budget: BudgetItem, index: number) => {
+          {budgetsToRender.map((budget: BudgetItem) => {
             const budgetTransactions = data.transactions.filter(
               (item: Transaction) => item.category === budget.category,
             );
@@ -178,7 +138,7 @@ const Budget = () => {
 
             return (
               <div
-                key={index}
+                key={budget.id ?? `${budget.category}-${budget.theme}`}
                 className="h-auto bg-white rounded-2xl p-5 flex flex-col gap-5 mb-5"
               >
                 <div className="flex gap-3 items-center">

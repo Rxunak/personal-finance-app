@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -7,6 +6,7 @@ import Image from "next/image";
 import IconCaret from "../icons/icon-caret-right.svg";
 
 type TransactionSummaryItem = {
+  id?: string;
   avatar: string;
   name: string;
   category: string;
@@ -23,17 +23,24 @@ type TransactionSummaryCardProps = {
   budgetCard?: boolean;
 };
 
+const backgroundClassNameMap: Record<string, string> = {
+  white: "bg-white",
+  "beige-100": "bg-beige-100",
+};
+
 export default function TransactionsCard({
   transactionData,
   backgroundColor,
   sliceAmount,
   title,
-  budgetCard,
 }: TransactionSummaryCardProps) {
   const router = useRouter();
+  const backgroundClassName = backgroundColor
+    ? backgroundClassNameMap[backgroundColor] ?? "bg-white"
+    : "bg-white";
 
   return (
-    <section className={`rounded-2xl bg-${backgroundColor}`}>
+    <section className={`rounded-2xl ${backgroundClassName}`}>
       <div className="flex justify-between p-6 pb-0">
         <h1 className="text-xl font-bold">{title}</h1>
         <button
@@ -47,9 +54,12 @@ export default function TransactionsCard({
       <div className="pl-6 pr-6 pb-6 overflow-auto h-auto">
         {transactionData
           .slice(0, sliceAmount)
-          .map((transaction: any, index: number) => (
+          .map((transaction) => (
             <div
-              key={index}
+              key={
+                transaction.id ??
+                `${transaction.name}-${transaction.date}-${transaction.amount}`
+              }
               className="border-b last:border-none pb-5 last:pb-0 pt-6 flex items-center justify-between"
             >
               <div className="flex items-center gap-3">

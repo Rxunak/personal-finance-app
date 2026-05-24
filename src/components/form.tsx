@@ -99,6 +99,7 @@ export function BudgetForm({
   }, [form, resolvedInitialValues]);
 
   function handleSubmit(data: BudgetFormValues) {
+    console.log(data);
     onSubmit?.(data);
     toast(
       mode === "edit"

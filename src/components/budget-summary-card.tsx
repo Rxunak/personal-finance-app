@@ -61,13 +61,13 @@ export default function BudgetSummaryCard({
         >
           <div className="flex flex-col gap-5 h-full justify-center">
             {!flexCol
-              ? budgets.map((budget: any, index: any) => (
+              ? budgets.map((budget) => (
                   <span
-                    key={`${budget.category}-${index}`}
+                    key={`${budget.category}-${budget.theme}`}
                     className="flex h-auto"
                   >
                     <span
-                      className={`border-l-4 rounded-xs w-1 h-13 self-stretch bg-${budget.theme}`}
+                      className="border-l-4 rounded-xs w-1 h-13 self-stretch"
                       style={{ borderLeftColor: budget.theme }}
                     ></span>
                     <div className="flex flex-col gap-1 justify-center">
@@ -83,9 +83,9 @@ export default function BudgetSummaryCard({
                     </div>
                   </span>
                 ))
-              : budgets.map((budget: any, index: any) => (
+              : budgets.map((budget) => (
                   <span
-                    key={`${budget.category}-${index}`}
+                    key={`${budget.category}-${budget.theme}`}
                     className="flex h-auto border-b pb-5 last:border-none last:pb-0"
                   >
                     <span

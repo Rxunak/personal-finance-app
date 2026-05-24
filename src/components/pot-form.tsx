@@ -202,7 +202,6 @@ export function PotForm({
                     onSelect={field.onChange}
                     portalContainer={cardRef.current}
                     width="100%"
-                    align="center"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

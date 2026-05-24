@@ -1,25 +1,26 @@
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "../components/ui/pagination";
 
+type PaginationComponentProps = {
+  totalItems: number;
+  itemsPerPage: number;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+};
+
 export function PaginationComponent({
   totalItems,
   itemsPerPage,
   currentPage,
   setCurrentPage,
-}: {
-  totalItems: any;
-  itemsPerPage: any;
-  currentPage: any;
-  setCurrentPage: any;
-}) {
-  const pages = [];
+}: PaginationComponentProps) {
+  const pages: number[] = [];
   for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
     pages.push(i);
   }
@@ -39,24 +40,42 @@ export function PaginationComponent({
     <Pagination>
       <PaginationContent>
         <PaginationItem className="border border-grey-500 rounded-md">
-          <PaginationPrevious href="#" onClick={() => handlePreviousPage()} />
+          <PaginationPrevious
+            href="#"
+            onClick={(event) => {
+              event.preventDefault();
+              handlePreviousPage();
+            }}
+          />
         </PaginationItem>
         <div className="flex flex-row gap-1">
-          {pages.map((page, index) => (
+          {pages.map((page) => (
             <PaginationItem
-              key={index}
+              key={page}
               className={
                 currentPage === page ? "bg-neutral-100 rounded-md" : ""
               }
             >
-              <PaginationLink href="#" onClick={() => setCurrentPage(page)}>
+              <PaginationLink
+                href="#"
+                onClick={(event) => {
+                  event.preventDefault();
+                  setCurrentPage(page);
+                }}
+              >
                 {page}
               </PaginationLink>
             </PaginationItem>
           ))}
         </div>
         <PaginationItem className="border border-grey-500 rounded-md">
-          <PaginationNext href="#" onClick={() => handleNextPage()} />
+          <PaginationNext
+            href="#"
+            onClick={(event) => {
+              event.preventDefault();
+              handleNextPage();
+            }}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

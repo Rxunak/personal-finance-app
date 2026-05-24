@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
@@ -17,6 +17,7 @@ type PotBalanceDialogProps = {
     target: number;
     theme: string;
   } | null;
+  onConfirmAmount?: (amountDelta: number) => void;
 };
 
 function formatCurrency(value: number) {
@@ -31,14 +32,9 @@ export function PotBalanceDialog({
   onOpenChange,
   mode,
   pot,
+  onConfirmAmount,
 }: PotBalanceDialogProps) {
   const [amount, setAmount] = useState("");
-
-  useEffect(() => {
-    if (!open) {
-      setAmount("");
-    }
-  }, [open]);
 
   const numericAmount = Number(amount || 0);
   const currentTotal = pot?.total ?? 0;
@@ -64,6 +60,7 @@ export function PotBalanceDialog({
   const placeholder = mode === "add" ? "400" : "20";
 
   const handleConfirm = () => {
+    onConfirmAmount?.(mode === "add" ? numericAmount : -numericAmount);
     toast(
       mode === "add"
         ? "Pot updated with the following addition:"
@@ -90,8 +87,16 @@ export function PotBalanceDialog({
     onOpenChange(false);
   };
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) {
+      setAmount("");
+    }
+
+    onOpenChange(nextOpen);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="w-[calc(100%-2rem)] max-w-[calc(100%-2rem)] rounded-2xl border-none bg-white p-7 shadow-none sm:max-w-[46rem]">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-4">

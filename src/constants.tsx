@@ -8,13 +8,15 @@ export const sortBy = [
 ];
 
 export const budgetCategory = [
+  "General",
   "Entertainment",
   "Bills",
   "Groceries",
   "Dining Out",
   "Transportation",
-  "personal Care",
+  "Personal Care",
   "Education",
+  "Lifestyle",
 ];
 
 export const budgetThemes = [
@@ -54,12 +56,15 @@ export interface TransactionArray {
 
 export const category = [
   "All transactions",
+  "General",
   "Entertainment",
   "Bills",
   "Groceries",
   "Dining Out",
   "Transportation",
   "Personal Care",
+  "Education",
+  "Lifestyle",
 ];
 
 export const payments: Payment[] = [

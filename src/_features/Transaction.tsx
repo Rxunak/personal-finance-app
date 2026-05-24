@@ -1,28 +1,52 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { SearchBar } from "../components/searchBar";
 import { ComboboxCon } from "../components/comboboxCon";
 import { sortBy, category } from "../constants";
-import { columns } from "../app/transactions/columns";
+import { getTransactionColumns } from "../app/transactions/columns";
 import { DataTable } from "../components/data-table";
 import { SpinnerButton } from "../components/spinnerButton";
-import {
-  type Transaction as TransactionItem,
-  useFinanceData,
-} from "../../hooks/use-finance-data";
+import { type Transaction as TransactionItem } from "../../hooks/use-finance-data";
+import { useLocalFinanceData } from "../../hooks/use-local-finance-data";
 import { PaginationComponent } from "../components/pagination";
+import { Dialog, DialogContent, DialogTitle } from "../components/ui/dialog";
+import {
+  TransactionForm,
+  type TransactionFormValues,
+} from "../components/transaction-form";
+import { DeleteConfirmationDialog } from "../components/delete-confirmation-dialog";
 
 const Transaction = () => {
-  const { isPending, error, data } = useFinanceData();
+  const { isPending, error, data, upsertTransaction, deleteTransaction } =
+    useLocalFinanceData();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(8);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSortAction, setSelectedSortAction] = useState("");
   const [query, setQuery] = useState("");
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<TransactionItem | null>(null);
+  const [isTransactionDialogOpen, setIsTransactionDialogOpen] = useState(false);
+  const [transactionPendingDelete, setTransactionPendingDelete] =
+    useState<TransactionItem | null>(null);
 
   const transactions = useMemo(() => {
     return data?.transactions ?? [];
   }, [data]);
+
+  const columns = useMemo(
+    () =>
+      getTransactionColumns({
+        onEdit: (transaction) => {
+          setSelectedTransaction(transaction);
+          setIsTransactionDialogOpen(true);
+        },
+        onDelete: (transaction) => {
+          setTransactionPendingDelete(transaction);
+        },
+      }),
+    [],
+  );
 
   const actionedTransactions = useMemo(() => {
     let results = [...transactions];
@@ -80,7 +104,12 @@ const Transaction = () => {
     return results;
   }, [query, selectedCategory, transactions, selectedSortAction]);
 
-  const lastItemIndex = currentPage * itemsPerPage;
+  const totalPages = Math.max(
+    1,
+    Math.ceil(actionedTransactions.length / itemsPerPage),
+  );
+  const effectiveCurrentPage = Math.min(currentPage, totalPages);
+  const lastItemIndex = effectiveCurrentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
   const currentItems = actionedTransactions.slice(
     firstItemIndex,
@@ -88,30 +117,100 @@ const Transaction = () => {
   );
 
   const categoryFil = (items: string) => {
+    setCurrentPage(1);
     setSelectedCategory(items);
   };
 
   const sortByFil = (items: string) => {
+    setCurrentPage(1);
     setSelectedSortAction(items);
   };
 
-  const setQueryValue = (value: string) => {
-    setQuery(value);
+  const initialValues = useMemo<TransactionFormValues | undefined>(
+    () =>
+      selectedTransaction
+        ? {
+            name: selectedTransaction.name,
+            category: selectedTransaction.category,
+            amount: String(Math.abs(selectedTransaction.amount)),
+            date: selectedTransaction.date.slice(0, 10),
+            type: selectedTransaction.amount >= 0 ? "income" : "expense",
+          }
+        : undefined,
+    [selectedTransaction],
+  );
+
+  const handleTransactionSubmit = (formData: TransactionFormValues) => {
+    if (!selectedTransaction) {
+      return;
+    }
+
+    const numericAmount = Number(formData.amount);
+
+    upsertTransaction({
+      id: selectedTransaction.id,
+      avatar: selectedTransaction.avatar,
+      name: formData.name,
+      category: formData.category,
+      amount: formData.type === "income" ? numericAmount : -numericAmount,
+      date: new Date(`${formData.date}T12:00:00Z`).toISOString(),
+      recurring: selectedTransaction.recurring,
+      dueDate: selectedTransaction.dueDate ?? null,
+      status: selectedTransaction.status ?? null,
+      paidDate: selectedTransaction.paidDate ?? null,
+    });
   };
 
   if (isPending) return <SpinnerButton />;
 
   if (error) return "An error has occured: " + error.message;
+  if (!data) return null;
   return (
     <div className="bg-beige-100 pl-8 pr-8">
       <header className="text-3xl font-semibold pt-6 mb-8">Transactions</header>
+      <Dialog
+        open={isTransactionDialogOpen}
+        onOpenChange={(open) => {
+          setIsTransactionDialogOpen(open);
+          if (!open) {
+            setSelectedTransaction(null);
+          }
+        }}
+      >
+        <DialogContent className="w-full border-none bg-transparent p-0 shadow-none">
+          <DialogTitle className="sr-only">Edit Transaction</DialogTitle>
+          <TransactionForm
+            initialValues={initialValues}
+            onSubmit={handleTransactionSubmit}
+            onClose={() => setIsTransactionDialogOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
+      <DeleteConfirmationDialog
+        open={!!transactionPendingDelete}
+        onOpenChange={(open) => {
+          if (!open) {
+            setTransactionPendingDelete(null);
+          }
+        }}
+        itemName={transactionPendingDelete?.name ?? ""}
+        itemType="transaction"
+        onConfirm={() => {
+          if (transactionPendingDelete?.id) {
+            deleteTransaction(transactionPendingDelete.id);
+          }
+          setTransactionPendingDelete(null);
+        }}
+      />
       <section className="bg-white p-8 flex flex-col gap-7 h-185 rounded-2xl">
         <div className="flex justify-between">
           <div className="w-sm">
             <SearchBar
-              setQuery={setQuery}
+              setQuery={(value: string) => {
+                setCurrentPage(1);
+                setQuery(value);
+              }}
               query={query}
-              actionedTransactions={actionedTransactions}
             />
           </div>
           <div className="flex justify-end gap-10 w-xl ">
@@ -139,9 +238,9 @@ const Transaction = () => {
         </div>
         <div className="mt-auto">
           <PaginationComponent
-            totalItems={data.transactions.length}
+            totalItems={actionedTransactions.length}
             itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
+            currentPage={effectiveCurrentPage}
             setCurrentPage={setCurrentPage}
           />
         </div>

@@ -1,11 +1,11 @@
 "use client";
 
 import { type Transaction } from "@/hooks/use-finance-data";
+import Image from "next/image";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { CircleCheck } from "lucide-react";
 import { CircleAlert } from "lucide-react";
-import { ComboboxCon } from "@/src/components/comboboxCon";
 
 function getOrdinalSuffix(num: number) {
   if (num === 0) return "";
@@ -32,9 +32,11 @@ export const recurringColumns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-4 font-bold">
-          <img
+          <Image
             src={row.original.avatar}
             alt=""
+            width={40}
+            height={40}
             className="size-10 rounded-2xl"
           />
           {row.original.name}
@@ -47,7 +49,6 @@ export const recurringColumns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "date",
     cell: ({ row }) => {
-      console.log(row.original.status);
       const dayOfMonth = Number(format(new Date(row.original.date), "d"));
 
       return (

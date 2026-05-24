@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useFinanceData, type Pot } from "@/hooks/use-finance-data";
+import { type Pot } from "@/hooks/use-finance-data";
+import { useLocalFinanceData } from "@/hooks/use-local-finance-data";
 import { PotBalanceDialog } from "../components/pot-balance-dialog";
 import { DeleteConfirmationDialog } from "../components/delete-confirmation-dialog";
 import { PotForm, type PotFormValues } from "../components/pot-form";
@@ -11,7 +12,14 @@ import { SpinnerButton } from "../components/spinnerButton";
 import { ActionMenu } from "../components/action-menu";
 
 const Pots = () => {
-  const { isPending, error, data } = useFinanceData();
+  const {
+    isPending,
+    error,
+    data,
+    upsertPot,
+    deletePot,
+    updatePotTotal,
+  } = useLocalFinanceData();
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [isPotDialogOpen, setIsPotDialogOpen] = useState(false);
   const [selectedPot, setSelectedPot] = useState<Pot | null>(null);
@@ -53,9 +61,20 @@ const Pots = () => {
     [selectedPot],
   );
 
+  const handlePotSubmit = (formData: PotFormValues) => {
+    upsertPot({
+      id: selectedPot?.id,
+      name: formData.name,
+      target: Number(formData.target),
+      total: selectedPot?.total ?? 0,
+      theme: formData.theme,
+    });
+  };
+
   if (isPending) return <SpinnerButton />;
 
   if (error) return "An error has occured: " + error.message;
+  if (!data) return null;
 
   return (
     <div className="flex h-lvh flex-col bg-beige-100 px-8 pb-8">
@@ -79,6 +98,7 @@ const Pots = () => {
             mode={dialogMode}
             usedThemeColors={data.pots.map((pot) => pot.theme)}
             initialValues={initialValues}
+            onSubmit={handlePotSubmit}
             onClose={() => handleDialogChange(false)}
           />
         </DialogContent>
@@ -92,7 +112,12 @@ const Pots = () => {
         }}
         itemName={potPendingDelete?.name ?? ""}
         itemType="pot"
-        onConfirm={() => setPotPendingDelete(null)}
+        onConfirm={() => {
+          if (potPendingDelete?.id) {
+            deletePot(potPendingDelete.id);
+          }
+          setPotPendingDelete(null);
+        }}
       />
       <PotBalanceDialog
         open={!!potBalanceTarget}
@@ -103,11 +128,16 @@ const Pots = () => {
         }}
         mode={potBalanceMode}
         pot={potBalanceTarget}
+        onConfirmAmount={(amountDelta) => {
+          if (potBalanceTarget?.id) {
+            updatePotTotal(potBalanceTarget.id, amountDelta);
+          }
+        }}
       />
 
       <div className="flex-1 overflow-y-auto no-scrollbar">
         <main className="grid grid-cols-2 gap-5 pb-2">
-          {data.pots.map((pot: Pot, index: number) => {
+          {data.pots.map((pot: Pot) => {
             const percentageSaved = Math.min(
               (pot.total / pot.target) * 100,
               100,
@@ -115,7 +145,7 @@ const Pots = () => {
 
             return (
               <section
-                key={`${pot.name}-${index}`}
+                key={pot.id ?? `${pot.name}-${pot.theme}`}
                 className="rounded-2xl bg-white p-6"
               >
                 <div className="mb-5 flex items-center gap-3">

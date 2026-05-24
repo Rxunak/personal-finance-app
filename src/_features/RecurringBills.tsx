@@ -114,7 +114,6 @@ const RecurringBills = () => {
             <SearchBar
               setQuery={setQuery}
               query={query}
-              actionedTransactions={filteredRecurring}
             />
             <ComboboxCon options={sortBy} onSelect={sortByFil} width="100px" />
           </div>

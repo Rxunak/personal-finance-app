@@ -6,8 +6,8 @@ import { sortBy, category } from "../constants";
 import { getTransactionColumns } from "../app/transactions/columns";
 import { DataTable } from "../components/data-table";
 import { SpinnerButton } from "../components/spinnerButton";
-import { type Transaction as TransactionItem } from "../../hooks/use-finance-data";
-import { useLocalFinanceData } from "../../hooks/use-local-finance-data";
+import { type Transaction as TransactionItem } from "@/hooks/use-finance-data";
+import { useLocalFinanceData } from "@/hooks/use-local-finance-data";
 import { PaginationComponent } from "../components/pagination";
 import { Dialog, DialogContent, DialogTitle } from "../components/ui/dialog";
 import {

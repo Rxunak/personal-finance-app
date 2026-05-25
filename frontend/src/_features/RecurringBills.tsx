@@ -4,7 +4,10 @@ import React, { useMemo, useState } from "react";
 import { ReceiptPoundSterling } from "lucide-react";
 import { DataTable } from "../components/data-table";
 import { recurringColumns } from "../app/recurringBills/recurringColumns";
-import { type Transaction, useFinanceData } from "@/hooks/use-finance-data";
+import {
+  type Transaction,
+  useFinanceData,
+} from "@/hooks/use-finance-data";
 import { SpinnerButton } from "../components/spinnerButton";
 import { ComboboxCon } from "../components/comboboxCon";
 import { sortBy } from "../constants";
@@ -111,10 +114,7 @@ const RecurringBills = () => {
         </div>
         <div className="bg-white rounded-2xl p-8 h-180 w-3/5 overflow-auto no-scrollbar">
           <div className="flex justify-between mb-10">
-            <SearchBar
-              setQuery={setQuery}
-              query={query}
-            />
+            <SearchBar setQuery={setQuery} query={query} />
             <ComboboxCon options={sortBy} onSelect={sortByFil} width="100px" />
           </div>
 

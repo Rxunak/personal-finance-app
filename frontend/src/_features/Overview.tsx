@@ -9,7 +9,7 @@ import {
   type Pot,
   type Transaction,
   useFinanceData,
-} from "../../hooks/use-finance-data";
+} from "@/hooks/use-finance-data";
 import BudgetSummaryCard from "../components/budget-summary-card";
 import TransactionsCard from "../components/transactionsCard";
 

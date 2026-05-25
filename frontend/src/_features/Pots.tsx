@@ -12,14 +12,8 @@ import { SpinnerButton } from "../components/spinnerButton";
 import { ActionMenu } from "../components/action-menu";
 
 const Pots = () => {
-  const {
-    isPending,
-    error,
-    data,
-    upsertPot,
-    deletePot,
-    updatePotTotal,
-  } = useLocalFinanceData();
+  const { isPending, error, data, upsertPot, deletePot, updatePotTotal } =
+    useLocalFinanceData();
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [isPotDialogOpen, setIsPotDialogOpen] = useState(false);
   const [selectedPot, setSelectedPot] = useState<Pot | null>(null);

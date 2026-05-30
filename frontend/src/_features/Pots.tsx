@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { type Pot } from "@/hooks/use-finance-data";
-import { useLocalFinanceData } from "@/hooks/use-local-finance-data";
 import { PotBalanceDialog } from "../components/pot-balance-dialog";
 import { DeleteConfirmationDialog } from "../components/delete-confirmation-dialog";
 import { PotForm, type PotFormValues } from "../components/pot-form";
@@ -10,10 +9,21 @@ import { Dialog, DialogContent, DialogTitle } from "../components/ui/dialog";
 import { Progress } from "../components/ui/progress";
 import { SpinnerButton } from "../components/spinnerButton";
 import { ActionMenu } from "../components/action-menu";
+import { useOverviewData } from "@/hooks/use-overview-data";
+import {
+  useCreatePot,
+  useDeletePot,
+  useUpdatePot,
+  useUpdatePotBalance,
+} from "@/hooks/use-pots-data";
+import { toast } from "sonner";
 
 const Pots = () => {
-  const { isPending, error, data, upsertPot, deletePot, updatePotTotal } =
-    useLocalFinanceData();
+  const { isPending, error, data } = useOverviewData();
+  const createPot = useCreatePot();
+  const updatePot = useUpdatePot();
+  const deletePot = useDeletePot();
+  const updatePotBalance = useUpdatePotBalance();
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [isPotDialogOpen, setIsPotDialogOpen] = useState(false);
   const [selectedPot, setSelectedPot] = useState<Pot | null>(null);
@@ -55,14 +65,23 @@ const Pots = () => {
     [selectedPot],
   );
 
-  const handlePotSubmit = (formData: PotFormValues) => {
-    upsertPot({
-      id: selectedPot?.id,
+  const handlePotSubmit = async (formData: PotFormValues) => {
+    const payload = {
       name: formData.name,
       target: Number(formData.target),
       total: selectedPot?.total ?? 0,
       theme: formData.theme,
-    });
+    };
+
+    if (dialogMode === "edit" && selectedPot?.id) {
+      await updatePot.mutateAsync({
+        id: selectedPot.id,
+        ...payload,
+      });
+      return;
+    }
+
+    await createPot.mutateAsync(payload);
   };
 
   if (isPending) return <SpinnerButton />;
@@ -106,11 +125,20 @@ const Pots = () => {
         }}
         itemName={potPendingDelete?.name ?? ""}
         itemType="pot"
-        onConfirm={() => {
+        onConfirm={async () => {
           if (potPendingDelete?.id) {
-            deletePot(potPendingDelete.id);
+            try {
+              await deletePot.mutateAsync(potPendingDelete.id);
+              setPotPendingDelete(null);
+            } catch (error) {
+              toast("Failed to delete pot.", {
+                description:
+                  error instanceof Error ? error.message : "Please try again.",
+                position: "bottom-right",
+              });
+              throw error;
+            }
           }
-          setPotPendingDelete(null);
         }}
       />
       <PotBalanceDialog
@@ -122,9 +150,12 @@ const Pots = () => {
         }}
         mode={potBalanceMode}
         pot={potBalanceTarget}
-        onConfirmAmount={(amountDelta) => {
+        onConfirmAmount={async (amountDelta) => {
           if (potBalanceTarget?.id) {
-            updatePotTotal(potBalanceTarget.id, amountDelta);
+            await updatePotBalance.mutateAsync({
+              id: potBalanceTarget.id,
+              amountDelta,
+            });
           }
         }}
       />

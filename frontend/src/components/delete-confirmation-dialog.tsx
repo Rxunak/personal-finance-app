@@ -18,7 +18,7 @@ type DeleteConfirmationDialogProps = {
   description?: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  onConfirm?: () => void;
+  onConfirm?: () => void | Promise<void>;
 };
 
 export function DeleteConfirmationDialog({
@@ -35,8 +35,8 @@ export function DeleteConfirmationDialog({
     description ??
     `Are you sure you want to delete this ${itemType}? This action cannot be reversed, and all the data inside it will be removed forever.`;
 
-  const handleConfirm = () => {
-    onConfirm?.();
+  const handleConfirm = async () => {
+    await onConfirm?.();
     onOpenChange(false);
   };
 

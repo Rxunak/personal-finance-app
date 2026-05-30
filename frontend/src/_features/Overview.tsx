@@ -5,11 +5,8 @@ import { useRouter } from "next/navigation";
 import { addDays, isAfter } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { SpinnerButton } from "../components/spinnerButton";
-import {
-  type Pot,
-  type Transaction,
-  useFinanceData,
-} from "@/hooks/use-finance-data";
+import { type Pot, type Transaction } from "@/hooks/use-finance-data";
+import { useOverviewData } from "@/hooks/use-overview-data";
 import BudgetSummaryCard from "../components/budget-summary-card";
 import TransactionsCard from "../components/transactionsCard";
 
@@ -17,7 +14,7 @@ const Overview = () => {
   const [recurringArray, setRecurringArray] = useState<Transaction[]>([]);
   const router = useRouter();
 
-  const { isPending, error, data } = useFinanceData();
+  const { isPending, error, data } = useOverviewData();
 
   const filteredTransactions = useMemo(
     () => data?.transactions?.filter((item) => item.recurring) ?? [],

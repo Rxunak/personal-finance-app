@@ -7,7 +7,6 @@ import { getTransactionColumns } from "../app/transactions/columns";
 import { DataTable } from "../components/data-table";
 import { SpinnerButton } from "../components/spinnerButton";
 import { type Transaction as TransactionItem } from "@/hooks/use-finance-data";
-import { useLocalFinanceData } from "@/hooks/use-local-finance-data";
 import { PaginationComponent } from "../components/pagination";
 import { Dialog, DialogContent, DialogTitle } from "../components/ui/dialog";
 import {
@@ -15,10 +14,17 @@ import {
   type TransactionFormValues,
 } from "../components/transaction-form";
 import { DeleteConfirmationDialog } from "../components/delete-confirmation-dialog";
+import {
+  useDeleteTransaction,
+  useTransactionsData,
+  useUpdateTransaction,
+} from "@/hooks/use-transactions-data";
+import { toast } from "sonner";
 
 const Transaction = () => {
-  const { isPending, error, data, upsertTransaction, deleteTransaction } =
-    useLocalFinanceData();
+  const { isPending, error, data } = useTransactionsData();
+  const updateTransaction = useUpdateTransaction();
+  const deleteTransaction = useDeleteTransaction();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(8);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -31,7 +37,7 @@ const Transaction = () => {
     useState<TransactionItem | null>(null);
 
   const transactions = useMemo(() => {
-    return data?.transactions ?? [];
+    return data ?? [];
   }, [data]);
 
   const columns = useMemo(
@@ -140,24 +146,19 @@ const Transaction = () => {
     [selectedTransaction],
   );
 
-  const handleTransactionSubmit = (formData: TransactionFormValues) => {
-    if (!selectedTransaction) {
+  const handleTransactionSubmit = async (formData: TransactionFormValues) => {
+    if (!selectedTransaction?.id) {
       return;
     }
 
     const numericAmount = Number(formData.amount);
 
-    upsertTransaction({
+    await updateTransaction.mutateAsync({
       id: selectedTransaction.id,
-      avatar: selectedTransaction.avatar,
       name: formData.name,
       category: formData.category,
       amount: formData.type === "income" ? numericAmount : -numericAmount,
       date: new Date(`${formData.date}T12:00:00Z`).toISOString(),
-      recurring: selectedTransaction.recurring,
-      dueDate: selectedTransaction.dueDate ?? null,
-      status: selectedTransaction.status ?? null,
-      paidDate: selectedTransaction.paidDate ?? null,
     });
   };
 
@@ -195,11 +196,20 @@ const Transaction = () => {
         }}
         itemName={transactionPendingDelete?.name ?? ""}
         itemType="transaction"
-        onConfirm={() => {
+        onConfirm={async () => {
           if (transactionPendingDelete?.id) {
-            deleteTransaction(transactionPendingDelete.id);
+            try {
+              await deleteTransaction.mutateAsync(transactionPendingDelete.id);
+              setTransactionPendingDelete(null);
+            } catch (error) {
+              toast("Failed to delete transaction.", {
+                description:
+                  error instanceof Error ? error.message : "Please try again.",
+                position: "bottom-right",
+              });
+              throw error;
+            }
           }
-          setTransactionPendingDelete(null);
         }}
       />
       <section className="bg-white p-8 flex flex-col gap-7 h-185 rounded-2xl">

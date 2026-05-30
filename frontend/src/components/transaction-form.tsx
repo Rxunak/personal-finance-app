@@ -36,7 +36,7 @@ export type TransactionFormValues = z.infer<typeof transactionFormSchema>;
 
 type TransactionFormProps = {
   initialValues?: TransactionFormValues;
-  onSubmit?: (data: TransactionFormValues) => void;
+  onSubmit?: (data: TransactionFormValues) => void | Promise<void>;
   onClose?: () => void;
 };
 
@@ -69,17 +69,22 @@ export function TransactionForm({
     form.reset(resolvedInitialValues);
   }, [form, resolvedInitialValues]);
 
-  const handleSubmit = (data: TransactionFormValues) => {
-    onSubmit?.(data);
-    toast("Transaction updated with the following values:", {
-      description: (
-        <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-    });
-    onClose?.();
+  const handleSubmit = async (data: TransactionFormValues) => {
+    try {
+      await onSubmit?.(data);
+      toast("Transaction updated successfully.", {
+        position: "bottom-right",
+      });
+      onClose?.();
+    } catch (error) {
+      const description =
+        error instanceof Error ? error.message : "Please try again.";
+
+      toast("Failed to update transaction.", {
+        description,
+        position: "bottom-right",
+      });
+    }
   };
 
   return (

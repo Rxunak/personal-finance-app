@@ -4,7 +4,6 @@ import {
   type Budget as BudgetItem,
   type Transaction,
 } from "@/hooks/use-finance-data";
-import { useLocalFinanceData } from "@/hooks/use-local-finance-data";
 import { SpinnerButton } from "../components/spinnerButton";
 import BudgetSummaryCard from "../components/budget-summary-card";
 import { ProgressWithLabel } from "../components/progressBar";
@@ -13,10 +12,19 @@ import { BudgetForm, type BudgetFormValues } from "../components/form";
 import { DeleteConfirmationDialog } from "../components/delete-confirmation-dialog";
 import { Dialog, DialogContent, DialogTitle } from "../components/ui/dialog";
 import { ActionMenu } from "../components/action-menu";
+import { useOverviewData } from "@/hooks/use-overview-data";
+import {
+  useCreateBudget,
+  useDeleteBudget,
+  useUpdateBudget,
+} from "@/hooks/use-budgets-data";
+import { toast } from "sonner";
 
 const Budget = () => {
-  const { isPending, error, data, upsertBudget, deleteBudget } =
-    useLocalFinanceData();
+  const { isPending, error, data } = useOverviewData();
+  const createBudget = useCreateBudget();
+  const updateBudget = useUpdateBudget();
+  const deleteBudget = useDeleteBudget();
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [isBudgetDialogOpen, setIsBudgetDialogOpen] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState<BudgetItem | null>(null);
@@ -47,14 +55,22 @@ const Budget = () => {
     }
   };
 
-  const handleBudgetSubmit = (formData: BudgetFormValues) => {
-    const normalizedBudget: BudgetItem = {
-      id: selectedBudget?.id,
+  const handleBudgetSubmit = async (formData: BudgetFormValues) => {
+    const payload = {
       category: formData.title,
       maximum: Number(formData.maximumSpend),
       theme: formData.theme,
     };
-    upsertBudget(normalizedBudget);
+
+    if (dialogMode === "edit" && selectedBudget?.id) {
+      await updateBudget.mutateAsync({
+        id: selectedBudget.id,
+        ...payload,
+      });
+      return;
+    }
+
+    await createBudget.mutateAsync(payload);
   };
 
   const initialValues = useMemo<BudgetFormValues | undefined>(
@@ -111,11 +127,20 @@ const Budget = () => {
         }}
         itemName={budgetPendingDelete?.category ?? ""}
         itemType="budget"
-        onConfirm={() => {
+        onConfirm={async () => {
           if (budgetPendingDelete?.id) {
-            deleteBudget(budgetPendingDelete.id);
+            try {
+              await deleteBudget.mutateAsync(budgetPendingDelete.id);
+              setBudgetPendingDelete(null);
+            } catch (error) {
+              toast("Failed to delete budget.", {
+                description:
+                  error instanceof Error ? error.message : "Please try again.",
+                position: "bottom-right",
+              });
+              throw error;
+            }
           }
-          setBudgetPendingDelete(null);
         }}
       />
       <main className="flex gap-5  h-9/10">

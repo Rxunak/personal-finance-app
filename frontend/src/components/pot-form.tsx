@@ -57,7 +57,7 @@ type PotFormProps = {
   mode: "create" | "edit";
   usedThemeColors: string[];
   initialValues?: PotFormValues;
-  onSubmit?: (data: PotFormValues) => void;
+  onSubmit?: (data: PotFormValues) => void | Promise<void>;
   onClose?: () => void;
 };
 
@@ -97,28 +97,20 @@ export function PotForm({
     form.reset(resolvedInitialValues);
   }, [form, resolvedInitialValues]);
 
-  function handleSubmit(data: PotFormValues) {
-    onSubmit?.(data);
-    toast(
-      mode === "edit"
-        ? "Pot updated with the following values:"
-        : "You submitted the following values:",
-      {
-        description: (
-          <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-            <code>{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
+  async function handleSubmit(data: PotFormValues) {
+    try {
+      await onSubmit?.(data);
+      toast(mode === "edit" ? "Pot updated successfully." : "Pot created successfully.", {
         position: "bottom-right",
-        classNames: {
-          content: "flex flex-col gap-2",
-        },
-        style: {
-          "--border-radius": "calc(var(--radius)  + 4px)",
-        } as React.CSSProperties,
-      },
-    );
-    onClose?.();
+      });
+      onClose?.();
+    } catch (error) {
+      toast(`Failed to ${mode === "edit" ? "update" : "create"} pot.`, {
+        description:
+          error instanceof Error ? error.message : "Please try again.",
+        position: "bottom-right",
+      });
+    }
   }
 
   return (

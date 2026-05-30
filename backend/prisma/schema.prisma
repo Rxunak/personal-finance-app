@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  email String @unique
+  name String
+  password String
+  create_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  transactions Transaction[]
+  budgets Budget[]
+  pots Pot[]
+
+  @@map("users")
+  @@index([name], name: "idx_name")
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+  userId Int
+  name String
+  avatar String
+  category String
+  amount Float
+  date DateTime
+  recurring Boolean @default(false)
+  dueDate DateTime?
+  status String?
+  paidDate DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+  @@index([userId, date], name: "idx_transactions_user_date")
+}
+
+model Budget {
+  id Int @id @default(autoincrement())
+  userId Int
+  category String
+  maximum Float
+  theme String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("budgets")
+  @@index([userId], name: "idx_budgets_user_id")
+}
+
+model Pot {
+  id Int @id @default(autoincrement())
+  userId Int
+  name String
+  target Float
+  total Float
+  theme String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("pots")
+  @@index([userId], name: "idx_pots_user_id")
+}

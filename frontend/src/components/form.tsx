@@ -59,7 +59,7 @@ type BudgetFormProps = {
   mode: "create" | "edit";
   usedThemeColors: string[];
   initialValues?: BudgetFormValues;
-  onSubmit?: (data: BudgetFormValues) => void;
+  onSubmit?: (data: BudgetFormValues) => void | Promise<void>;
   onClose?: () => void;
 };
 
@@ -98,29 +98,20 @@ export function BudgetForm({
     form.reset(resolvedInitialValues);
   }, [form, resolvedInitialValues]);
 
-  function handleSubmit(data: BudgetFormValues) {
-    console.log(data);
-    onSubmit?.(data);
-    toast(
-      mode === "edit"
-        ? "Budget updated with the following values:"
-        : "You submitted the following values:",
-      {
-        description: (
-          <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-            <code>{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
+  async function handleSubmit(data: BudgetFormValues) {
+    try {
+      await onSubmit?.(data);
+      toast(mode === "edit" ? "Budget updated successfully." : "Budget created successfully.", {
         position: "bottom-right",
-        classNames: {
-          content: "flex flex-col gap-2",
-        },
-        style: {
-          "--border-radius": "calc(var(--radius)  + 4px)",
-        } as React.CSSProperties,
-      },
-    );
-    onClose?.();
+      });
+      onClose?.();
+    } catch (error) {
+      toast(`Failed to ${mode === "edit" ? "update" : "create"} budget.`, {
+        description:
+          error instanceof Error ? error.message : "Please try again.",
+        position: "bottom-right",
+      });
+    }
   }
 
   return (

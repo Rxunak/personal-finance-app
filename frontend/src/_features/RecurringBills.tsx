@@ -2,21 +2,20 @@
 
 import React, { useMemo, useState } from "react";
 import { ReceiptPoundSterling } from "lucide-react";
+import { addDays, isAfter } from "date-fns";
 import { DataTable } from "../components/data-table";
 import { recurringColumns } from "../app/recurringBills/recurringColumns";
-import {
-  type Transaction,
-  useFinanceData,
-} from "@/hooks/use-finance-data";
+import { type Transaction } from "@/hooks/use-finance-data";
 import { SpinnerButton } from "../components/spinnerButton";
 import { ComboboxCon } from "../components/comboboxCon";
 import { sortBy } from "../constants";
 import { SearchBar } from "../components/searchBar";
+import { useOverviewData } from "@/hooks/use-overview-data";
 
 const RecurringBills = () => {
   const [selectedSortAction, setSelectedSortAction] = useState("");
   const [query, setQuery] = useState("");
-  const { isPending, error, data } = useFinanceData();
+  const { isPending, error, data } = useOverviewData();
 
   const transactions = useMemo(() => {
     return data?.transactions ?? [];
@@ -75,6 +74,39 @@ const RecurringBills = () => {
     return newResults;
   }, [query, selectedSortAction, transactions]);
 
+  const recurringSummary = useMemo(() => {
+    const recurringTransactions = transactions.filter(
+      (item) => item.recurring === true,
+    );
+
+    const paid = recurringTransactions.filter((item) => item.status === "paid");
+    const upcoming = recurringTransactions.filter(
+      (item) =>
+        item.status !== "paid" &&
+        item.dueDate &&
+        isAfter(new Date(item.dueDate), new Date()),
+    );
+    const dueSoon = recurringTransactions.filter(
+      (item) =>
+        item.status !== "paid" &&
+        item.dueDate &&
+        isAfter(new Date(item.dueDate), addDays(new Date(), 7)),
+    );
+
+    const sumAmounts = (items: Transaction[]) =>
+      items.reduce((sum, item) => sum + Math.abs(Number(item.amount)), 0);
+
+    return {
+      totalBills: sumAmounts(recurringTransactions),
+      paidCount: paid.length,
+      paidTotal: sumAmounts(paid),
+      upcomingCount: upcoming.length,
+      upcomingTotal: sumAmounts(upcoming),
+      dueSoonCount: dueSoon.length,
+      dueSoonTotal: sumAmounts(dueSoon),
+    };
+  }, [transactions]);
+
   const sortByFil = (items: string) => {
     setSelectedSortAction(items);
   };
@@ -93,22 +125,48 @@ const RecurringBills = () => {
             <ReceiptPoundSterling className="text-white size-12" />
             <div>
               <h1 className="text-white mb-4">Total Bills</h1>
-              <span className="text-white font-bold text-5xl">£384.98</span>
+              <span className="text-white font-bold text-5xl">
+                {recurringSummary.totalBills.toLocaleString("en-GB", {
+                  style: "currency",
+                  currency: "GBP",
+                })}
+              </span>
             </div>
           </div>
           <div className="bg-white rounded-2xl p-8">
             <h1 className="text-2xl font-bold">Summary</h1>
             <div className="flex justify-between border-b pt-6 pb-6">
               <h1 className="text-gray-500">Paid Biils</h1>
-              <h1 className="font-bold">4 ($190.00)</h1>
+              <h1 className="font-bold">
+                {recurringSummary.paidCount} (
+                {recurringSummary.paidTotal.toLocaleString("en-GB", {
+                  style: "currency",
+                  currency: "GBP",
+                })}
+                )
+              </h1>
             </div>
             <div className="flex justify-between border-b pt-6 pb-6">
               <h1 className="text-gray-500 ">Total Uocoming</h1>
-              <h1 className="font-bold">4 ($190.00)</h1>
+              <h1 className="font-bold">
+                {recurringSummary.upcomingCount} (
+                {recurringSummary.upcomingTotal.toLocaleString("en-GB", {
+                  style: "currency",
+                  currency: "GBP",
+                })}
+                )
+              </h1>
             </div>
             <div className="flex justify-between pt-6">
               <h1 className="text-red">Due Soon</h1>
-              <h1 className="text-red font-bold">4 ($190.00)</h1>
+              <h1 className="text-red font-bold">
+                {recurringSummary.dueSoonCount} (
+                {recurringSummary.dueSoonTotal.toLocaleString("en-GB", {
+                  style: "currency",
+                  currency: "GBP",
+                })}
+                )
+              </h1>
             </div>
           </div>
         </div>

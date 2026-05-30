@@ -17,7 +17,7 @@ type PotBalanceDialogProps = {
     target: number;
     theme: string;
   } | null;
-  onConfirmAmount?: (amountDelta: number) => void;
+  onConfirmAmount?: (amountDelta: number) => void | Promise<void>;
 };
 
 function formatCurrency(value: number) {
@@ -59,32 +59,25 @@ export function PotBalanceDialog({
 
   const placeholder = mode === "add" ? "400" : "20";
 
-  const handleConfirm = () => {
-    onConfirmAmount?.(mode === "add" ? numericAmount : -numericAmount);
-    toast(
-      mode === "add"
-        ? "Pot updated with the following addition:"
-        : "Pot updated with the following withdrawal:",
-      {
-        description: (
-          <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-            <code>
-              {JSON.stringify(
-                {
-                  pot: pot?.name ?? "",
-                  amount,
-                  newTotal: nextTotal,
-                },
-                null,
-                2,
-              )}
-            </code>
-          </pre>
-        ),
+  const handleConfirm = async () => {
+    try {
+      await onConfirmAmount?.(mode === "add" ? numericAmount : -numericAmount);
+      toast(
+        mode === "add"
+          ? "Pot balance updated successfully."
+          : "Pot withdrawal saved successfully.",
+        {
+          position: "bottom-right",
+        },
+      );
+      onOpenChange(false);
+    } catch (error) {
+      toast("Failed to update pot balance.", {
+        description:
+          error instanceof Error ? error.message : "Please try again.",
         position: "bottom-right",
-      },
-    );
-    onOpenChange(false);
+      });
+    }
   };
 
   const handleOpenChange = (nextOpen: boolean) => {

@@ -92,8 +92,8 @@ const Budget = () => {
 
   const budgetsToRender = data.budgets;
   return (
-    <div className="h-lvh bg-beige-100 pl-8 pr-8 pb-8 text-foreground dark:bg-background">
-      <div className="flex flex-row justify-between pt-6 mb-8">
+    <div className="min-h-lvh bg-beige-100 pl-8 pr-8 pb-8 text-foreground dark:bg-background">
+      <div className="mb-8 flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
         <header className="text-3xl font-semibold flex items-center">
           Budgets
         </header>
@@ -143,12 +143,12 @@ const Budget = () => {
           }
         }}
       />
-      <main className="flex gap-5  h-9/10">
-        <div className="w-2/5 h-full">
+      <main className="grid gap-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <div className="xl:sticky xl:top-6 self-start">
           <BudgetSummaryCard budgets={budgetsToRender} flexCol={"flex-col"} />
         </div>
 
-        <div className="w-3/5 h-full overflow-auto no-scrollbar">
+        <div className="min-w-0">
           {budgetsToRender.map((budget: BudgetItem) => {
             const budgetTransactions = data.transactions.filter(
               (item: Transaction) => item.category === budget.category,
@@ -194,8 +194,8 @@ const Budget = () => {
                     barValue={Math.abs(sum)}
                   />
                 </div>
-                <div className="flex">
-                  <div className="w-1/2 h-15 flex gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row">
+                  <div className="flex h-15 gap-4 sm:w-1/2">
                     <span
                       className="rounded-2xl w-1.5 h-full"
                       style={{ background: budget.theme }}
@@ -210,7 +210,7 @@ const Budget = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="w-1/2 h-15 flex gap-4">
+                  <div className="flex h-15 gap-4 sm:w-1/2">
                     <span className="bg-grey-100 rounded-2xl w-1.5 h-full" />
                     <div className="flex flex-col justify-between">
                       <p className="text-muted-foreground">Remaining</p>

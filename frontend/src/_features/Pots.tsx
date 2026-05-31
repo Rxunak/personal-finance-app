@@ -90,8 +90,8 @@ const Pots = () => {
   if (!data) return null;
 
   return (
-    <div className="flex h-lvh flex-col bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
-      <div className="mb-8 flex flex-row justify-between pt-6">
+    <div className="flex min-h-lvh flex-col bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
+      <div className="mb-8 flex flex-col gap-4 pt-6 sm:flex-row sm:items-center sm:justify-between">
         <header className="flex items-center text-3xl font-semibold">
           Pots
         </header>
@@ -159,9 +159,8 @@ const Pots = () => {
           }
         }}
       />
-
-      <div className="flex-1 overflow-y-auto no-scrollbar">
-        <main className="grid grid-cols-2 gap-5 pb-2">
+      <div>
+        <main className="grid gap-5 pb-2 md:grid-cols-2">
           {data.pots.map((pot: Pot) => {
             const percentageSaved = Math.min(
               (pot.total / pot.target) * 100,

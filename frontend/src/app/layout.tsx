@@ -21,7 +21,7 @@ export default function RootLayout({
         <QueryProvider>
           <SidebarProvider>
             <AppSidebar />
-            <SidebarInset className="w-full h-full overflow-hidden">
+            <SidebarInset className="min-h-svh w-full overflow-x-hidden overflow-y-auto">
               {children}
             </SidebarInset>
           </SidebarProvider>

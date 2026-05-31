@@ -167,7 +167,7 @@ const Transaction = () => {
   if (error) return "An error has occured: " + error.message;
   if (!data) return null;
   return (
-    <div className="bg-beige-100 pl-8 pr-8 text-foreground dark:bg-background">
+    <div className="bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
       <header className="mb-8 pt-6 text-3xl font-semibold">Transactions</header>
       <Dialog
         open={isTransactionDialogOpen}
@@ -212,9 +212,9 @@ const Transaction = () => {
           }
         }}
       />
-      <section className="bg-card text-card-foreground flex h-185 flex-col gap-7 rounded-2xl p-8">
-        <div className="flex justify-between">
-          <div className="w-sm">
+      <section className="bg-card text-card-foreground flex flex-col gap-7 rounded-2xl p-8">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+          <div className="w-full max-w-sm">
             <SearchBar
               setQuery={(value: string) => {
                 setCurrentPage(1);
@@ -223,7 +223,7 @@ const Transaction = () => {
               query={query}
             />
           </div>
-          <div className="flex justify-end gap-10 w-xl ">
+          <div className="flex flex-col gap-4 sm:flex-row sm:justify-end sm:gap-6 xl:w-auto">
             <div className="flex items-center gap-1.5">
               <p className="text-base text-muted-foreground">Sort by</p>{" "}
               <ComboboxCon
@@ -243,10 +243,10 @@ const Transaction = () => {
             </div>
           </div>
         </div>
-        <div className="h-auto overflow-scroll no-scrollbar">
+        <div className="overflow-x-auto">
           <DataTable columns={columns} data={currentItems} />
         </div>
-        <div className="mt-auto">
+        <div>
           <PaginationComponent
             totalItems={actionedTransactions.length}
             itemsPerPage={itemsPerPage}

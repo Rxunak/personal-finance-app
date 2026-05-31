@@ -117,8 +117,8 @@ const RecurringBills = () => {
     <div className="flex min-h-lvh flex-col gap-7 bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
       <div className="pt-6 text-3xl font-semibold">Recurring Bills</div>
 
-      <div className="flex gap-5">
-        <div className="h-full w-2/5 flex flex-col gap-10">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+        <div className="flex flex-col gap-5 xl:gap-10">
           <div className="bg-grey-900 rounded-xl p-8 flex flex-col gap-12 text-white dark:bg-white dark:text-grey-900">
             <ReceiptPoundSterling className="size-12" />
             <div>
@@ -168,13 +168,13 @@ const RecurringBills = () => {
             </div>
           </div>
         </div>
-        <div className="bg-card text-card-foreground h-180 w-3/5 overflow-auto rounded-2xl p-8 no-scrollbar">
-          <div className="flex justify-between mb-10">
+        <div className="min-w-0 rounded-2xl bg-card p-8 text-card-foreground">
+          <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <SearchBar setQuery={setQuery} query={query} />
             <ComboboxCon options={sortBy} onSelect={sortByFil} width="100px" />
           </div>
 
-          <div>
+          <div className="overflow-x-auto">
             <DataTable columns={recurringColumns} data={filteredRecurring} />
           </div>
         </div>

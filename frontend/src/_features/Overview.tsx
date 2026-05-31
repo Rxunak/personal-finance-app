@@ -62,7 +62,7 @@ const Overview = () => {
     data.pots.find((item) => item.name === "Savings") ?? data.pots[0];
 
   return (
-    <div className="flex h-lvh flex-col gap-7 bg-beige-100 pl-8 pr-8 text-foreground dark:bg-background">
+    <div className="flex min-h-lvh flex-col gap-7 bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
       <div className="pt-6 text-3xl font-semibold">Dashboard</div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="h-25 rounded-2xl bg-grey-900 flex flex-col justify-center p-7 gap-3 text-white">
@@ -96,8 +96,8 @@ const Overview = () => {
         </div>
       </div>
       {aiPreview.length ? <AiPreviewCard insights={aiPreview} /> : null}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 h-full">
-        <div className="space-y-4 lg:col-span-7 overflow-auto h-5/6 no-scrollbar">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+        <div className="space-y-4 lg:col-span-7">
           <section className="rounded-2xl bg-card p-8 text-card-foreground">
             <div className="flex justify-between mb-5">
               <h1 className="text-xl font-bold">Pots</h1>
@@ -109,8 +109,8 @@ const Overview = () => {
                 See Details <IconCaret />
               </button>
             </div>
-            <div className="flex justify-start gap-10 h-30">
-              <div className="bg-beige-100 dark:bg-secondary min-w-70 h-full rounded-xl flex gap-5 items-center pl-5 grow-5">
+            <div className="flex flex-col justify-start gap-6 lg:flex-row lg:gap-10">
+              <div className="bg-beige-100 dark:bg-secondary flex min-h-30 min-w-70 grow-5 items-center gap-5 rounded-xl pl-5">
                 <Image
                   src="/images/icon-pot.svg"
                   width={25}
@@ -127,7 +127,7 @@ const Overview = () => {
                   </p>
                 </span>
               </div>
-              <div className="grid grid-cols-2 auto-rows-fr gap-4 h-full grow-3">
+              <div className="grid grow-3 grid-cols-1 gap-4 sm:grid-cols-2 auto-rows-fr">
                 {data.pots.slice(0, 4).map((pot: Pot, index: number) => (
                   <span key={index} className="flex h-full">
                     <span
@@ -155,7 +155,7 @@ const Overview = () => {
             sliceAmount={5}
           />
         </div>
-        <div className="space-y-4 lg:col-span-5 h-5/6 overflow-auto no-scrollbar">
+        <div className="space-y-4 lg:col-span-5">
           <BudgetSummaryCard
             budgets={data.budgets}
             onAction={() => router.push("/budgets")}
@@ -172,7 +172,7 @@ const Overview = () => {
                 See Details <IconCaret />
               </button>
             </div>
-            <div className="px-6 pb-6 flex flex-col gap-2.5 h-full overflow-y-auto">
+            <div className="flex flex-col gap-2.5 px-6 pb-6">
               <div className="shrink-0 bg-beige-100 dark:bg-secondary flex h-15 items-center justify-between rounded-xl border-l-[5px] border-green px-6 text-sm text-muted-foreground">
                 <p>Paid Bills</p>
                 <p className="font-bold text-foreground">

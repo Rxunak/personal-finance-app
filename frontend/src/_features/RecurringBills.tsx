@@ -2,7 +2,6 @@
 
 import React, { useMemo, useState } from "react";
 import { ReceiptPoundSterling } from "lucide-react";
-import { addDays, isAfter } from "date-fns";
 import { DataTable } from "../components/data-table";
 import { recurringColumns } from "../app/recurringBills/recurringColumns";
 import { type Transaction } from "@/hooks/use-finance-data";
@@ -115,8 +114,8 @@ const RecurringBills = () => {
   if (error) return "An error has occured: " + error.message;
 
   return (
-    <div className="pl-8 pr-8 flex flex-col gap-7 bg-beige-100 h-lvh">
-      <div className="text-3xl font-semibold pt-6">Recurring Biils</div>
+    <div className="bg-beige-100 px-8 pb-8 flex min-h-lvh flex-col gap-7">
+      <div className="text-3xl font-semibold pt-6">Recurring Bills</div>
 
       <div className="flex gap-5">
         <div className="h-full w-2/5 flex flex-col gap-10">

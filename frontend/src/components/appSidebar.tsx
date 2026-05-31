@@ -18,6 +18,7 @@ import IconNavOverview from "../icons/icon-nav-overview.svg";
 import IconNavPots from "../icons/icon-nav-pots.svg";
 import IconNavRecurringBills from "../icons/icon-nav-recurring-bills.svg";
 import IconNavTransactions from "../icons/icon-nav-transactions.svg";
+import { Sparkles } from "lucide-react";
 export function AppSidebar() {
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
@@ -93,6 +94,19 @@ export function AppSidebar() {
           <Link href="/recurringBills" className="flex gap-5 items-center">
             <IconNavRecurringBills className="text-gray-400 group-hover/recurring-bills:text-green group-data-[active=true]/recurring-bills:text-green transition-colors" />
             {!isCollapsed ? "Recurring bills" : ""}
+          </Link>
+        </SidebarMenuButton>
+        <SidebarMenuButton
+          className={
+            isCollapsed
+              ? "group/summarise-statements p-3 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green w-10"
+              : "group/summarise-statements p-6 data-[active=true]:bg-white data-[active=true]:text-black data-[active=true]:border-l-4 border-green"
+          }
+          isActive={pathname === "/summariseStatements"}
+        >
+          <Link href="/summariseStatements" className="flex gap-5 items-center">
+            <Sparkles className="size-4 text-gray-400 group-hover/summarise-statements:text-green group-data-[active=true]/summarise-statements:text-green transition-colors" />
+            {!isCollapsed ? "Summarise Statements" : ""}
           </Link>
         </SidebarMenuButton>
       </SidebarMenu>

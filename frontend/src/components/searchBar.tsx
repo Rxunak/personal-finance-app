@@ -14,7 +14,7 @@ export function SearchBar({ setQuery, query }: SearchBarProps) {
         value={query}
         onValueChange={setQuery}
         placeholder={"Search transactions"}
-        className="text-black text-base"
+        className="text-base text-foreground"
       />
     </Command>
   );

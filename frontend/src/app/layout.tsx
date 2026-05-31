@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-beige-100">
+      <body className="bg-background text-foreground">
         <QueryProvider>
           <SidebarProvider>
             <AppSidebar />

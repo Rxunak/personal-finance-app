@@ -90,13 +90,13 @@ const Pots = () => {
   if (!data) return null;
 
   return (
-    <div className="flex h-lvh flex-col bg-beige-100 px-8 pb-8">
+    <div className="flex h-lvh flex-col bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
       <div className="mb-8 flex flex-row justify-between pt-6">
         <header className="flex items-center text-3xl font-semibold">
           Pots
         </header>
         <button
-          className="flex h-12 w-40 cursor-pointer items-center justify-center rounded-md bg-black text-sm text-white"
+          className="flex h-12 w-40 cursor-pointer items-center justify-center rounded-md bg-grey-900 text-sm text-white dark:bg-white dark:text-grey-900"
           onClick={openCreateDialog}
         >
           + Add New Pot
@@ -171,7 +171,7 @@ const Pots = () => {
             return (
               <section
                 key={pot.id ?? `${pot.name}-${pot.theme}`}
-                className="rounded-2xl bg-white p-6"
+                className="rounded-2xl bg-card p-6 text-card-foreground"
               >
                 <div className="mb-5 flex items-center gap-3">
                   <span
@@ -196,7 +196,7 @@ const Pots = () => {
                 </div>
 
                 <div className="mb-4 flex items-end justify-between">
-                  <p className="text-grey-500">Total Saved</p>
+                  <p className="text-muted-foreground">Total Saved</p>
                   <p className="text-3xl font-bold">
                     {pot.total.toLocaleString("en-GB", {
                       style: "currency",
@@ -209,10 +209,10 @@ const Pots = () => {
                   value={pot.total}
                   maximumAmount={pot.target}
                   barColor={pot.theme}
-                  className="mb-3 h-2 rounded-full bg-beige-100 p-0"
+                  className="mb-3 h-2 rounded-full bg-beige-100 p-0 dark:bg-secondary"
                 />
 
-                <div className="flex justify-between text-sm text-grey-500">
+                <div className="flex justify-between text-sm text-muted-foreground">
                   <span>{percentageSaved.toFixed(0)}%</span>
                   <span>
                     Target of{" "}
@@ -226,7 +226,7 @@ const Pots = () => {
                 <div className="flex justify-around mt-4 gap-5 h-12">
                   <button
                     type="button"
-                    className="flex h-full w-1/2 cursor-pointer items-center justify-center rounded-md bg-beige-100 font-bold"
+                    className="flex h-full w-1/2 cursor-pointer items-center justify-center rounded-md bg-beige-100 font-bold dark:bg-secondary"
                     onClick={() => {
                       setPotBalanceMode("add");
                       setPotBalanceTarget(pot);
@@ -236,7 +236,7 @@ const Pots = () => {
                   </button>
                   <button
                     type="button"
-                    className="flex h-full w-1/2 cursor-pointer items-center justify-center rounded-md bg-beige-100 font-bold"
+                    className="flex h-full w-1/2 cursor-pointer items-center justify-center rounded-md bg-beige-100 font-bold dark:bg-secondary"
                     onClick={() => {
                       setPotBalanceMode("withdraw");
                       setPotBalanceTarget(pot);

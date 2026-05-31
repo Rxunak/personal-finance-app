@@ -24,8 +24,8 @@ type TransactionSummaryCardProps = {
 };
 
 const backgroundClassNameMap: Record<string, string> = {
-  white: "bg-white",
-  "beige-100": "bg-beige-100",
+  white: "bg-card text-card-foreground",
+  "beige-100": "bg-beige-100 dark:bg-secondary text-card-foreground",
 };
 
 export default function TransactionsCard({
@@ -36,8 +36,8 @@ export default function TransactionsCard({
 }: TransactionSummaryCardProps) {
   const router = useRouter();
   const backgroundClassName = backgroundColor
-    ? backgroundClassNameMap[backgroundColor] ?? "bg-white"
-    : "bg-white";
+    ? backgroundClassNameMap[backgroundColor] ?? "bg-card text-card-foreground"
+    : "bg-card text-card-foreground";
 
   return (
     <section className={`rounded-2xl ${backgroundClassName}`}>
@@ -45,7 +45,7 @@ export default function TransactionsCard({
         <h1 className="text-xl font-bold">{title}</h1>
         <button
           type="button"
-          className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer"
+          className="flex cursor-pointer items-center gap-4 text-sm text-muted-foreground"
           onClick={() => router.push("/transactions")}
         >
           View all <IconCaret />
@@ -60,7 +60,7 @@ export default function TransactionsCard({
                 transaction.id ??
                 `${transaction.name}-${transaction.date}-${transaction.amount}`
               }
-              className="border-b last:border-none pb-5 last:pb-0 pt-6 flex items-center justify-between"
+              className="flex items-center justify-between border-b border-border pb-5 pt-6 last:border-none last:pb-0"
             >
               <div className="flex items-center gap-3">
                 <Image
@@ -70,11 +70,11 @@ export default function TransactionsCard({
                   alt="ProfileImage"
                   className="rounded-full"
                 />
-                <p className="text-sm font-bold">{transaction.name}</p>
+                <p className="text-sm font-bold text-foreground">{transaction.name}</p>
               </div>
               <div className="flex flex-col gap-2 items-end">
                 <p
-                  className={`text-sm font-bold ${Math.sign(transaction.amount) === 1 ? "text-green" : "text-black"}`}
+                  className={`text-sm font-bold ${Math.sign(transaction.amount) === 1 ? "text-green" : "text-foreground"}`}
                 >
                   {Math.sign(transaction.amount) === 1
                     ? `+${transaction.amount.toLocaleString("en-GB", { style: "currency", currency: "GBP" })}`
@@ -83,7 +83,7 @@ export default function TransactionsCard({
                         currency: "GBP",
                       })}
                 </p>
-                <p className="text-xs">
+                <p className="text-xs text-muted-foreground">
                   {format(new Date(transaction.date), "d MMM yyy")}
                 </p>
               </div>

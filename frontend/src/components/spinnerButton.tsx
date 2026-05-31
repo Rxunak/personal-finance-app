@@ -3,7 +3,7 @@ import { Spinner } from "../components/ui/spinner";
 
 export function SpinnerButton() {
   return (
-    <div className="flex justify-center items-center gap-4 h-210 bg-beige-100">
+    <div className="flex h-210 items-center justify-center gap-4 bg-beige-100 dark:bg-background">
       <Button disabled size="sm">
         <Spinner data-icon="inline-start" />
         Loading...

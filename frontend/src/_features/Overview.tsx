@@ -9,6 +9,8 @@ import { type Pot, type Transaction } from "@/hooks/use-finance-data";
 import { useOverviewData } from "@/hooks/use-overview-data";
 import BudgetSummaryCard from "../components/budget-summary-card";
 import TransactionsCard from "../components/transactionsCard";
+import { buildFinanceAiReport } from "@/lib/financial-ai";
+import { AiPreviewCard } from "../components/ai/ai-primitives";
 
 const Overview = () => {
   const [recurringArray, setRecurringArray] = useState<Transaction[]>([]);
@@ -19,6 +21,10 @@ const Overview = () => {
   const filteredTransactions = useMemo(
     () => data?.transactions?.filter((item) => item.recurring) ?? [],
     [data?.transactions],
+  );
+  const aiPreview = useMemo(
+    () => (data ? buildFinanceAiReport(data).previewInsights : []),
+    [data],
   );
 
   useEffect(() => {
@@ -56,8 +62,8 @@ const Overview = () => {
     data.pots.find((item) => item.name === "Savings") ?? data.pots[0];
 
   return (
-    <div className="pl-8 pr-8 flex flex-col gap-7 bg-beige-100 h-lvh">
-      <div className="text-3xl font-semibold pt-6">Overview</div>
+    <div className="flex h-lvh flex-col gap-7 bg-beige-100 pl-8 pr-8 text-foreground dark:bg-background">
+      <div className="pt-6 text-3xl font-semibold">Dashboard</div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="h-25 rounded-2xl bg-grey-900 flex flex-col justify-center p-7 gap-3 text-white">
           <p className="text-sm">Current Balance</p>
@@ -68,7 +74,7 @@ const Overview = () => {
             })}
           </p>
         </div>
-        <div className="h-25 rounded-2xl bg-white flex flex-col justify-center p-7 gap-3">
+        <div className="h-25 rounded-2xl bg-card flex flex-col justify-center gap-3 p-7 text-card-foreground">
           <p className="text-sm">Income</p>
           <p className="text-3xl font-bold">
             {" "}
@@ -78,7 +84,7 @@ const Overview = () => {
             })}
           </p>
         </div>
-        <div className="h-25 rounded-2xl bg-white flex flex-col justify-center p-7 gap-3">
+        <div className="h-25 rounded-2xl bg-card flex flex-col justify-center gap-3 p-7 text-card-foreground">
           <p className="text-sm">Expenses</p>
           <p className="text-3xl font-bold">
             {" "}
@@ -89,30 +95,31 @@ const Overview = () => {
           </p>
         </div>
       </div>
+      {aiPreview.length ? <AiPreviewCard insights={aiPreview} /> : null}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 h-full">
         <div className="space-y-4 lg:col-span-7 overflow-auto h-5/6 no-scrollbar">
-          <section className="rounded-2xl bg-white p-8">
+          <section className="rounded-2xl bg-card p-8 text-card-foreground">
             <div className="flex justify-between mb-5">
               <h1 className="text-xl font-bold">Pots</h1>
               <button
                 type="button"
-                className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer"
+                className="flex cursor-pointer items-center gap-4 text-sm text-muted-foreground"
                 onClick={() => router.push("/pots")}
               >
                 See Details <IconCaret />
               </button>
             </div>
             <div className="flex justify-start gap-10 h-30">
-              <div className="bg-beige-100 min-w-70 h-full rounded-xl flex gap-5 items-center pl-5 grow-5">
+              <div className="bg-beige-100 dark:bg-secondary min-w-70 h-full rounded-xl flex gap-5 items-center pl-5 grow-5">
                 <Image
                   src="/images/icon-pot.svg"
                   width={25}
                   height={25}
                   alt="PotIcon"
                 />
-                <span className="text-sm text-grey-500 flex flex-col gap-2.5">
+                <span className="flex flex-col gap-2.5 text-sm text-muted-foreground">
                   <h1>Total Saved</h1>
-                  <p className="text-black font-bold text-3xl">
+                  <p className="text-3xl font-bold text-foreground">
                     {savingPot.total.toLocaleString("en-GB", {
                       style: "currency",
                       currency: "GBP",
@@ -128,8 +135,8 @@ const Overview = () => {
                       style={{ borderLeftColor: pot.theme }}
                     ></span>
                     <div className="flex flex-col gap-1">
-                      <p className="text-grey-500 text-sm  pl-4">{pot.name}</p>
-                      <p className="text-black font-bold pl-4">
+                      <p className="pl-4 text-sm text-muted-foreground">{pot.name}</p>
+                      <p className="pl-4 font-bold text-foreground">
                         {pot.total.toLocaleString("en-GB", {
                           style: "currency",
                           currency: "GBP",
@@ -151,24 +158,24 @@ const Overview = () => {
         <div className="space-y-4 lg:col-span-5 h-5/6 overflow-auto no-scrollbar">
           <BudgetSummaryCard
             budgets={data.budgets}
-            onAction={() => router.push("/budget")}
+            onAction={() => router.push("/budgets")}
           />
-          <section className="rounded-2xl bg-white">
+          <section className="rounded-2xl bg-card text-card-foreground">
             {/* h-46 overflow-auto */}
             <div className="flex justify-between p-6">
               <h1 className="text-xl font-bold">Recurring Bills</h1>
               <button
                 type="button"
-                className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer"
+                className="flex cursor-pointer items-center gap-4 text-sm text-muted-foreground"
                 onClick={() => router.push("/recurringBills")}
               >
                 See Details <IconCaret />
               </button>
             </div>
             <div className="px-6 pb-6 flex flex-col gap-2.5 h-full overflow-y-auto">
-              <div className="shrink-0 bg-beige-100 flex justify-between px-6 h-15 rounded-xl items-center text-sm text-gray-500 border-l-[5px] border-green">
+              <div className="shrink-0 bg-beige-100 dark:bg-secondary flex h-15 items-center justify-between rounded-xl border-l-[5px] border-green px-6 text-sm text-muted-foreground">
                 <p>Paid Bills</p>
-                <p className="font-bold text-black">
+                <p className="font-bold text-foreground">
                   {paidBills.toLocaleString("en-GB", {
                     style: "currency",
                     currency: "GBP",
@@ -176,9 +183,9 @@ const Overview = () => {
                 </p>
               </div>
 
-              <div className="shrink-0 bg-beige-100 flex justify-between px-6 h-15 rounded-xl items-center text-sm text-gray-500 border-l-[5px] border-yellow">
+              <div className="shrink-0 bg-beige-100 dark:bg-secondary flex h-15 items-center justify-between rounded-xl border-l-[5px] border-yellow px-6 text-sm text-muted-foreground">
                 <p>Total Upcoming</p>
-                <p className="font-bold text-black">
+                <p className="font-bold text-foreground">
                   {upcomingBills.toLocaleString("en-GB", {
                     style: "currency",
                     currency: "GBP",
@@ -186,9 +193,9 @@ const Overview = () => {
                 </p>
               </div>
 
-              <div className="shrink-0 bg-beige-100 flex justify-between px-6 h-15 rounded-xl items-center text-sm text-gray-500 border-l-[5px] border-cyan">
+              <div className="shrink-0 bg-beige-100 dark:bg-secondary flex h-15 items-center justify-between rounded-xl border-l-[5px] border-cyan px-6 text-sm text-muted-foreground">
                 <p>Due Soon</p>
-                <p className="font-bold text-black">
+                <p className="font-bold text-foreground">
                   {dueSoonBiils.toLocaleString("en-GB", {
                     style: "currency",
                     currency: "GBP",

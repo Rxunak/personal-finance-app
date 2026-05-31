@@ -53,7 +53,7 @@ export const recurringColumns: ColumnDef<Transaction>[] = [
 
       return (
         <div
-          className={`pl-2 ${row.original.status === "paid" ? "text-green" : row.original.status === "overdue" ? "text-red" : "text-grey-500"} flex gap-1.5 items-center`}
+          className={`pl-2 ${row.original.status === "paid" ? "text-green" : row.original.status === "overdue" ? "text-red" : "text-muted-foreground"} flex gap-1.5 items-center`}
         >
           {`Monthly-${appendSuffix(dayOfMonth)}`}
           {row.original.status === "paid" ? (
@@ -73,7 +73,7 @@ export const recurringColumns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       return (
         <p
-          className={`text-sm font-bold ${row.original.status === "overdue" ? "text-red" : "text-black"}`}
+          className={`text-sm font-bold ${row.original.status === "overdue" ? "text-red" : "text-foreground"}`}
         >
           {Math.abs(row.original.amount).toLocaleString("en-GB", {
             style: "currency",

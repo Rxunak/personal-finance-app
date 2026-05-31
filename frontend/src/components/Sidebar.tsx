@@ -6,7 +6,7 @@ const Sidebar = () => {
     <div className="flex flex-col bg-grey-900 rounded-r-2xl min-h-screen">
       <Link href="/">Overview</Link>
       <Link href="/transactions">Transactions</Link>
-      <Link href="/budget">Budgets</Link>
+      <Link href="/budgets">Budgets</Link>
       <Link href="/pots">Pots</Link>
       <Link href="/recurringBills">Recurring Bills</Link>
     </div>

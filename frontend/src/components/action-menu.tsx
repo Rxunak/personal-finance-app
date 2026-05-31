@@ -20,7 +20,7 @@ type ActionMenuProps = {
 const itemVariantClassNames: Record<NonNullable<ActionMenuItem["variant"]>, string> =
   {
     default:
-      "text-beige-500 hover:bg-beige-100",
+      "text-foreground hover:bg-muted",
     destructive:
       "text-red hover:bg-red/5",
   };
@@ -53,7 +53,7 @@ export function ActionMenu({
     <div className="relative ml-auto" ref={menuRef}>
       <button
         type="button"
-        className="flex cursor-pointer items-center justify-center rounded-full p-1 text-grey-500 transition-colors hover:bg-beige-100"
+        className="flex cursor-pointer items-center justify-center rounded-full p-1 text-muted-foreground transition-colors hover:bg-muted"
         aria-label={ariaLabel}
         aria-expanded={isOpen}
         onClick={() => setIsOpen((open) => !open)}
@@ -62,7 +62,7 @@ export function ActionMenu({
       </button>
       {isOpen && (
         <div
-          className={`absolute right-0 top-10 z-20 overflow-hidden bg-white shadow-[0_18px_40px_rgba(0,0,0,0.18)] ${menuWidthClassName} ${menuClassName}`}
+          className={`absolute right-0 top-10 z-20 overflow-hidden bg-card text-card-foreground shadow-[0_18px_40px_rgba(0,0,0,0.18)] ${menuWidthClassName} ${menuClassName}`}
         >
           {items.map((item, index) => (
             <div key={item.label}>
@@ -76,7 +76,7 @@ export function ActionMenu({
               >
                 {item.label}
               </button>
-              {index < items.length - 1 && <div className="mx-4 h-px bg-grey-100" />}
+              {index < items.length - 1 && <div className="mx-4 h-px bg-border" />}
             </div>
           ))}
         </div>

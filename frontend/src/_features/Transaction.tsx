@@ -167,8 +167,8 @@ const Transaction = () => {
   if (error) return "An error has occured: " + error.message;
   if (!data) return null;
   return (
-    <div className="bg-beige-100 pl-8 pr-8">
-      <header className="text-3xl font-semibold pt-6 mb-8">Transactions</header>
+    <div className="bg-beige-100 pl-8 pr-8 text-foreground dark:bg-background">
+      <header className="mb-8 pt-6 text-3xl font-semibold">Transactions</header>
       <Dialog
         open={isTransactionDialogOpen}
         onOpenChange={(open) => {
@@ -212,7 +212,7 @@ const Transaction = () => {
           }
         }}
       />
-      <section className="bg-white p-8 flex flex-col gap-7 h-185 rounded-2xl">
+      <section className="bg-card text-card-foreground flex h-185 flex-col gap-7 rounded-2xl p-8">
         <div className="flex justify-between">
           <div className="w-sm">
             <SearchBar
@@ -225,7 +225,7 @@ const Transaction = () => {
           </div>
           <div className="flex justify-end gap-10 w-xl ">
             <div className="flex items-center gap-1.5">
-              <p className="text-base text-grey-500">Sort by</p>{" "}
+              <p className="text-base text-muted-foreground">Sort by</p>{" "}
               <ComboboxCon
                 options={sortBy}
                 onSelect={sortByFil}
@@ -234,7 +234,7 @@ const Transaction = () => {
             </div>
 
             <div className="flex items-center gap-1.5">
-              <p className="text-base text-grey-500">Category</p>{" "}
+              <p className="text-base text-muted-foreground">Category</p>{" "}
               <ComboboxCon
                 options={category}
                 onSelect={categoryFil}

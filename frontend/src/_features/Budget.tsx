@@ -92,13 +92,13 @@ const Budget = () => {
 
   const budgetsToRender = data.budgets;
   return (
-    <div className="bg-beige-100 pl-8 pr-8 pb-8 h-lvh">
+    <div className="h-lvh bg-beige-100 pl-8 pr-8 pb-8 text-foreground dark:bg-background">
       <div className="flex flex-row justify-between pt-6 mb-8">
         <header className="text-3xl font-semibold flex items-center">
           Budgets
         </header>
         <button
-          className="flex h-12 w-40 items-center justify-center rounded-md bg-black text-white text-sm cursor-pointer"
+          className="flex h-12 w-40 cursor-pointer items-center justify-center rounded-md bg-grey-900 text-sm text-white dark:bg-white dark:text-grey-900"
           onClick={openCreateDialog}
         >
           + Add New Budget
@@ -164,7 +164,7 @@ const Budget = () => {
             return (
               <div
                 key={budget.id ?? `${budget.category}-${budget.theme}`}
-                className="h-auto bg-white rounded-2xl p-5 flex flex-col gap-5 mb-5"
+                className="mb-5 flex h-auto flex-col gap-5 rounded-2xl bg-card p-5 text-card-foreground"
               >
                 <div className="flex gap-3 items-center">
                   <span
@@ -201,7 +201,7 @@ const Budget = () => {
                       style={{ background: budget.theme }}
                     />
                     <div className="flex flex-col justify-between">
-                      <p className="text-gray-500">Spent</p>
+                      <p className="text-muted-foreground">Spent</p>
                       <p className="font-bold text-xl">
                         {Math.abs(sum).toLocaleString("en-GB", {
                           style: "currency",
@@ -213,7 +213,7 @@ const Budget = () => {
                   <div className="w-1/2 h-15 flex gap-4">
                     <span className="bg-grey-100 rounded-2xl w-1.5 h-full" />
                     <div className="flex flex-col justify-between">
-                      <p className="text-gray-500">Remaining</p>
+                      <p className="text-muted-foreground">Remaining</p>
                       <p className="font-bold text-xl">
                         {Math.abs(sum) > budget.maximum
                           ? "£0"

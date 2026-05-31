@@ -15,7 +15,7 @@ export function ProgressWithLabel({
   return (
     <Field.Root className="w-full flex flex-col gap-5">
       <Field.Label htmlFor="progress-upload" className="flex">
-        <span className="text-grey-500">
+        <span className="text-muted-foreground">
           {`Maximum of ${maximumAmount.toLocaleString("en-GB", {
             style: "currency",
             currency: "GBP",
@@ -25,7 +25,7 @@ export function ProgressWithLabel({
       <Progress
         value={barValue}
         id="progress-upload"
-        className="bg-beige-100"
+        className="bg-beige-100 dark:bg-secondary"
         barColor={barColor}
         maximumAmount={maximumAmount}
       />

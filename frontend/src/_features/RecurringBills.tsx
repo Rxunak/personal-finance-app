@@ -114,16 +114,16 @@ const RecurringBills = () => {
   if (error) return "An error has occured: " + error.message;
 
   return (
-    <div className="bg-beige-100 px-8 pb-8 flex min-h-lvh flex-col gap-7">
-      <div className="text-3xl font-semibold pt-6">Recurring Bills</div>
+    <div className="flex min-h-lvh flex-col gap-7 bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
+      <div className="pt-6 text-3xl font-semibold">Recurring Bills</div>
 
       <div className="flex gap-5">
         <div className="h-full w-2/5 flex flex-col gap-10">
-          <div className="bg-black rounded-xl p-8 flex flex-col gap-12">
-            <ReceiptPoundSterling className="text-white size-12" />
+          <div className="bg-grey-900 rounded-xl p-8 flex flex-col gap-12 text-white dark:bg-white dark:text-grey-900">
+            <ReceiptPoundSterling className="size-12" />
             <div>
-              <h1 className="text-white mb-4">Total Bills</h1>
-              <span className="text-white font-bold text-5xl">
+              <h1 className="mb-4">Total Bills</h1>
+              <span className="font-bold text-5xl">
                 {recurringSummary.totalBills.toLocaleString("en-GB", {
                   style: "currency",
                   currency: "GBP",
@@ -131,10 +131,10 @@ const RecurringBills = () => {
               </span>
             </div>
           </div>
-          <div className="bg-white rounded-2xl p-8">
+          <div className="bg-card rounded-2xl p-8 text-card-foreground">
             <h1 className="text-2xl font-bold">Summary</h1>
-            <div className="flex justify-between border-b pt-6 pb-6">
-              <h1 className="text-gray-500">Paid Biils</h1>
+            <div className="flex justify-between border-b border-border pt-6 pb-6">
+              <h1 className="text-muted-foreground">Paid Biils</h1>
               <h1 className="font-bold">
                 {recurringSummary.paidCount} (
                 {recurringSummary.paidTotal.toLocaleString("en-GB", {
@@ -144,8 +144,8 @@ const RecurringBills = () => {
                 )
               </h1>
             </div>
-            <div className="flex justify-between border-b pt-6 pb-6">
-              <h1 className="text-gray-500 ">Total Upcoming</h1>
+            <div className="flex justify-between border-b border-border pt-6 pb-6">
+              <h1 className="text-muted-foreground ">Total Upcoming</h1>
               <h1 className="font-bold">
                 {recurringSummary.upcomingCount} (
                 {recurringSummary.upcomingTotal.toLocaleString("en-GB", {
@@ -168,7 +168,7 @@ const RecurringBills = () => {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-2xl p-8 h-180 w-3/5 overflow-auto no-scrollbar">
+        <div className="bg-card text-card-foreground h-180 w-3/5 overflow-auto rounded-2xl p-8 no-scrollbar">
           <div className="flex justify-between mb-10">
             <SearchBar setQuery={setQuery} query={query} />
             <ComboboxCon options={sortBy} onSelect={sortByFil} width="100px" />

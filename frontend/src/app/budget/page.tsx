@@ -1,10 +1,7 @@
-import React from 'react'
-import Budget from '../../_features/Budget'
+import { redirect } from "next/navigation";
 
 const BudgetPage = () => {
-  return (
-    <div><Budget/></div>
-  )
-}
+  redirect("/budgets");
+};
 
-export default BudgetPage
+export default BudgetPage;

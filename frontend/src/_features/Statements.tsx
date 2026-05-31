@@ -100,32 +100,32 @@ const Statements = () => {
   };
 
   return (
-    <div className="bg-beige-100 px-8 pb-8 flex min-h-lvh flex-col gap-7">
-      <div className="text-3xl font-semibold pt-6">Summarise Statements</div>
+    <div className="flex min-h-lvh flex-col gap-7 bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
+      <div className="pt-6 text-3xl font-semibold">Summarise Statements</div>
 
       <div className="grid gap-5 xl:grid-cols-[1.35fr_0.9fr]">
-        <div className="rounded-2xl bg-white p-8">
+        <div className="rounded-2xl bg-card p-8 text-card-foreground">
           <div className="mb-6 flex items-start justify-between gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-xl bg-beige-100 text-green">
+                <div className="flex size-10 items-center justify-center rounded-xl bg-beige-100 text-green dark:bg-secondary">
                   <Bot className="size-5" />
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold">Statements</h1>
-                  <p className="text-sm text-grey-500">
+                  <p className="text-sm text-muted-foreground">
                     Upload a bank statement PDF and get AI-style spending
                     highlights.
                   </p>
                 </div>
               </div>
             </div>
-            <span className="rounded-full bg-beige-100 px-3 py-1 text-xs font-semibold text-grey-900">
+            <span className="rounded-full bg-beige-100 px-3 py-1 text-xs font-semibold text-foreground dark:bg-secondary">
               AI
             </span>
           </div>
 
-          <div className="mb-5 rounded-2xl border border-green/15 bg-green/5 p-4 text-sm text-grey-500">
+          <div className="mb-5 rounded-2xl border border-green/15 bg-green/5 p-4 text-sm text-muted-foreground">
             Your statement is processed locally in your browser and is not
             uploaded to our servers. If you choose to remember the summary, only
             the generated summary is stored on this device for 7 days.
@@ -139,17 +139,17 @@ const Statements = () => {
             onChange={handleStatementUpload}
           />
 
-          <div className="rounded-2xl border border-dashed border-grey-300 bg-beige-100 p-5">
+          <div className="rounded-2xl border border-dashed border-border bg-beige-100 p-5 dark:bg-secondary">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-start gap-3">
-                <div className="flex size-10 items-center justify-center rounded-xl bg-white text-grey-900">
+                <div className="flex size-10 items-center justify-center rounded-xl bg-card text-foreground">
                   <FileText className="size-5" />
                 </div>
                 <div>
-                  <p className="font-semibold text-grey-900">
+                  <p className="font-semibold text-foreground">
                     {statementAnalysis?.fileName ?? "Add statement PDF"}
                   </p>
-                  <p className="text-sm text-grey-500">
+                  <p className="text-sm text-muted-foreground">
                     Text-based PDFs work best for merchant and category
                     detection.
                   </p>
@@ -157,7 +157,7 @@ const Statements = () => {
               </div>
               <Button
                 type="button"
-                className="rounded-xl bg-grey-900 px-4 text-white hover:bg-grey-900/90"
+                className="rounded-xl bg-grey-900 px-4 text-white hover:bg-grey-900/90 dark:bg-white dark:text-grey-900"
                 onClick={() => statementInputRef.current?.click()}
                 disabled={isAnalyzingStatement}
               >
@@ -165,11 +165,11 @@ const Statements = () => {
                 {statementAnalysis ? "Replace PDF" : "Upload PDF"}
               </Button>
             </div>
-            <div className="mt-4 flex flex-col gap-3 border-t border-grey-300 pt-4 sm:flex-row sm:items-center sm:justify-between">
-              <label className="flex items-start gap-3 text-sm text-grey-500">
+            <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
+              <label className="flex items-start gap-3 text-sm text-muted-foreground">
                 <input
                   type="checkbox"
-                  className="mt-1 size-4 rounded border-grey-300 accent-green"
+                  className="mt-1 size-4 rounded border-border accent-green"
                   checked={rememberSummary}
                   onChange={(event) =>
                     setRememberSummary(event.target.checked)
@@ -179,7 +179,7 @@ const Statements = () => {
                   Remember this summary on this device for 7 days
                 </span>
               </label>
-              <span className="text-xs text-grey-500">
+              <span className="text-xs text-muted-foreground">
                 {rememberSummary ? "Persistence enabled" : "Not saved after you leave"}
               </span>
             </div>
@@ -188,7 +188,7 @@ const Statements = () => {
                 <Button
                   type="button"
                   variant="ghost"
-                  className="rounded-xl text-grey-500 hover:text-red"
+                  className="rounded-xl text-muted-foreground hover:text-red"
                   onClick={handleRemoveStatement}
                 >
                   <Trash2 className="size-4" />
@@ -199,8 +199,8 @@ const Statements = () => {
           </div>
 
           {isAnalyzingStatement ? (
-            <div className="mt-5 rounded-2xl bg-beige-100 p-5">
-              <div className="flex items-center gap-3 text-sm text-grey-500">
+            <div className="mt-5 rounded-2xl bg-beige-100 p-5 dark:bg-secondary">
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Sparkles className="size-4 text-green" />
                 Analyzing your statement and building spending insights...
               </div>
@@ -219,10 +219,10 @@ const Statements = () => {
                 {statementAnalysis.insights.map((insight) => (
                   <div
                     key={insight.title}
-                    className="rounded-2xl bg-beige-100 p-4"
+                    className="rounded-2xl bg-beige-100 p-4 dark:bg-secondary"
                   >
-                    <p className="text-sm text-grey-500">{insight.title}</p>
-                    <p className="pt-2 text-xl font-bold text-grey-900">
+                    <p className="text-sm text-muted-foreground">{insight.title}</p>
+                    <p className="pt-2 text-xl font-bold text-foreground">
                       {insight.value}
                     </p>
                     <p
@@ -231,7 +231,7 @@ const Statements = () => {
                           ? "text-red"
                           : insight.tone === "success"
                             ? "text-green"
-                            : "text-grey-500"
+                            : "text-muted-foreground"
                       }`}
                     >
                       {insight.detail}
@@ -244,13 +244,13 @@ const Statements = () => {
                 {statementAnalysis.metrics.map((metric) => (
                   <div
                     key={metric.label}
-                    className="rounded-2xl border border-grey-100 bg-white p-5"
+                    className="rounded-2xl border border-border bg-card p-5"
                   >
-                    <p className="text-sm text-grey-500">{metric.label}</p>
-                    <p className="pt-2 text-xl font-bold text-grey-900">
+                    <p className="text-sm text-muted-foreground">{metric.label}</p>
+                    <p className="pt-2 text-xl font-bold text-foreground">
                       {metric.value}
                     </p>
-                    <p className="pt-2 text-sm text-grey-500">
+                    <p className="pt-2 text-sm text-muted-foreground">
                       {metric.detail}
                     </p>
                   </div>
@@ -258,12 +258,12 @@ const Statements = () => {
               </div>
 
               <div className="grid gap-5 lg:grid-cols-2">
-                <div className="rounded-2xl bg-beige-100 p-5">
+                <div className="rounded-2xl bg-beige-100 p-5 dark:bg-secondary">
                   <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-lg font-bold text-grey-900">
+                    <h3 className="text-lg font-bold text-foreground">
                       Top spending categories
                     </h3>
-                    <span className="text-sm text-grey-500">
+                    <span className="text-sm text-muted-foreground">
                       {statementAnalysis.statementPeriod}
                     </span>
                   </div>
@@ -271,17 +271,17 @@ const Statements = () => {
                     {statementAnalysis.topCategories.map((category) => (
                       <div
                         key={category.name}
-                        className="flex items-center justify-between rounded-xl bg-white px-4 py-3"
+                        className="flex items-center justify-between rounded-xl bg-card px-4 py-3"
                       >
                         <div>
-                          <p className="font-semibold text-grey-900">
+                          <p className="font-semibold text-foreground">
                             {category.name}
                           </p>
-                          <p className="text-sm text-grey-500">
+                          <p className="text-sm text-muted-foreground">
                             {(category.share * 100).toFixed(0)}% of spend
                           </p>
                         </div>
-                        <p className="font-bold text-grey-900">
+                        <p className="font-bold text-foreground">
                           {category.displayAmount}
                         </p>
                       </div>
@@ -289,25 +289,25 @@ const Statements = () => {
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-beige-100 p-5">
-                  <h3 className="text-lg font-bold text-grey-900">
+                <div className="rounded-2xl bg-beige-100 p-5 dark:bg-secondary">
+                  <h3 className="text-lg font-bold text-foreground">
                     Top merchants
                   </h3>
                   <div className="mt-4 space-y-3">
                     {statementAnalysis.topMerchants.map((merchant, index) => (
                       <div
                         key={merchant.name}
-                        className="flex items-center justify-between rounded-xl bg-white px-4 py-3"
+                        className="flex items-center justify-between rounded-xl bg-card px-4 py-3"
                       >
                         <div>
-                          <p className="font-semibold text-grey-900">
+                          <p className="font-semibold text-foreground">
                             {index + 1}. {merchant.name}
                           </p>
-                          <p className="text-sm text-grey-500">
+                          <p className="text-sm text-muted-foreground">
                             Highest merchant outflow
                           </p>
                         </div>
-                        <p className="font-bold text-grey-900">
+                        <p className="font-bold text-foreground">
                           {merchant.displayAmount}
                         </p>
                       </div>
@@ -332,22 +332,22 @@ const Statements = () => {
             </div>
           ) : (
             !isAnalyzingStatement && (
-              <div className="mt-5 rounded-2xl bg-white">
-                <div className="flex justify-between border-b border-grey-100 py-4 text-sm">
-                  <span className="text-grey-500">What you will get</span>
-                  <span className="font-semibold text-grey-900">
+              <div className="mt-5 rounded-2xl bg-card">
+                <div className="flex justify-between border-b border-border py-4 text-sm">
+                  <span className="text-muted-foreground">What you will get</span>
+                  <span className="font-semibold text-foreground">
                     Summary cards
                   </span>
                 </div>
-                <div className="flex justify-between border-b border-grey-100 py-4 text-sm">
-                  <span className="text-grey-500">Focus areas</span>
-                  <span className="font-semibold text-grey-900">
+                <div className="flex justify-between border-b border-border py-4 text-sm">
+                  <span className="text-muted-foreground">Focus areas</span>
+                  <span className="font-semibold text-foreground">
                     High-spend categories
                   </span>
                 </div>
                 <div className="flex justify-between py-4 text-sm">
-                  <span className="text-grey-500">Recommendations</span>
-                  <span className="font-semibold text-grey-900">
+                  <span className="text-muted-foreground">Recommendations</span>
+                  <span className="font-semibold text-foreground">
                     Where to cut back
                   </span>
                 </div>
@@ -367,36 +367,36 @@ const Statements = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl bg-white p-8">
+          <div className="rounded-2xl bg-card p-8 text-card-foreground">
             <h2 className="text-2xl font-bold">Privacy and storage</h2>
             <div className="mt-6 space-y-4">
-              <div className="flex justify-between border-b border-grey-100 pb-4 text-sm">
-                <span className="text-grey-500">Best format</span>
-                <span className="font-semibold text-grey-900">
+              <div className="flex justify-between border-b border-border pb-4 text-sm">
+                <span className="text-muted-foreground">Best format</span>
+                <span className="font-semibold text-foreground">
                   Text-based bank PDF
                 </span>
               </div>
-              <div className="flex justify-between border-b border-grey-100 pb-4 text-sm">
-                <span className="text-grey-500">Works less well with</span>
-                <span className="font-semibold text-grey-900">
+              <div className="flex justify-between border-b border-border pb-4 text-sm">
+                <span className="text-muted-foreground">Works less well with</span>
+                <span className="font-semibold text-foreground">
                   Scanned image PDFs
                 </span>
               </div>
-              <div className="flex justify-between border-b border-grey-100 pb-4 text-sm">
-                <span className="text-grey-500">Server upload</span>
-                <span className="font-semibold text-grey-900">
+              <div className="flex justify-between border-b border-border pb-4 text-sm">
+                <span className="text-muted-foreground">Server upload</span>
+                <span className="font-semibold text-foreground">
                   No
                 </span>
               </div>
-              <div className="flex justify-between border-b border-grey-100 pb-4 text-sm">
-                <span className="text-grey-500">Saved file</span>
-                <span className="font-semibold text-grey-900">
+              <div className="flex justify-between border-b border-border pb-4 text-sm">
+                <span className="text-muted-foreground">Saved file</span>
+                <span className="font-semibold text-foreground">
                   Summary only
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-grey-500">Retention</span>
-                <span className="font-semibold text-grey-900">
+                <span className="text-muted-foreground">Retention</span>
+                <span className="font-semibold text-foreground">
                   7 days or until removed
                 </span>
               </div>

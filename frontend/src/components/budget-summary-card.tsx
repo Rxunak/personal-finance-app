@@ -36,13 +36,13 @@ export default function BudgetSummaryCard({
   }));
 
   return (
-    <section className="rounded-2xl bg-white p-8">
+    <section className="rounded-2xl bg-card p-8 text-card-foreground">
       <div className="flex justify-between">
         <h1 className="text-xl font-bold">{flexCol ? "" : title}</h1>
         {onAction ? (
           <button
             type="button"
-            className="flex items-center gap-4 text-sm text-grey-500 cursor-pointer"
+            className="flex cursor-pointer items-center gap-4 text-sm text-muted-foreground"
             onClick={onAction}
           >
             {actionLabel} <IconCaret />
@@ -71,10 +71,10 @@ export default function BudgetSummaryCard({
                       style={{ borderLeftColor: budget.theme }}
                     ></span>
                     <div className="flex flex-col gap-1 justify-center">
-                      <p className="text-grey-500 text-xs  pl-4">
+                      <p className="pl-4 text-xs text-muted-foreground">
                         {budget.category}
                       </p>
-                      <p className="text-black font-bold pl-4">
+                      <p className="pl-4 font-bold text-foreground">
                         {budget.maximum.toLocaleString("en-GB", {
                           style: "currency",
                           currency: "GBP",
@@ -86,17 +86,17 @@ export default function BudgetSummaryCard({
               : budgets.map((budget) => (
                   <span
                     key={`${budget.category}-${budget.theme}`}
-                    className="flex h-auto border-b pb-5 last:border-none last:pb-0"
+                    className="flex h-auto border-b border-border pb-5 last:border-none last:pb-0"
                   >
                     <span
                       className="border-l-4 rounded-xs w-1 h-6 self-stretch"
                       style={{ borderLeftColor: budget.theme }}
                     ></span>
                     <div className="flex flex-row gap-1 items-center w-full justify-between">
-                      <p className="text-grey-500 text-sm pl-4">
+                      <p className="pl-4 text-sm text-muted-foreground">
                         {budget.category}
                       </p>
-                      <p className="text-black font-bold pl-4">
+                      <p className="pl-4 font-bold text-foreground">
                         {budget.maximum.toLocaleString("en-GB", {
                           style: "currency",
                           currency: "GBP",

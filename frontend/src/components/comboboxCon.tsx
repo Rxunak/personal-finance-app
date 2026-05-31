@@ -77,7 +77,7 @@ export function ComboboxCon({
             "Select an option"
           }
           readOnly
-          className="h-12 cursor-pointer border border-beige-500"
+          className="h-12 cursor-pointer border border-border bg-background text-foreground"
         >
           {selectedOption?.color && (
             <InputGroupAddon align="inline-start">
@@ -90,7 +90,7 @@ export function ComboboxCon({
         </ComboboxInput>
         <ComboboxContent
           container={portalContainer ?? undefined}
-          className="text-beige-500"
+          className="text-foreground"
         >
           <ComboboxEmpty>No items found.</ComboboxEmpty>
           <ComboboxList>
@@ -98,7 +98,7 @@ export function ComboboxCon({
               <ComboboxItem
                 key={item.value}
                 value={item.value}
-                className="text-beige-500 cursor-pointer"
+                className="cursor-pointer text-foreground"
                 disabled={item.disabled}
                 onClick={() => {
                   if (!item.disabled) {
@@ -127,7 +127,7 @@ function OptionContent({ item }: { item: ComboboxOption }) {
       )}
       <span>{item.label}</span>
       {item.disabled && (
-        <span className="ml-auto text-xs text-grey-500">Already used</span>
+        <span className="ml-auto text-xs text-muted-foreground">Already used</span>
       )}
     </>
   );

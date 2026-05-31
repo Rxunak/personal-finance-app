@@ -39,7 +39,7 @@ export function PaginationComponent({
   return (
     <Pagination>
       <PaginationContent>
-        <PaginationItem className="border border-grey-500 rounded-md">
+        <PaginationItem className="rounded-md border border-border">
           <PaginationPrevious
             href="#"
             onClick={(event) => {
@@ -53,7 +53,7 @@ export function PaginationComponent({
             <PaginationItem
               key={page}
               className={
-                currentPage === page ? "bg-neutral-100 rounded-md" : ""
+                currentPage === page ? "rounded-md bg-muted" : ""
               }
             >
               <PaginationLink
@@ -68,7 +68,7 @@ export function PaginationComponent({
             </PaginationItem>
           ))}
         </div>
-        <PaginationItem className="border border-grey-500 rounded-md">
+        <PaginationItem className="rounded-md border border-border">
           <PaginationNext
             href="#"
             onClick={(event) => {

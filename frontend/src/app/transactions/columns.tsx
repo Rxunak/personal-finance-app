@@ -37,14 +37,14 @@ export const getTransactionColumns = ({
     accessorKey: "category",
     header: () => <div className="pl-2">Category</div>,
     cell: ({ row }) => {
-      return <div className="text-grey-500">{row.original.category}</div>;
+      return <div className="text-muted-foreground">{row.original.category}</div>;
     },
   },
   {
     accessorKey: "date",
     cell: ({ row }) => {
       return (
-        <div className="text-grey-500">
+        <div className="text-muted-foreground">
           {format(new Date(row.original.date), "d MMM yyy")}
         </div>
       );
@@ -56,7 +56,7 @@ export const getTransactionColumns = ({
     cell: ({ row }) => {
       return (
         <p
-          className={`text-sm font-bold ${Math.sign(row.original.amount) === 1 ? "text-green" : "text-black"}`}
+          className={`text-sm font-bold ${Math.sign(row.original.amount) === 1 ? "text-green" : "text-foreground"}`}
         >
           {Math.abs(row.original.amount).toLocaleString("en-GB", {
             style: "currency",

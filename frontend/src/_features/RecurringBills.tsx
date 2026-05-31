@@ -80,21 +80,20 @@ const RecurringBills = () => {
     );
 
     const paid = recurringTransactions.filter((item) => item.status === "paid");
+
     const upcoming = recurringTransactions.filter(
-      (item) =>
-        item.status !== "paid" &&
-        item.dueDate &&
-        isAfter(new Date(item.dueDate), new Date()),
+      (item) => item.status === "unpaid" || item.status === "overdue",
     );
+
     const dueSoon = recurringTransactions.filter(
-      (item) =>
-        item.status !== "paid" &&
-        item.dueDate &&
-        isAfter(new Date(item.dueDate), addDays(new Date(), 7)),
+      (item) => item.status === "overdue",
     );
 
     const sumAmounts = (items: Transaction[]) =>
-      items.reduce((sum, item) => sum + Math.abs(Number(item.amount)), 0);
+      items.reduce((sum, item) => {
+        const amount = Number(item.amount);
+        return sum + Math.abs(Number(amount));
+      }, 0);
 
     return {
       totalBills: sumAmounts(recurringTransactions),
@@ -147,7 +146,7 @@ const RecurringBills = () => {
               </h1>
             </div>
             <div className="flex justify-between border-b pt-6 pb-6">
-              <h1 className="text-gray-500 ">Total Uocoming</h1>
+              <h1 className="text-gray-500 ">Total Upcoming</h1>
               <h1 className="font-bold">
                 {recurringSummary.upcomingCount} (
                 {recurringSummary.upcomingTotal.toLocaleString("en-GB", {

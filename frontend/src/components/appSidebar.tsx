@@ -19,8 +19,10 @@ import {
   Activity,
   Bot,
   HandCoins,
+  LayoutDashboard,
   HeartPulse,
   PiggyBank,
+  ReceiptText,
   Sparkles,
 } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
@@ -29,7 +31,7 @@ const navigationItems = [
   {
     href: "/",
     label: "Overview",
-    icon: PiggyBank,
+    icon: LayoutDashboard,
     iconClassName:
       "group-hover/overview:text-green group-data-[active=true]/overview:text-green",
     match: (pathname: string) => pathname === "/",
@@ -66,7 +68,7 @@ const navigationItems = [
   {
     href: "/recurringBills",
     label: "Recurring Bills",
-    icon: PiggyBank,
+    icon: ReceiptText,
     iconClassName:
       "group-hover/recurring-bills:text-green group-data-[active=true]/recurring-bills:text-green",
     match: (pathname: string) => pathname === "/recurringBills",

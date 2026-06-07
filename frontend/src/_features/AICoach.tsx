@@ -18,6 +18,7 @@ import {
   RecommendationList,
   SectionCard,
 } from "@/src/components/ai/ai-primitives";
+import { ComboboxCon, type ComboboxOption } from "@/src/components/comboboxCon";
 import { Input } from "@/src/components/ui/input";
 
 const groupOptions: Array<{ label: string; value: InsightGroup | "all" }> = [
@@ -32,6 +33,12 @@ const groupOptions: Array<{ label: string; value: InsightGroup | "all" }> = [
 ];
 
 type SortOption = "priority" | "impact" | "title";
+
+const sortOptions: ComboboxOption[] = [
+  { label: "Sort by priority", value: "priority" },
+  { label: "Sort by impact", value: "impact" },
+  { label: "Sort by title", value: "title" },
+];
 
 const sortInsights = (items: FinanceAiInsight[], sortBy: SortOption) => {
   const nextItems = [...items];
@@ -150,22 +157,21 @@ const AICoach = () => {
               Filter by coaching category, search specific concerns, and sort by urgency or impact.
             </p>
           </div>
-          <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+          <div className="grid w-full gap-3 md:grid-cols-[minmax(0,16rem)_12rem] lg:max-w-md">
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search insights"
               className="h-11 rounded-xl border-border bg-background"
             />
-            <select
-              value={sortBy}
-              onChange={(event) => setSortBy(event.target.value as SortOption)}
-              className="h-11 rounded-xl border border-border bg-background px-4 text-sm text-foreground"
-            >
-              <option value="priority">Sort by priority</option>
-              <option value="impact">Sort by impact</option>
-              <option value="title">Sort by title</option>
-            </select>
+            <div className="w-full">
+              <ComboboxCon
+                options={sortOptions}
+                value={sortBy}
+                onSelect={(item) => setSortBy(item as SortOption)}
+                width="100%"
+              />
+            </div>
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -174,7 +180,7 @@ const AICoach = () => {
               key={option.value}
               type="button"
               onClick={() => setSelectedGroup(option.value)}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+              className={`cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition ${
                 selectedGroup === option.value
                   ? "bg-grey-900 text-white dark:bg-white dark:text-grey-900"
                   : "bg-beige-100 text-grey-900 dark:bg-secondary dark:text-foreground"

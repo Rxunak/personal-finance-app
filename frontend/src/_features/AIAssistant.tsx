@@ -226,7 +226,7 @@ const AIAssistant = () => {
                 key={suggestion}
                 type="button"
                 onClick={() => sendMessage(suggestion)}
-                className="rounded-full bg-beige-100 px-4 py-2 text-sm font-semibold text-grey-900 transition hover:bg-beige-100/80 dark:bg-secondary dark:text-foreground"
+                className="cursor-pointer rounded-full bg-beige-100 px-4 py-2 text-sm font-semibold text-grey-900 transition hover:bg-beige-100/80 dark:bg-secondary dark:text-foreground"
               >
                 {suggestion}
               </button>

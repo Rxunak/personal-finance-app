@@ -167,7 +167,7 @@ const Transaction = () => {
   if (error) return "An error has occured: " + error.message;
   if (!data) return null;
   return (
-    <div className="bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
+    <div className="flex min-h-lvh flex-col bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
       <header className="mb-8 pt-6 text-3xl font-semibold">Transactions</header>
       <Dialog
         open={isTransactionDialogOpen}

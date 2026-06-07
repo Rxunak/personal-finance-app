@@ -5,6 +5,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuItem,
   SidebarMenuButton,
   SidebarTrigger,
 } from "../components/ui/sidebar";
@@ -26,7 +27,8 @@ const navigationItems = [
     href: "/",
     label: "Dashboard",
     icon: IconNavOverview,
-    iconClassName: "group-hover/dashboard:text-green group-data-[active=true]/dashboard:text-green",
+    iconClassName:
+      "group-hover/dashboard:text-green group-data-[active=true]/dashboard:text-green",
     match: (pathname: string) => pathname === "/",
     group: "dashboard",
   },
@@ -43,15 +45,18 @@ const navigationItems = [
     href: "/budgets",
     label: "Budgets",
     icon: IconNavBudgets,
-    iconClassName: "group-hover/budgets:text-green group-data-[active=true]/budgets:text-green",
-    match: (pathname: string) => pathname === "/budgets" || pathname === "/budget",
+    iconClassName:
+      "group-hover/budgets:text-green group-data-[active=true]/budgets:text-green",
+    match: (pathname: string) =>
+      pathname === "/budgets" || pathname === "/budget",
     group: "budgets",
   },
   {
     href: "/pots",
     label: "Pots",
     icon: IconNavPots,
-    iconClassName: "group-hover/pots:text-green group-data-[active=true]/pots:text-green",
+    iconClassName:
+      "group-hover/pots:text-green group-data-[active=true]/pots:text-green",
     match: (pathname: string) => pathname === "/pots",
     group: "pots",
   },
@@ -65,19 +70,11 @@ const navigationItems = [
     group: "recurring-bills",
   },
   {
-    href: "/summariseStatements",
-    label: "Summarise Statements",
-    icon: Sparkles,
-    iconClassName:
-      "group-hover/summarise-statements:text-green group-data-[active=true]/summarise-statements:text-green",
-    match: (pathname: string) => pathname === "/summariseStatements",
-    group: "summarise-statements",
-  },
-  {
     href: "/ai-coach",
     label: "AI Coach",
     icon: Sparkles,
-    iconClassName: "group-hover/ai-coach:text-green group-data-[active=true]/ai-coach:text-green",
+    iconClassName:
+      "group-hover/ai-coach:text-green group-data-[active=true]/ai-coach:text-green",
     match: (pathname: string) => pathname === "/ai-coach",
     group: "ai-coach",
   },
@@ -120,30 +117,37 @@ export function AppSidebar() {
       <SidebarHeader className={isCollapsed ? "p-4 mb-3" : "p-6"}>
         {isCollapsed ? <LogoSmall /> : <LogoLarge />}
       </SidebarHeader>
-      <SidebarMenu className={isCollapsed ? "gap-4" : ""}>
+      <SidebarMenu className={isCollapsed ? "gap-4 pr-2" : "pr-2"}>
         {navigationItems.map((item) => {
           const Icon = item.icon;
           const itemClassName = isCollapsed
-            ? `group/${item.group} w-10 p-3 data-[active=true]:border-l-4 data-[active=true]:bg-white data-[active=true]:text-black border-green`
-            : `group/${item.group} p-6 data-[active=true]:border-l-4 data-[active=true]:bg-white data-[active=true]:text-black border-green`;
+            ? `group/${item.group} size-12 justify-center rounded-lg border-l-4 border-transparent px-0 hover:border-green hover:bg-white hover:text-black data-[active=true]:border-green data-[active=true]:bg-white data-[active=true]:text-black`
+            : `group/${item.group} h-12 w-full justify-start rounded-lg border-l-4 border-transparent px-6 hover:border-green hover:bg-white hover:text-black data-[active=true]:border-green data-[active=true]:bg-white data-[active=true]:text-black`;
 
           return (
-            <SidebarMenuButton
-              key={item.href}
-              className={itemClassName}
-              isActive={item.match(pathname)}
-            >
-              <Link href={item.href} className="flex items-center gap-5">
-                <Icon
-                  className={`size-4 text-gray-400 transition-colors ${item.iconClassName}`}
-                />
-                {!isCollapsed ? item.label : ""}
-              </Link>
-            </SidebarMenuButton>
+            <SidebarMenuItem key={item.href}>
+              <SidebarMenuButton
+                asChild
+                className={itemClassName}
+                isActive={item.match(pathname)}
+              >
+                <Link
+                  href={item.href}
+                  className={`flex w-full items-center ${isCollapsed ? "justify-center" : "gap-5"}`}
+                >
+                  <span className="flex size-5 shrink-0 items-center justify-center overflow-visible">
+                    <Icon
+                      className={`size-5 shrink-0 overflow-visible text-gray-400 transition-colors ${item.iconClassName}`}
+                    />
+                  </span>
+                  {!isCollapsed ? <span>{item.label}</span> : null}
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           );
         })}
       </SidebarMenu>
-      <SidebarFooter>
+      <SidebarFooter className="pr-2">
         {!isCollapsed ? <ThemeToggle /> : null}
         <SidebarTrigger />
       </SidebarFooter>

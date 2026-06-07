@@ -3,6 +3,7 @@ import cors from "@fastify/cors";
 import formbody from "@fastify/formbody";
 import helmet from "@fastify/helmet";
 import multipart from "@fastify/multipart";
+import aiRoutes from "./routes/ai.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import budgetRoutes from "./routes/budgets.routes.js";
 import overviewRoutes from "./routes/overview.routes.js";
@@ -22,6 +23,7 @@ app.register(formbody);
 app.register(helmet);
 app.register(multipart);
 
+app.register(aiRoutes);
 app.register(authRoutes);
 app.register(budgetRoutes);
 app.register(overviewRoutes);

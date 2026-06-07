@@ -4,7 +4,8 @@ import { startTransition, useEffect, useMemo, useState } from "react";
 import { Bot, MessageSquare, Send, Trash2, User2 } from "lucide-react";
 
 import { useFinancialAi } from "@/hooks/use-financial-ai";
-import { buildAssistantAnswer } from "@/lib/financial-ai";
+import { apiBaseUrl } from "@/hooks/api";
+import { buildAssistantAnswer, buildAssistantContext } from "@/lib/financial-ai";
 import {
   AiErrorState,
   AiLoadingState,
@@ -31,8 +32,11 @@ const defaultPrompts = [
   "Which subscriptions look non-essential?",
 ];
 
+const FALLBACK_PREFIX =
+  "The live AI service is unavailable right now, so this answer uses the local fallback logic. ";
+
 const AIAssistant = () => {
-  const { report, isPending, error, refetch } = useFinancialAi();
+  const { report, data, isPending, error, refetch } = useFinancialAi();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<AssistantMessage[]>(() => {
     if (typeof window === "undefined") {
@@ -67,10 +71,10 @@ const AIAssistant = () => {
     return [...defaultPrompts, ...dynamic].slice(0, 6);
   }, [report]);
 
-  const sendMessage = (rawQuestion?: string) => {
+  const sendMessage = async (rawQuestion?: string) => {
     const question = (rawQuestion ?? input).trim();
 
-    if (!question || !report || isSending) {
+    if (!question || !report || !data || isSending) {
       return;
     }
 
@@ -87,20 +91,62 @@ const AIAssistant = () => {
     setIsSending(true);
     setInput("");
 
-    startTransition(() => {
-      setMessages((current) => [...current, userMessage]);
-      const response = buildAssistantAnswer(question, report);
+    setMessages((current) => [...current, userMessage]);
 
-      const assistantMessage: AssistantMessage = {
-        id: `${baseId}-assistant`,
-        role: "assistant",
-        content: response.answer,
-        createdAt: new Date().toISOString(),
+    try {
+      const response = await fetch(`${apiBaseUrl}/ai/assistant`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question,
+          messages: messages.slice(-6).map((message) => ({
+            role: message.role,
+            content: message.content,
+          })),
+          context: buildAssistantContext(data, report),
+        }),
+      });
+
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as
+          | { message?: string }
+          | null;
+        throw new Error(body?.message ?? `AI request failed with status ${response.status}`);
+      }
+
+      const payload = (await response.json()) as {
+        answer: string;
+        suggestions?: string[];
       };
 
-      setMessages((current) => [...current, assistantMessage]);
+      startTransition(() => {
+        const assistantMessage: AssistantMessage = {
+          id: `${baseId}-assistant`,
+          role: "assistant",
+          content: payload.answer,
+          createdAt: new Date().toISOString(),
+        };
+
+        setMessages((current) => [...current, assistantMessage]);
+      });
+    } catch {
+      const fallback = buildAssistantAnswer(question, report);
+
+      startTransition(() => {
+        const assistantMessage: AssistantMessage = {
+          id: `${baseId}-assistant`,
+          role: "assistant",
+          content: `${FALLBACK_PREFIX}${fallback.answer}`,
+          createdAt: new Date().toISOString(),
+        };
+
+        setMessages((current) => [...current, assistantMessage]);
+      });
+    } finally {
       setIsSending(false);
-    });
+    }
   };
 
   if (isPending) {
@@ -108,7 +154,7 @@ const AIAssistant = () => {
       <AiPageContainer>
         <AiPageHeader
           title="AI Assistant"
-          description="A locally powered financial Q&A workspace with private conversation persistence on this device."
+          description="An OpenAI-powered financial Q&A workspace with private conversation persistence on this device."
         />
         <AiLoadingState />
       </AiPageContainer>
@@ -120,7 +166,7 @@ const AIAssistant = () => {
       <AiPageContainer>
         <AiPageHeader
           title="AI Assistant"
-          description="A locally powered financial Q&A workspace with private conversation persistence on this device."
+          description="An OpenAI-powered financial Q&A workspace with private conversation persistence on this device."
         />
         <AiErrorState
           message={error?.message ?? "No assistant context is available yet."}
@@ -134,7 +180,7 @@ const AIAssistant = () => {
     <AiPageContainer>
       <AiPageHeader
         title="AI Assistant"
-        description="Ask questions about spending, budgets, subscriptions, and financial health. Answers are generated from local transaction data already available in the app."
+        description="Ask questions about spending, budgets, subscriptions, and financial health. Answers are generated from your finance data with a backend OpenAI call."
       />
 
       <div className="grid gap-4 md:grid-cols-3">
@@ -187,7 +233,7 @@ const AIAssistant = () => {
             ))}
           </div>
           <div className="rounded-2xl border border-green/15 bg-green/5 p-4 text-sm text-muted-foreground">
-            This assistant uses the same local transaction, budget, pot, and recurring bill data visible elsewhere in the app. No server-side AI call is required for these answers.
+            This assistant uses the same transaction, budget, pot, and recurring bill data visible elsewhere in the app, then sends a grounded summary to the backend AI service for the final answer.
           </div>
         </SectionCard>
 

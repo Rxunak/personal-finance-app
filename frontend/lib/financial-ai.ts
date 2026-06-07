@@ -102,6 +102,56 @@ export type FinanceAiReport = {
   };
 };
 
+export type AssistantContextPayload = {
+  balance: {
+    current: number;
+    income: number;
+    expenses: number;
+  };
+  health: {
+    score: number;
+    delta: number | null;
+    recommendations: string[];
+  };
+  budgets: Array<{
+    category: string;
+    maximum: number;
+  }>;
+  pots: Array<{
+    name: string;
+    target: number;
+    total: number;
+  }>;
+  topInsights: Array<{
+    title: string;
+    summary: string;
+    detail: string;
+    group: InsightGroup;
+    tone: InsightTone;
+  }>;
+  subscriptions: Array<{
+    name: string;
+    category: string;
+    monthlyCost: number;
+    annualCost: number;
+    status: "active" | "watch" | "cancel";
+    recommendation: string;
+  }>;
+  recentTransactions: Array<{
+    name: string;
+    category: string;
+    amount: number;
+    date: string;
+    recurring: boolean;
+  }>;
+  monthlyCashflow: Array<{
+    label: string;
+    income: number;
+    expenses: number;
+    net: number;
+  }>;
+};
+
 const currencyFormatter = new Intl.NumberFormat("en-GB", {
   style: "currency",
   currency: "GBP",
@@ -658,6 +708,55 @@ export const buildFinanceAiReport = (data: FinanceData): FinanceAiReport => {
     subscriptions,
   };
 };
+
+export const buildAssistantContext = (
+  data: FinanceData,
+  report: FinanceAiReport,
+): AssistantContextPayload => ({
+  balance: report ? data.balance : { current: 0, income: 0, expenses: 0 },
+  health: {
+    score: report.health.score,
+    delta: report.health.delta,
+    recommendations: report.health.recommendations.slice(0, 3),
+  },
+  budgets: data.budgets.map((budget) => ({
+    category: budget.category,
+    maximum: budget.maximum,
+  })),
+  pots: data.pots.map((pot) => ({
+    name: pot.name,
+    target: pot.target,
+    total: pot.total,
+  })),
+  topInsights: report.insights.slice(0, 6).map((insight) => ({
+    title: insight.title,
+    summary: insight.summary,
+    detail: insight.detail,
+    group: insight.group,
+    tone: insight.tone,
+  })),
+  subscriptions: report.subscriptions.items.slice(0, 8).map((item) => ({
+    name: item.name,
+    category: item.category,
+    monthlyCost: item.monthlyCost,
+    annualCost: item.annualCost,
+    status: item.status,
+    recommendation: item.recommendation,
+  })),
+  recentTransactions: data.transactions.slice(0, 20).map((transaction) => ({
+    name: transaction.name,
+    category: transaction.category,
+    amount: transaction.amount,
+    date: transaction.date,
+    recurring: transaction.recurring,
+  })),
+  monthlyCashflow: report.monthlyCashflow.slice(-6).map((point) => ({
+    label: point.label,
+    income: point.income,
+    expenses: point.expenses,
+    net: point.net,
+  })),
+});
 
 export const buildAssistantAnswer = (
   question: string,

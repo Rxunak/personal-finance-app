@@ -10,6 +10,8 @@ class Env{
           : 8000
     static JWT_SECRET = process.env.JWT_SECRET || "STRONG_SECRET"
     static DATABASE_URL = process.env.DATABASE_URL || ""
+    static OPENAI_API_KEY = process.env.OPENAI_API_KEY || ""
+    static OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-5.4-mini"
 
 }
 

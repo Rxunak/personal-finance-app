@@ -23,7 +23,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/src/components/ui/tooltip";
-import Image from "next/image";
+import IconMinimizeMenu from "@/src/icons/icon-minimize-menu.svg";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -266,9 +266,12 @@ function SidebarTrigger({
     <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      variant="ghost"
+      // variant="ghost"
       size="icon"
-      className={cn("size-7 w-full justify-start", className)}
+      className={cn(
+        "text-grey-300 h-12 w-full justify-start rounded-lg px-0 transition-colors hover:bg-white hover:text-black cursor-pointer",
+        className,
+      )}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
@@ -279,22 +282,18 @@ function SidebarTrigger({
       <div
         className={
           isCollapsed
-            ? "flex flex-row gap-5 cursor-pointer pl-2"
-            : "flex flex-row gap-5 cursor-pointer pl-4"
+            ? "flex w-full items-center justify-center"
+            : "flex w-full items-center gap-5 pl-6"
         }
       >
-        <Image
-          src="/images/icon-minimize-menu.svg"
-          width={18}
-          height={18}
-          alt="minimize"
-          className={isCollapsed ? "rotate-180" : ""}
+        <IconMinimizeMenu
+          className={cn("size-5 shrink-0 transition-colors", isCollapsed && "rotate-180")}
         />
 
         {isCollapsed ? (
           ""
         ) : (
-          <p className="text-grey-300 font-sans text-base font-bold">
+          <p className="font-sans text-base font-bold transition-colors">
             Minimize Menu
           </p>
         )}

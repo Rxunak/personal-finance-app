@@ -225,7 +225,7 @@ const Pots = () => {
                 <div className="flex justify-around mt-4 gap-5 h-12">
                   <button
                     type="button"
-                    className="flex h-full w-1/2 cursor-pointer items-center justify-center rounded-md bg-beige-100 font-bold dark:bg-secondary"
+                    className="flex h-full w-1/2 cursor-pointer items-center justify-center rounded-md bg-beige-100 font-bold dark:bg-secondary hover:bg-white hover:border"
                     onClick={() => {
                       setPotBalanceMode("add");
                       setPotBalanceTarget(pot);
@@ -235,7 +235,7 @@ const Pots = () => {
                   </button>
                   <button
                     type="button"
-                    className="flex h-full w-1/2 cursor-pointer items-center justify-center rounded-md bg-beige-100 font-bold dark:bg-secondary"
+                    className="flex h-full w-1/2 cursor-pointer items-center justify-center rounded-md bg-beige-100 font-bold dark:bg-secondary hover:bg-white hover:border"
                     onClick={() => {
                       setPotBalanceMode("withdraw");
                       setPotBalanceTarget(pot);

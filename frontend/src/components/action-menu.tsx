@@ -62,7 +62,7 @@ export function ActionMenu({
       </button>
       {isOpen && (
         <div
-          className={`absolute right-0 top-10 z-20 overflow-hidden bg-card text-card-foreground shadow-[0_18px_40px_rgba(0,0,0,0.18)] ${menuWidthClassName} ${menuClassName}`}
+          className={`absolute top-full right-0 z-20 mt-4 overflow-hidden bg-card text-card-foreground ring-1 ring-foreground/10 shadow-xl shadow-black/10 dark:shadow-black/30 ${menuWidthClassName} ${menuClassName}`}
         >
           {items.map((item, index) => (
             <div key={item.label}>

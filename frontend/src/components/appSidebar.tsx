@@ -14,23 +14,26 @@ import { useSidebar } from "../components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import LogoLarge from "../icons/logo-large.svg";
 import LogoSmall from "../icons/logo-small.svg";
-import IconNavBudgets from "../icons/icon-nav-budgets.svg";
-import IconNavOverview from "../icons/icon-nav-overview.svg";
-import IconNavPots from "../icons/icon-nav-pots.svg";
-import IconNavRecurringBills from "../icons/icon-nav-recurring-bills.svg";
 import IconNavTransactions from "../icons/icon-nav-transactions.svg";
-import { Activity, Bot, HeartPulse, Sparkles } from "lucide-react";
+import {
+  Activity,
+  Bot,
+  HandCoins,
+  HeartPulse,
+  PiggyBank,
+  Sparkles,
+} from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 
 const navigationItems = [
   {
     href: "/",
-    label: "Dashboard",
-    icon: IconNavOverview,
+    label: "Overview",
+    icon: PiggyBank,
     iconClassName:
-      "group-hover/dashboard:text-green group-data-[active=true]/dashboard:text-green",
+      "group-hover/overview:text-green group-data-[active=true]/overview:text-green",
     match: (pathname: string) => pathname === "/",
-    group: "dashboard",
+    group: "overview",
   },
   {
     href: "/transactions",
@@ -44,7 +47,7 @@ const navigationItems = [
   {
     href: "/budgets",
     label: "Budgets",
-    icon: IconNavBudgets,
+    icon: HandCoins,
     iconClassName:
       "group-hover/budgets:text-green group-data-[active=true]/budgets:text-green",
     match: (pathname: string) =>
@@ -54,7 +57,7 @@ const navigationItems = [
   {
     href: "/pots",
     label: "Pots",
-    icon: IconNavPots,
+    icon: PiggyBank,
     iconClassName:
       "group-hover/pots:text-green group-data-[active=true]/pots:text-green",
     match: (pathname: string) => pathname === "/pots",
@@ -63,7 +66,7 @@ const navigationItems = [
   {
     href: "/recurringBills",
     label: "Recurring Bills",
-    icon: IconNavRecurringBills,
+    icon: PiggyBank,
     iconClassName:
       "group-hover/recurring-bills:text-green group-data-[active=true]/recurring-bills:text-green",
     match: (pathname: string) => pathname === "/recurringBills",

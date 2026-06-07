@@ -63,7 +63,7 @@ const Overview = () => {
 
   return (
     <div className="flex min-h-lvh flex-col gap-7 bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
-      <div className="pt-6 text-3xl font-semibold">Dashboard</div>
+      <div className="pt-6 text-3xl font-semibold">Overview</div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="h-25 rounded-2xl bg-grey-900 flex flex-col justify-center p-7 gap-3 text-white">
           <p className="text-sm">Current Balance</p>

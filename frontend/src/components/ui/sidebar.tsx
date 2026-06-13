@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Separator } from "@/src/components/ui/separator";
+
 import {
   Sheet,
   SheetContent,
@@ -199,7 +200,9 @@ function Sidebar({
             <SheetTitle>Sidebar</SheetTitle>
             <SheetDescription>Displays the mobile sidebar.</SheetDescription>
           </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
+          <div className="flex h-full w-full flex-col bg-grey-900">
+            {children}
+          </div>
         </SheetContent>
       </Sheet>
     );
@@ -258,49 +261,61 @@ function SidebarTrigger({
   onClick,
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, isMobile } = useSidebar();
   const { state } = useSidebar();
 
   const isCollapsed = state === "collapsed";
   return (
-    <Button
-      data-sidebar="trigger"
-      data-slot="sidebar-trigger"
-      // variant="ghost"
-      size="icon"
-      className={cn(
-        "text-grey-300 h-12 w-full justify-start rounded-lg px-0 transition-colors hover:bg-white hover:text-black cursor-pointer",
-        className,
+    <>
+      {!isMobile && (
+        <Button
+          data-sidebar="trigger"
+          data-slot="sidebar-trigger"
+          // variant="ghost"
+          size="icon"
+          className={cn(
+            "text-grey-300 h-12 w-full justify-start rounded-lg px-0 transition-colors hover:bg-white hover:text-black cursor-pointer",
+            className,
+          )}
+          onClick={(event) => {
+            onClick?.(event);
+            toggleSidebar();
+          }}
+          {...props}
+        >
+          {/* <PanelLeftIcon /> */}
+          <div
+            className={
+              isCollapsed
+                ? "flex w-full items-center justify-center"
+                : "flex w-full items-center gap-5 pl-6"
+            }
+          >
+            {!isMobile ? (
+              <>
+                <IconMinimizeMenu
+                  className={cn(
+                    "size-5 shrink-0 transition-colors",
+                    isCollapsed && "rotate-180",
+                  )}
+                />
+                {isCollapsed ? (
+                  ""
+                ) : (
+                  <p className="font-sans text-base font-bold transition-colors">
+                    Minimize Menu
+                  </p>
+                )}
+              </>
+            ) : (
+              ""
+            )}
+          </div>
+
+          <span className="sr-only">Toggle Sidebar</span>
+        </Button>
       )}
-      onClick={(event) => {
-        onClick?.(event);
-        toggleSidebar();
-      }}
-      {...props}
-    >
-      {/* <PanelLeftIcon /> */}
-      <div
-        className={
-          isCollapsed
-            ? "flex w-full items-center justify-center"
-            : "flex w-full items-center gap-5 pl-6"
-        }
-      >
-        <IconMinimizeMenu
-          className={cn("size-5 shrink-0 transition-colors", isCollapsed && "rotate-180")}
-        />
-
-        {isCollapsed ? (
-          ""
-        ) : (
-          <p className="font-sans text-base font-bold transition-colors">
-            Minimize Menu
-          </p>
-        )}
-      </div>
-
-      <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+    </>
   );
 }
 

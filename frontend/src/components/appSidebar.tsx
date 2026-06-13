@@ -15,6 +15,7 @@ import { usePathname } from "next/navigation";
 import LogoLarge from "../icons/logo-large.svg";
 import LogoSmall from "../icons/logo-small.svg";
 import IconNavTransactions from "../icons/icon-nav-transactions.svg";
+import { PanelRightOpen } from "lucide-react";
 import {
   Activity,
   Bot,
@@ -116,11 +117,13 @@ export function AppSidebar() {
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
   const pathname = usePathname();
+  const { toggleSidebar, isMobile } = useSidebar();
 
   return (
     <Sidebar>
       <SidebarHeader className={isCollapsed ? "p-4 mb-3" : "p-6"}>
         {isCollapsed ? <LogoSmall /> : <LogoLarge />}
+        {isMobile ? <PanelRightOpen onClick={toggleSidebar} /> : ""}
       </SidebarHeader>
       <SidebarMenu className={isCollapsed ? "gap-4 pr-2" : "pr-2"}>
         {navigationItems.map((item) => {

@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { SidebarInset, SidebarProvider } from "../components/ui/sidebar";
 import { AppSidebar } from "../components/appSidebar";
+import MobileNavigation from "../components/mobileNavigation";
 import QueryProvider from "./queryProvider";
 
 export const metadata: Metadata = {
@@ -21,6 +22,8 @@ export default function RootLayout({
         <QueryProvider>
           <SidebarProvider>
             <AppSidebar />
+            <MobileNavigation />
+
             <SidebarInset className="min-h-svh w-full overflow-x-hidden overflow-y-auto">
               {children}
             </SidebarInset>

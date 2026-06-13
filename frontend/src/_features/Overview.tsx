@@ -62,7 +62,7 @@ const Overview = () => {
     data.pots.find((item) => item.name === "Savings") ?? data.pots[0];
 
   return (
-    <div className="flex min-h-lvh flex-col gap-7 bg-beige-100 px-8 pb-8 text-foreground dark:bg-background">
+    <div className="flex min-h-lvh flex-col gap-7 bg-beige-100 px-8 pb-8 pl-5 text-foreground dark:bg-background md:px-8 md:pb-8">
       <div className="pt-6 text-3xl font-semibold">Overview</div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="h-25 rounded-2xl bg-grey-900 flex flex-col justify-center p-7 gap-3 text-white">
@@ -135,7 +135,9 @@ const Overview = () => {
                       style={{ borderLeftColor: pot.theme }}
                     ></span>
                     <div className="flex flex-col gap-1">
-                      <p className="pl-4 text-sm text-muted-foreground">{pot.name}</p>
+                      <p className="pl-4 text-sm text-muted-foreground">
+                        {pot.name}
+                      </p>
                       <p className="pl-4 font-bold text-foreground">
                         {pot.total.toLocaleString("en-GB", {
                           style: "currency",

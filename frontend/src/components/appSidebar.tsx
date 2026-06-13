@@ -121,9 +121,24 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className={isCollapsed ? "p-4 mb-3" : "p-6"}>
+      <SidebarHeader
+        className={
+          isMobile
+            ? "flex flex-row justify-between p-6 items-center"
+            : isCollapsed
+              ? "p-4 mb-3"
+              : "p-6"
+        }
+      >
         {isCollapsed ? <LogoSmall /> : <LogoLarge />}
-        {isMobile ? <PanelRightOpen onClick={toggleSidebar} /> : ""}
+        {isMobile ? (
+          <PanelRightOpen
+            onClick={toggleSidebar}
+            className="cursor-pointer size-8 hover:rotate-180 transition duration-800"
+          />
+        ) : (
+          ""
+        )}
       </SidebarHeader>
       <SidebarMenu className={isCollapsed ? "gap-4 pr-2" : "pr-2"}>
         {navigationItems.map((item) => {
